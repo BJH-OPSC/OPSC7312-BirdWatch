@@ -23,8 +23,8 @@ class SettingsActivity : AppCompatActivity() {
         sharedPreferencesManager =
             SharedPreferencesManager(applicationContext) // Initialize SharedPreferencesManager
 
-        decisionSwitch = findViewById(R.id.decisionSwitch)
-        maxDistanceEditText = findViewById(R.id.MaxDistanceEditText)
+        //decisionSwitch = findViewById(R.id.decisionSwitch)
+        //maxDistanceEditText = findViewById(R.id.MaxDistanceEditText)
 
         val isImperialEnabled =
             sharedPreferencesManager.getUnit() // Use the SharedPreferencesManager

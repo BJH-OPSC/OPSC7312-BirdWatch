@@ -4,7 +4,7 @@
             "outputFile": "com.example.opsc_birdwatch.app-mergeDebugResources-30:/values-v18/values-v18.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\lab_services_student\\.gradle\\caches\\transforms-3\\3e0b6e4cd00ec1094432a441bef118ac\\transformed\\appcompat-1.6.1\\res\\values-v18\\values-v18.xml",
+                    "source": "C:\\Users\\danja\\.gradle\\caches\\transforms-3\\3e0b6e4cd00ec1094432a441bef118ac\\transformed\\appcompat-1.6.1\\res\\values-v18\\values-v18.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",

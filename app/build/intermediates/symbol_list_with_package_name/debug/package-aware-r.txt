@@ -1415,6 +1415,7 @@ color foreground_material_light
 color highlighted_text_material_dark
 color highlighted_text_material_light
 color lavender
+color link_blue
 color m3_appbar_overlay_color
 color m3_assist_chip_icon_tint_color
 color m3_assist_chip_stroke_color
@@ -2946,10 +2947,13 @@ drawable abc_vector_test
 drawable avd_hide_password
 drawable avd_show_password
 drawable baseline_home_24
+drawable baseline_info_24
 drawable baseline_list_24
+drawable baseline_login_24
 drawable baseline_logout_24
 drawable baseline_map_24
 drawable baseline_settings_24
+drawable binoculars_svgrepo_com
 drawable btn_checkbox_checked_mtrl
 drawable btn_checkbox_checked_to_unchecked_mtrl_animation
 drawable btn_checkbox_unchecked_mtrl
@@ -2958,6 +2962,7 @@ drawable btn_radio_off_mtrl
 drawable btn_radio_off_to_on_mtrl_animation
 drawable btn_radio_on_mtrl
 drawable btn_radio_on_to_off_mtrl_animation
+drawable contour_line
 drawable design_fab_background
 drawable design_ic_visibility
 drawable design_ic_visibility_off
@@ -2989,6 +2994,7 @@ drawable m3_tabs_background
 drawable m3_tabs_line_indicator
 drawable m3_tabs_rounded_line_indicator
 drawable m3_tabs_transparent_background
+drawable man_takes_photo
 drawable material_cursor_drawable
 drawable material_ic_calendar_black_24dp
 drawable material_ic_clear_black_24dp
@@ -3049,6 +3055,8 @@ drawable notification_template_icon_bg
 drawable notification_template_icon_low_bg
 drawable notification_tile_bg
 drawable notify_panel_notification_icon_bg
+drawable rounded_button
+drawable rounded_edit_text
 drawable test_level_drawable
 drawable tooltip_frame_dark
 drawable tooltip_frame_light
@@ -3150,7 +3158,9 @@ id bounce
 id bounceBoth
 id bounceEnd
 id bounceStart
+id buttonLogin
 id buttonPanel
+id buttonSignUp
 id cache_measures
 id callMeasure
 id cancel_button
@@ -3224,6 +3234,8 @@ id easeInOut
 id easeOut
 id east
 id edge
+id editTextPassword
+id editTextUsername
 id edit_query
 id elastic
 id embed
@@ -3272,6 +3284,7 @@ id ifRoom
 id ignore
 id ignoreRequest
 id image
+id imageView
 id immediateStop
 id included
 id indeterminate
@@ -3352,8 +3365,10 @@ id mtrl_picker_text_input_range_start
 id mtrl_picker_title_text
 id mtrl_view_tag_bottom_padding
 id multiply
+id nav_about
 id nav_home
 id nav_list
+id nav_login
 id nav_logout
 id nav_map
 id nav_settings
@@ -3670,6 +3685,11 @@ layout abc_search_view
 layout abc_select_dialog_material
 layout abc_tooltip
 layout activity_main
+layout activity_map
+layout activity_observations
+layout activity_settings
+layout activity_sign_in
+layout activity_sign_up
 layout custom_dialog
 layout design_bottom_navigation_item
 layout design_bottom_sheet_dialog
@@ -4243,6 +4263,7 @@ style Platform_V21_AppCompat_Light
 style Platform_V25_AppCompat
 style Platform_V25_AppCompat_Light
 style Platform_Widget_AppCompat_Spinner
+style RoundedButton
 style RtlOverlay_DialogWindowTitle_AppCompat
 style RtlOverlay_Widget_AppCompat_ActionBar_TitleItem
 style RtlOverlay_Widget_AppCompat_DialogTitle_Icon

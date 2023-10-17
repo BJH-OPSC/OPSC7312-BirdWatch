@@ -13,7 +13,7 @@ class SignInActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_in)
 
-        val loginButton = findViewById<Button>(R.id.login_button)
+        /*val loginButton = findViewById<Button>(R.id.login_button)
         val registerText = findViewById<TextView>(R.id.register_text)
         val usernameEditText = findViewById<EditText>(R.id.usernameEditText)
 
@@ -48,6 +48,6 @@ class SignInActivity : AppCompatActivity() {
             startActivity(intent)
             finish()
 
-        }
+        }*/
     }
 }
