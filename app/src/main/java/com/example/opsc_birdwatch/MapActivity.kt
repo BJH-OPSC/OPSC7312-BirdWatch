@@ -38,7 +38,11 @@ import com.google.maps.model.Unit
 import retrofit2.*
 import retrofit2.converter.gson.GsonConverterFactory
 
-class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener, OnPolylineClickListener {
+import android.view.MenuItem
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.navigation.NavigationView
+
+class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener, OnPolylineClickListener, NavigationView.OnNavigationItemSelectedListener {
     // *********CAN ADD FUNCTION TO RESET MAP SO THAT POLYLINES ARE NO LONGER VISIBLE, CURRENTLY HAVE TO CLICK ON A NEW LOCATION AND GET DIRECTIONS TO CLEAR PREVIOUS POLYLINES***************
     private val API_KEY = "AIzaSyAHuVhTH57FC4TbT01iA0uhep_7M5RRX-o"
     private val ERROR_DIALOG_REQUEST = 1
@@ -66,6 +70,9 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfoWin
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
+
+        val navigationView = findViewById<NavigationView>(R.id.bottomNavigationView)
+        navigationView.setNavigationItemSelectedListener(this)
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
@@ -422,5 +429,20 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfoWin
             600,
             null
         )
+    }
+
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+            R.id.menu_exit->{
+                startActivity(Intent(this, MainActivity::class.java))
+            }
+            R.id.menu_home->{
+                startActivity(Intent(this, MainActivity::class.java))
+            }
+            R.id.menu_list->{
+                startActivity(Intent(this, ObservationsActivity::class.java))
+            }
+        }
+        return true
     }
 }
