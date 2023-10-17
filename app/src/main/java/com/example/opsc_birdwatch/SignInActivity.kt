@@ -13,14 +13,14 @@ class SignInActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_in)
 
-        /*val loginButton = findViewById<Button>(R.id.login_button)
-        val registerText = findViewById<TextView>(R.id.register_text)
-        val usernameEditText = findViewById<EditText>(R.id.usernameEditText)
+        val loginButton = findViewById<Button>(R.id.buttonLogin)
+        //val registerText = findViewById<TextView>(R.id.)
+        val usernameEditText = findViewById<EditText>(R.id.editTextUsername)
 
 
         loginButton.setOnClickListener {
             val username = usernameEditText.text.toString()
-            val password = findViewById<EditText>(R.id.PasswordEditText).text.toString()
+            val password = findViewById<EditText>(R.id.editTextPassword).text.toString()
             val storedPassword = AccountManager.getUserPassword(username)
 
             if (storedPassword != null && storedPassword == password)
@@ -42,7 +42,7 @@ class SignInActivity : AppCompatActivity() {
             }
         }
 
-        registerText.setOnClickListener {
+       /* registerText.setOnClickListener {
             // Start the RegisterActivity
             val intent = Intent(this, SignUpActivity::class.java)
             startActivity(intent)
