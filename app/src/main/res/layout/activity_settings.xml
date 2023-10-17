@@ -11,6 +11,39 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+
+        <Switch
+            android:id="@+id/decisionSwitch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:text="Make a Decision"
+            android:checked="false" />
+
+        <EditText
+            android:id="@+id/MaxDistanceEditText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            app:layout_constraintTop_toBottomOf="@+id/decisionSwitch"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintWidth="0dp"
+            android:hint="Max Distance"
+            android:inputType="numberDecimal" />
+
+        <Button
+            android:id="@+id/apply_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:layout_constraintTop_toBottomOf="@+id/MaxDistanceEditText"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:text="Apply" />
         <androidx.appcompat.widget.Toolbar
             android:layout_width="match_parent"
             android:layout_height="56dp"
@@ -23,6 +56,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/fragment_container"/>
+
+
     </LinearLayout>
 
     <com.google.android.material.navigation.NavigationView
@@ -32,6 +67,9 @@
         android:layout_gravity="start"
         app:headerLayout="@layout/nav_header"
         app:menu="@menu/nav_menu"
+
+
+
 
         app:itemIconTint="@color/lavender"
         app:itemTextColor="@color/lavender"/>
