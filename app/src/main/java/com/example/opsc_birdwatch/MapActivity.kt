@@ -34,6 +34,7 @@ import com.google.maps.GeoApiContext
 import com.google.maps.PendingResult
 import com.google.maps.internal.PolylineEncoding
 import com.google.maps.model.DirectionsResult
+import com.google.maps.model.Unit
 import retrofit2.*
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -47,13 +48,14 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfoWin
     private lateinit var binding: ActivityMapBinding
     private var mLocationPermissionGranted = false
     private lateinit var mFusedLocationClient: FusedLocationProviderClient
-    val BASE_URL = "https://api.ebird.org/v2/"
+    private val BASE_URL = "https://api.ebird.org/v2/"
     private var mCurrentLocation: Location = Location("dummy_provider")
     private var mGeoApiContext: GeoApiContext? = null
     private var mPolyLinesData: ArrayList<PolylineData> = ArrayList()
     private var selectedDistance: Int = 20
-    var mSelectedMarker: Marker? = null
-    var mTripMarkers: ArrayList<Marker> = ArrayList()
+    private var mSelectedMarker: Marker? = null
+    private var mTripMarkers: ArrayList<Marker> = ArrayList()
+    private var selectedUnits: String = "metric"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
@@ -89,6 +91,12 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfoWin
         )
         val directions = DirectionsApiRequest(mGeoApiContext)
         directions.alternatives(true)
+        if(selectedUnits == "metric"){
+            directions.units(Unit.METRIC)
+        }else{
+            directions.units(Unit.IMPERIAL)
+        }
+
         directions.origin(
             com.google.maps.model.LatLng(
                 mCurrentLocation.latitude,
