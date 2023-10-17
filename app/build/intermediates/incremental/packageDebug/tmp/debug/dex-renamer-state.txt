@@ -1,16 +1,10 @@
-#Tue Oct 17 16:31:35 CAT 2023
-path.4=classes2.dex
-path.3=3/classes.dex
-path.2=1/classes.dex
+#Tue Oct 17 14:33:43 CAT 2023
+base.2=C\:\\Users\\danja\\OneDrive\\Documents\\GitHub\\OPSC7312-BirdWatch\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\3\\classes.dex
+path.2=3/classes.dex
+base.1=C\:\\Users\\danja\\OneDrive\\Documents\\GitHub\\OPSC7312-BirdWatch\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\0\\classes.dex
 path.1=0/classes.dex
-path.0=classes.dex
-base.4=C\:\\Users\\mattb\\AndroidStudioProjects\\OPSC7312-BirdWatch\\app\\build\\intermediates\\dex\\debug\\mergeExtDexDebug\\classes2.dex
-base.3=C\:\\Users\\mattb\\AndroidStudioProjects\\OPSC7312-BirdWatch\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\3\\classes.dex
-base.2=C\:\\Users\\mattb\\AndroidStudioProjects\\OPSC7312-BirdWatch\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\1\\classes.dex
-base.1=C\:\\Users\\mattb\\AndroidStudioProjects\\OPSC7312-BirdWatch\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\0\\classes.dex
-base.0=C\:\\Users\\mattb\\AndroidStudioProjects\\OPSC7312-BirdWatch\\app\\build\\intermediates\\dex\\debug\\mergeExtDexDebug\\classes.dex
-renamed.3=classes4.dex
+base.0=C\:\\Users\\danja\\OneDrive\\Documents\\GitHub\\OPSC7312-BirdWatch\\app\\build\\intermediates\\dex\\debug\\mergeExtDexDebug\\classes.dex
 renamed.2=classes3.dex
 renamed.1=classes2.dex
 renamed.0=classes.dex
-renamed.4=classes5.dex
+path.0=classes.dex

@@ -1,9 +1,8 @@
 R_DEF: Internal format may change without notice
 local
 color black
-color blue
-color gray
 color lavender
+color link_blue
 color purple_200
 color purple_500
 color purple_700
@@ -21,10 +20,16 @@ drawable binoculars_svgrepo_com
 drawable contour_line
 drawable ic_launcher_background
 drawable ic_launcher_foreground
+drawable man_takes_photo
+drawable rounded_button
+drawable rounded_edit_text
+id buttonLogin
+id buttonSignUp
 id drawer_layout
+id editTextPassword
+id editTextUsername
 id fragment_container
-id locationNameTextView
-id map
+id imageView
 id nav_about
 id nav_home
 id nav_list
@@ -33,8 +38,6 @@ id nav_logout
 id nav_map
 id nav_settings
 id nav_view
-id observedTextView
-id speciesTextView
 id toolbar
 layout activity_main
 layout activity_map
@@ -42,7 +45,6 @@ layout activity_observations
 layout activity_settings
 layout activity_sign_in
 layout activity_sign_up
-layout custom_info_window
 layout fragment_about
 layout fragment_home
 layout fragment_list
@@ -55,6 +57,7 @@ string app_name
 string close_nav
 string hello_blank_fragment
 string open_nav
+style RoundedButton
 style Theme.MainActivity
 style Theme.OPSC_BirdWatch
 xml backup_rules
