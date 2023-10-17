@@ -24,6 +24,10 @@
         "source": "com.example.opsc_birdwatch.app-main-34:/drawable/contour_line.xml"
     },
     {
+        "merged": "com.example.opsc_birdwatch.app-merged_res-32:/menu_bottom_nav_menu.xml.flat",
+        "source": "com.example.opsc_birdwatch.app-main-34:/menu/bottom_nav_menu.xml"
+    },
+    {
         "merged": "com.example.opsc_birdwatch.app-merged_res-32:/layout_activity_map.xml.flat",
         "source": "com.example.opsc_birdwatch.app-main-34:/layout/activity_map.xml"
     },
@@ -70,6 +74,10 @@
     {
         "merged": "com.example.opsc_birdwatch.app-merged_res-32:/layout_fragment_about.xml.flat",
         "source": "com.example.opsc_birdwatch.app-main-34:/layout/fragment_about.xml"
+    },
+    {
+        "merged": "com.example.opsc_birdwatch.app-merged_res-32:/drawable_baseline_arrow_back_24.xml.flat",
+        "source": "com.example.opsc_birdwatch.app-main-34:/drawable/baseline_arrow_back_24.xml"
     },
     {
         "merged": "com.example.opsc_birdwatch.app-merged_res-32:/drawable_baseline_login_24.xml.flat",

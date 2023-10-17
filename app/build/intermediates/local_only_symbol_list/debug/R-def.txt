@@ -9,6 +9,7 @@ color purple_700
 color teal_200
 color teal_700
 color white
+drawable baseline_arrow_back_24
 drawable baseline_home_24
 drawable baseline_info_24
 drawable baseline_list_24
@@ -23,13 +24,21 @@ drawable ic_launcher_foreground
 drawable man_takes_photo
 drawable rounded_button
 drawable rounded_edit_text
+id bottomNavigationView
 id buttonLogin
+id buttonRegister
+id buttonSignIn
 id buttonSignUp
 id drawer_layout
+id editTextConfirmPassword
 id editTextPassword
 id editTextUsername
 id fragment_container
 id imageView
+id layout_linear
+id menu_exit
+id menu_home
+id menu_list
 id nav_about
 id nav_home
 id nav_list
@@ -50,6 +59,7 @@ layout fragment_home
 layout fragment_list
 layout fragment_settings
 layout nav_header
+menu bottom_nav_menu
 menu nav_menu
 mipmap ic_launcher
 mipmap ic_launcher_round
