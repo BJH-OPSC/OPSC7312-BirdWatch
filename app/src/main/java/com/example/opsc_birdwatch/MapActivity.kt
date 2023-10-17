@@ -88,7 +88,6 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfoWin
             marker.position.longitude
         )
         val directions = DirectionsApiRequest(mGeoApiContext)
-
         directions.alternatives(true)
         directions.origin(
             com.google.maps.model.LatLng(
