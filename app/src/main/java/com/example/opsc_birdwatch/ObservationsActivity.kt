@@ -14,6 +14,7 @@ import com.google.android.material.navigation.NavigationView
 class ObservationsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     private lateinit var drawerLayout: DrawerLayout
 
+    private lateinit var helperClass: HelperClass
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_observations)
@@ -83,5 +84,13 @@ class ObservationsActivity : AppCompatActivity(), NavigationView.OnNavigationIte
         } else {
             onBackPressedDispatcher.onBackPressed()
         }
+    }
+
+    //method to check if user is logged in
+    //if not sends them to the log in page
+    //do not want unlogged users to be able to save
+    fun isUserLogged(userName: String) : Boolean{
+
+    return true
     }
 }
