@@ -1,6 +1,8 @@
 R_DEF: Internal format may change without notice
 local
 color black
+color blue
+color gray
 color lavender
 color purple_200
 color purple_500
@@ -9,22 +11,38 @@ color teal_200
 color teal_700
 color white
 drawable baseline_home_24
+drawable baseline_info_24
 drawable baseline_list_24
+drawable baseline_login_24
 drawable baseline_logout_24
 drawable baseline_map_24
 drawable baseline_settings_24
+drawable binoculars_svgrepo_com
+drawable contour_line
 drawable ic_launcher_background
 drawable ic_launcher_foreground
 id drawer_layout
 id fragment_container
+id locationNameTextView
+id map
+id nav_about
 id nav_home
 id nav_list
+id nav_login
 id nav_logout
 id nav_map
 id nav_settings
 id nav_view
+id observedTextView
+id speciesTextView
 id toolbar
 layout activity_main
+layout activity_map
+layout activity_observations
+layout activity_settings
+layout activity_sign_in
+layout activity_sign_up
+layout custom_info_window
 layout fragment_about
 layout fragment_home
 layout fragment_list
