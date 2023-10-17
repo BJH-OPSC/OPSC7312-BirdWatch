@@ -444,5 +444,5 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfoWin
             }
         }
         return true
-    }
+
 }
