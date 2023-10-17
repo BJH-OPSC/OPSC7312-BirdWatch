@@ -151,8 +151,6 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfoWin
 
                 // This loops through all the LatLng coordinates of ONE polyline.
                 for (latLng in decodedPath) {
-
-//                        Log.d(TAG, "run: latlng: " + latLng.toString());
                     newDecodedPath.add(
                         LatLng(
                             latLng.lat,
@@ -392,7 +390,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfoWin
                 val markerOptions = MarkerOptions()
                     .position(endLocation)
                     .title("Trip #$index")
-                    .snippet("Duration: ${polylineData.getLeg()!!.duration}\n")
+                    .snippet("Duration: ${polylineData.getLeg()!!.duration}\nDistance: ${polylineData.getLeg()!!.distance}")
                 val marker = mMap.addMarker(markerOptions)
                 marker?.showInfoWindow()
                 if (marker != null) {
