@@ -42,11 +42,11 @@ class SettingsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
             } catch (e: NumberFormatException) {
                 Toast.makeText(this, "Invalid max distance", Toast.LENGTH_SHORT).show()
 
-                0.0f
+                20.0f
             }
         } else {
             Toast.makeText(this, "Please enter max distance", Toast.LENGTH_SHORT).show()
-            0.0f
+            20.0f
         }
         // Set the initial state of the switch
         decisionSwitch.isChecked = isImperialEnabled

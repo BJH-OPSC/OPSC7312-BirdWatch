@@ -16,19 +16,27 @@ class SignUpActivity : AppCompatActivity() {
 
         val usernameEditText = findViewById<EditText>(R.id.editTextUsername)
         val passwordEditText = findViewById<EditText>(R.id.editTextPassword)
-        val registerButton = findViewById<Button>(R.id.buttonSignUp)
+        val registerButton = findViewById<Button>(R.id.buttonRegister)
 
         registerButton.setOnClickListener {
-            val username = usernameEditText.text.toString()
-            val password = passwordEditText.text.toString()
+            val username = usernameEditText.text
+            val password = passwordEditText.text
 
             // After successful registration, navigate to the login screen
-            if (AccountManager.getUserPassword(username) != null) {
+            if (AccountManager.getUserPassword(username.toString()) != null || username == null ||password == null) {
                 // Show an error message
-                usernameEditText.setText("Error: Invalid")
+                val alertDialog = AlertDialog.Builder(this)
+                alertDialog.setTitle("UnSuccessful Register")
+                alertDialog.setMessage("Invalid Username and/or Password")
+                alertDialog.setPositiveButton("OK") { dialog, _ ->
+                    // when the user clicks OK
+                    dialog.dismiss()
+                }
+                alertDialog.show()
+                //usernameEditText.setText("Error: Invalid")
             } else {
                 // Register the user
-                AccountManager.addUser(username, password)
+                AccountManager.addUser(username.toString(), password.toString())
                 val alertDialog = AlertDialog.Builder(this)
                 alertDialog.setTitle("Successful Register")
                 alertDialog.setMessage("You Have Successfully Registered")

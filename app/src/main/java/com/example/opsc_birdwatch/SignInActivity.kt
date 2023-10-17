@@ -14,7 +14,7 @@ class SignInActivity : AppCompatActivity() {
         setContentView(R.layout.activity_sign_in)
 
         val loginButton = findViewById<Button>(R.id.buttonLogin)
-        //val registerText = findViewById<TextView>(R.id.)
+        val register = findViewById<Button>(R.id.buttonSignUp)
         val usernameEditText = findViewById<EditText>(R.id.editTextUsername)
 
 
@@ -38,16 +38,23 @@ class SignInActivity : AppCompatActivity() {
 
             } else {
                 //login Failed, show an error message
-                usernameEditText.setText("Error: Invalid")
+                val alertDialog = AlertDialog.Builder(this)
+                alertDialog.setTitle("Unsuccessful Login")
+                alertDialog.setMessage("Invalid Username and/or Password")
+                alertDialog.setPositiveButton("OK") { dialog, _ ->
+                    // when the user clicks OK
+                    dialog.dismiss()
+                }
+                alertDialog.show()
             }
         }
 
-       /* registerText.setOnClickListener {
+        register.setOnClickListener {
             // Start the RegisterActivity
             val intent = Intent(this, SignUpActivity::class.java)
             startActivity(intent)
             finish()
 
-        }*/
+        }
     }
 }
