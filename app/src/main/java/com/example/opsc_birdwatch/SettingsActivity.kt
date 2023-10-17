@@ -31,12 +31,23 @@ class SettingsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
         sharedPreferences = getSharedPreferences("MyAppPrefs", MODE_PRIVATE)
         sharedPreferencesManager = SharedPreferencesManager(applicationContext) // Initialize SharedPreferencesManager
 
-        //decisionSwitch = findViewById(R.id.decisionSwitch)
-        //maxDistanceEditText = findViewById(R.id.MaxDistanceEditText)
+        decisionSwitch = findViewById(R.id.decisionSwitch)
+        maxDistanceEditText = findViewById(R.id.MaxDistanceEditText)
 
         val isImperialEnabled = sharedPreferencesManager.getUnit() // Use the SharedPreferencesManager
-        val maxDistance = maxDistanceEditText.text.toString().toFloat()
+        val maxDistanceFloat = maxDistanceEditText.text.toString()
+        val maxDistance = if (maxDistanceFloat.isNotBlank()) {
+            try {
+                maxDistanceFloat.toFloat()
+            } catch (e: NumberFormatException) {
+                Toast.makeText(this, "Invalid max distance", Toast.LENGTH_SHORT).show()
 
+                0.0f
+            }
+        } else {
+            Toast.makeText(this, "Please enter max distance", Toast.LENGTH_SHORT).show()
+            0.0f
+        }
         // Set the initial state of the switch
         decisionSwitch.isChecked = isImperialEnabled
 
@@ -50,7 +61,7 @@ class SettingsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
         drawerLayout = findViewById<DrawerLayout>(R.id.drawer_layout)
 
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
-        setSupportActionBar(toolbar)
+        // setSupportActionBar(toolbar)
 
         val navigationView = findViewById<NavigationView>(R.id.nav_view)
         navigationView.setNavigationItemSelectedListener(this)
@@ -97,6 +108,8 @@ class SettingsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
                 }
             }
 
+            R.id.nav_login -> {startActivity(Intent(this, SignInActivity::class.java))}
+
             R.id.nav_logout -> Toast.makeText(this, "Logged Out!", Toast.LENGTH_SHORT).show()
         }
         drawerLayout.closeDrawer(GravityCompat.START)
@@ -111,4 +124,5 @@ class SettingsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
             onBackPressedDispatcher.onBackPressed()
         }
     }
+
 }

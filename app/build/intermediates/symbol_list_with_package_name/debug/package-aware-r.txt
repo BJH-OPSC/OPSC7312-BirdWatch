@@ -3143,6 +3143,7 @@ id BOTTOM_START
 id CTRL
 id FUNCTION
 id META
+id MaxDistanceEditText
 id NO_DEBUG
 id SHIFT
 id SHOW_ALL
@@ -3220,6 +3221,7 @@ id animateToEnd
 id animateToStart
 id antiClockwise
 id anticipate
+id apply_button
 id arc
 id asConfigured
 id async
@@ -3286,6 +3288,7 @@ id dark
 id date_picker_actions
 id decelerate
 id decelerateAndComplete
+id decisionSwitch
 id decor_content_parent
 id default_activity_button
 id deltaRelative

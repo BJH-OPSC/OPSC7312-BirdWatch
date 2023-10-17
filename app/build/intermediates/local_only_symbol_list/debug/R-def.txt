@@ -26,11 +26,14 @@ drawable ic_launcher_foreground
 drawable man_takes_photo
 drawable rounded_button
 drawable rounded_edit_text
+id MaxDistanceEditText
+id apply_button
 id bottomNavigationView
 id buttonLogin
 id buttonRegister
 id buttonSignIn
 id buttonSignUp
+id decisionSwitch
 id drawer_layout
 id editTextConfirmPassword
 id editTextPassword

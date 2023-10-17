@@ -40,9 +40,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 import android.view.MenuItem
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.navigation.NavigationView
 
-class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener, OnPolylineClickListener, NavigationView.OnNavigationItemSelectedListener {
+class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener, OnPolylineClickListener, BottomNavigationView.OnNavigationItemSelectedListener {
     // *********CAN ADD FUNCTION TO RESET MAP SO THAT POLYLINES ARE NO LONGER VISIBLE, CURRENTLY HAVE TO CLICK ON A NEW LOCATION AND GET DIRECTIONS TO CLEAR PREVIOUS POLYLINES***************
     private val API_KEY = "AIzaSyAHuVhTH57FC4TbT01iA0uhep_7M5RRX-o"
     private val ERROR_DIALOG_REQUEST = 1
@@ -70,9 +69,8 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfoWin
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
-
-        val navigationView = findViewById<NavigationView>(R.id.bottomNavigationView)
-        navigationView.setNavigationItemSelectedListener(this)
+        val navigationView = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+        navigationView.setOnNavigationItemSelectedListener(this)
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
@@ -87,6 +85,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfoWin
         }
         mMap.setOnInfoWindowClickListener(this)
         mMap.setOnPolylineClickListener(this)
+        getLastKnownLocation()
     }
 
     private fun calculateDirections(marker: Marker){
@@ -296,7 +295,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfoWin
             == PackageManager.PERMISSION_GRANTED
         ) {
             mLocationPermissionGranted = true
-            getLastKnownLocation()
+            return //GETLOCATIONHERE
         } else {
             ActivityCompat.requestPermissions(
                 this, arrayOf<String>(Manifest.permission.ACCESS_FINE_LOCATION),
@@ -315,7 +314,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfoWin
             return true
         } else if (GoogleApiAvailability.getInstance().isUserResolvableError(available)) {
             //an error occured but we can resolve it
-            Log.d(TAG, "isServicesOK: an error occured but we can fix it")
+            Log.d(TAG, "isServicesOK: an error occurred but we can fix it")
             val dialog: Dialog? = GoogleApiAvailability.getInstance()
                 .getErrorDialog(this@MapActivity, available, ERROR_DIALOG_REQUEST)
             dialog?.show()
@@ -340,6 +339,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfoWin
                     && grantResults[0] == PackageManager.PERMISSION_GRANTED
                 ) {
                     mLocationPermissionGranted = true
+                    getLastKnownLocation()
                 }
             }
         }
@@ -352,7 +352,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfoWin
         when (requestCode) {
             PERMISSIONS_REQUEST_ENABLE_GPS -> {
                 if (mLocationPermissionGranted) {
-                    getLastKnownLocation()
+                    return //GETLOCATIONHERE
                 } else {
                     getLocationPermission()
                 }
@@ -364,7 +364,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfoWin
         super.onResume()
         if(checkMapServices()){
             if(mLocationPermissionGranted){
-                getLastKnownLocation()
+                return //GELOCATION HERE
             }else{
                 getLocationPermission()
             }
@@ -432,17 +432,20 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfoWin
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        when(item.itemId){
-            R.id.menu_exit->{
+        when (item.itemId) {
+            R.id.menu_exit -> {
+                finish()
                 startActivity(Intent(this, MainActivity::class.java))
             }
-            R.id.menu_home->{
+            R.id.menu_home -> {
+                finish()
                 startActivity(Intent(this, MainActivity::class.java))
             }
-            R.id.menu_list->{
+            R.id.menu_list -> {
+                finish()
                 startActivity(Intent(this, ObservationsActivity::class.java))
             }
         }
         return true
-
+    }
 }

@@ -11,6 +11,8 @@
         
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style><style name="Theme.MainActivity" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         
         <item name="colorPrimary">@color/lavender</item>

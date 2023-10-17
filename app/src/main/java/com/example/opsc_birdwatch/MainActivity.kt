@@ -53,7 +53,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 }
             }
 
-            R.id.nav_map -> {startActivity(Intent(this, MapActivity::class.java))}
+            R.id.nav_map -> {
+                val intent = Intent(this, MapActivity::class.java)
+                startActivity(intent)
+                finish()
+            }
 
             R.id.nav_list -> {startActivity(Intent(this, ObservationsActivity::class.java))}
 
