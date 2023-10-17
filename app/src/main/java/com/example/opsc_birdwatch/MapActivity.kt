@@ -14,8 +14,6 @@ class MapActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelected
 
         val navigationView = findViewById<NavigationView>(R.id.bottomNavigationView)
         navigationView.setNavigationItemSelectedListener(this)
-
-
     }
 
 

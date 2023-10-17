@@ -97,6 +97,8 @@ class SettingsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
                 }
             }
 
+            R.id.nav_login -> {startActivity(Intent(this, SignInActivity::class.java))}
+
             R.id.nav_logout -> Toast.makeText(this, "Logged Out!", Toast.LENGTH_SHORT).show()
         }
         drawerLayout.closeDrawer(GravityCompat.START)
