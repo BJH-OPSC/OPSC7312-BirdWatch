@@ -95,7 +95,7 @@ class ListObservationsFragment : Fragment() {
         val name = editText.text.toString()
         val loc = "here"
         val date = getCurrentDateTime()
-        saveEntry(name, name, date)
+        saveEntry(name, loc, date)
     }
 
     fun btnRefreshClick(){
