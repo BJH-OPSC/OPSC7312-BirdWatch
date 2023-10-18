@@ -1,9 +1,11 @@
 package com.example.opsc_birdwatch
 
 import android.content.ContentValues.TAG
+import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
 import android.util.Log
+import android.Manifest
 import android.location.Geocoder
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -12,10 +14,16 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.model.LatLng
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.Random
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -33,8 +41,22 @@ class ListObservationsFragment : Fragment() {
     private lateinit var adapter: birdAdapter
     lateinit var helperClass: HelperClass
 
+
+    lateinit var birdList: List<BirdItem>
+
     private var mCurrentLocation: Location = Location("dummy_provider")
     private lateinit var editText: EditText
+
+    val birdImgList = mutableListOf(
+        R.drawable.bird_svgrepo_com,
+        R.drawable.bird_svgrepo_com__1_,
+        R.drawable.bird_svgrepo_com__2_,
+        R.drawable.bird_svgrepo_com__3_,
+        R.drawable.bird_svgrepo_com__4_,
+        R.drawable.bird_svgrepo_com__5_,
+        R.drawable.bird_svgrepo_com__6_,
+        R.drawable.bird_svgrepo_com__8_,
+    )
 
     // TODO: Rename and change types of parameters
     private var param1: String? = null
@@ -58,7 +80,7 @@ class ListObservationsFragment : Fragment() {
         editText = view.findViewById(R.id.editTextBird)
 
         //helperClass.BirdMap
-        val birdList = getBirdData()
+        birdList = getBirdData()
 
         val addButton = view.findViewById<Button>(R.id.btnAdd)
         val refButton = view.findViewById<Button>(R.id.btnRefresh)
@@ -86,8 +108,10 @@ class ListObservationsFragment : Fragment() {
 
 
     private fun getBirdData(): List<BirdItem> {
-        val birdList = mutableListOf<BirdItem>()
-        return birdList
+        val ListCust = mutableListOf<BirdItem>()
+
+        // Add more birds as needed
+        return ListCust
     }
 
     fun getLocation(location: Location?){
@@ -100,7 +124,7 @@ class ListObservationsFragment : Fragment() {
 
     private fun getLocationName(location: Location): String {
         val geocoder = Geocoder(requireContext())
-        var returnName = ""
+        var returnName: String = ""
         try {
             Log.d(TAG, "New Location - Latitude: ${location.latitude}, Longitude: ${location.longitude}")
             val addresses = geocoder.getFromLocation(location.latitude, location.longitude, 1)
@@ -139,7 +163,7 @@ class ListObservationsFragment : Fragment() {
     }
 
     fun btnRefreshClick(){
-        val birdList = updateList(helperClass.BirdMap)
+        birdList = updateList(helperClass.BirdMap)
         // Notify the adapter that the data has changed
         adapter = birdAdapter(birdList)
         recyclerView.adapter = adapter
@@ -147,22 +171,27 @@ class ListObservationsFragment : Fragment() {
         val layoutManager = LinearLayoutManager(context)
         recyclerView.layoutManager = layoutManager
 
+        // Notify the adapter that the data has changed
+        adapter.notifyDataSetChanged()
+
         Toast.makeText(requireContext(),"Refreshed!", Toast.LENGTH_SHORT).show()
     }
 
 
     fun updateList(birdMap: HashMap<String, HelperClass.Bird>): List<BirdItem>{
-        val birdList = mutableListOf<BirdItem>()
+        val listCust = mutableListOf<BirdItem>()
 
         if(birdMap.isNotEmpty()){
             for ((birdName, bird) in birdMap) {
                 // Use the birdName as the name, and get other details from the Bird object
-                birdList.add(BirdItem(R.drawable.bird_svgrepo_com, birdName, bird.dateTime, bird.location))
+
+                val bir = getRandomImg()
+                listCust.add(BirdItem(bir, birdName, bird.dateTime, bird.location))
             }
         }else{
             Toast.makeText(requireContext(),"No Saved Observations", Toast.LENGTH_LONG).show()
         }
-        return birdList
+        return listCust
     }
 
     fun saveEntry(name: String, location: String, date: String){
@@ -174,6 +203,20 @@ class ListObservationsFragment : Fragment() {
         val cal = Calendar.getInstance()
         val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
         return sdf.format(cal.time)
+    }
+
+    fun getRandomImg(): Int{
+
+        // Create a Random instance
+        val random = Random()
+
+        // Generate a random index within the range of the list size
+        val randomIndex = random.nextInt(birdImgList.size)
+
+        // Get the random drawable resource ID
+        val randomDrawableId = birdImgList[randomIndex]
+
+        return randomDrawableId
     }
 
     companion object {

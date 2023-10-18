@@ -10,7 +10,9 @@ class HelperClass {
     fun addToList(usersName: String, name: String, dateTime: String, location: String){
 
         val bird = Bird(name, dateTime, location)
-        BirdMap[usersName] = bird
+
+        BirdMap.put(usersName, bird)
+        //BirdMap[usersName] = bird
     }
 
 }
