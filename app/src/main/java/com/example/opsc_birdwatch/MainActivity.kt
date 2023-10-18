@@ -1,5 +1,6 @@
 package com.example.opsc_birdwatch
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
@@ -30,6 +31,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val toggle = ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open_nav, R.string.close_nav)
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
+
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, HomeFragment()).commit()
@@ -39,20 +41,49 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.nav_home -> supportFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, HomeFragment()).commit()
-            R.id.nav_map -> supportFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, SettingsFragment()).commit()
-            R.id.nav_list -> supportFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, ListFragment()).commit()
-            R.id.nav_settings -> supportFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, AboutFragment()).commit()
-            R.id.nav_logout -> Toast.makeText(this, "Logout!", Toast.LENGTH_SHORT).show()
+            R.id.nav_home -> {
+                val currentActivity = this::class.java
+
+                //check whats the current activity, if not the main activity it will start the main activity
+                if (currentActivity != MainActivity::class.java){
+                    startActivity(Intent(this, MainActivity::class.java))
+                }else{
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.fragment_container, HomeFragment()).commit()
+                }
+            }
+
+            R.id.nav_map -> {
+                val intent = Intent(this, MapActivity::class.java)
+                startActivity(intent)
+                finish()
+            }
+
+            R.id.nav_list -> {startActivity(Intent(this, ObservationsActivity::class.java))}
+
+            R.id.nav_settings -> {startActivity(Intent(this, SettingsActivity::class.java))}
+
+            R.id.nav_about -> {
+                val currentActivity = this::class.java
+
+                if (currentActivity != MainActivity::class.java){
+                    startActivity(Intent(this, MainActivity::class.java))
+                }else{
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.fragment_container, AboutFragment()).commit()
+                }
+            }
+
+            R.id.nav_login -> {startActivity(Intent(this, SignInActivity::class.java))}
+
+            R.id.nav_logout -> Toast.makeText(this, "Logged Out!", Toast.LENGTH_SHORT).show()
         }
         drawerLayout.closeDrawer(GravityCompat.START)
         return true
     }
 
+    //onBackPressed function will determine what to do when the back button on the phone is pressed
+    //checks if nav drawer is open, if yes then close it
     override fun onBackPressed() {
         super.onBackPressed()
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {

@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="black">#FF000000</color>
+    <color name="blue">#4a89f3</color>
+    <color name="gray">#a6a6a6 </color>
     <color name="lavender">#8692f7</color>
+    <color name="link_blue">#0070E0</color>
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#FF6200EE</color>
     <color name="purple_700">#FF3700B3</color>
@@ -12,6 +15,13 @@
     <string name="close_nav">Close Navigation Drawer</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="open_nav">Open Navigation Drawer</string>
+    <style name="RoundedButton">
+        <item name="android:background">@drawable/rounded_button</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center</item>
+    </style>
     <style name="Theme.MainActivity" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         
         <item name="colorPrimary">@color/lavender</item>
@@ -37,5 +47,7 @@
         
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style>
 </resources>
