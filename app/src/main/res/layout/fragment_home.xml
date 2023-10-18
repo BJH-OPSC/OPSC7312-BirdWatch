@@ -28,7 +28,7 @@
             />
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/btnMap"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/transparent_button_rounded"
@@ -39,7 +39,7 @@
             android:layout_marginHorizontal="10dp"/>
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/btnList"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/transparent_button_rounded"

@@ -36,10 +36,10 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false)
+        val view =  inflater.inflate(R.layout.fragment_home, container, false)
 
-        val listButton = view?.findViewById<Button>(R.id.btnAdd)
-        val mapButton = view?.findViewById<Button>(R.id.btnRefresh)
+        val listButton = view?.findViewById<Button>(R.id.btnList)
+        val mapButton = view?.findViewById<Button>(R.id.btnMap)
 
         listButton?.setOnClickListener {
             btnListClick()
@@ -48,6 +48,8 @@ class HomeFragment : Fragment() {
         mapButton?.setOnClickListener {
             btnMapClick()
         }
+
+        return view
     }
 
     private fun btnListClick() {

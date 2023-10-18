@@ -105,6 +105,7 @@ class ListObservationsFragment : Fragment() {
 
             //put getLocation here pls
             val loc = "here"
+
             val date = getCurrentDateTime()
             saveEntry(name, loc, date)
         }else{
