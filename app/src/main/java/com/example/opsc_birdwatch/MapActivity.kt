@@ -423,6 +423,9 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfoWin
 
     override fun onInfoWindowClick(marker: Marker) {
         Log.d(TAG, "onInfoWindowClick: INFO WINDOW CLICKED")
+        if (marker.title != null && marker.title!!.contains("Trip #")) {
+            return
+        }
         val builder = AlertDialog.Builder(this)
         builder.setTitle("Directions to ${marker.title}")
             .setMessage("Do you want to calculate directions to this hotspot?")
