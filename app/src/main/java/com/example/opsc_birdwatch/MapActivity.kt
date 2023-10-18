@@ -1,10 +1,12 @@
 package com.example.opsc_birdwatch
 
+import kotlin.math.roundToInt
 import android.Manifest
 import android.app.Dialog
 import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationManager
@@ -43,6 +45,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener, OnPolylineClickListener, BottomNavigationView.OnNavigationItemSelectedListener {
     // *********CAN ADD FUNCTION TO RESET MAP SO THAT POLYLINES ARE NO LONGER VISIBLE, CURRENTLY HAVE TO CLICK ON A NEW LOCATION AND GET DIRECTIONS TO CLEAR PREVIOUS POLYLINES***************
+    private lateinit var sharedPreferencesManager: SharedPreferencesManager
+    private lateinit var sharedPreferences: SharedPreferences
     private val API_KEY = "AIzaSyAHuVhTH57FC4TbT01iA0uhep_7M5RRX-o"
     private val ERROR_DIALOG_REQUEST = 1
     private val PERMISSIONS_REQUEST_ENABLE_GPS = 2
@@ -55,15 +59,21 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfoWin
     private var mCurrentLocation: Location = Location("dummy_provider")
     private var mGeoApiContext: GeoApiContext? = null
     private var mPolyLinesData: ArrayList<PolylineData> = ArrayList()
-    private var selectedDistance: Int = 20
+    private var selectedDistance: Int = 100;
     private var mSelectedMarker: Marker? = null
     private var mTripMarkers: ArrayList<Marker> = ArrayList()
-    private var selectedUnits: String = "metric"
+    private var selectedUnits: Boolean = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         binding = ActivityMapBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        //shared preferences
+        sharedPreferences = getSharedPreferences("MyAppPrefs", MODE_PRIVATE)
+        sharedPreferencesManager = SharedPreferencesManager(applicationContext)
+        selectedDistance = sharedPreferencesManager.getSetDistance()
+        selectedUnits=sharedPreferencesManager.getUnit()
+
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         val mapFragment = supportFragmentManager
@@ -97,7 +107,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfoWin
         )
         val directions = DirectionsApiRequest(mGeoApiContext)
         directions.alternatives(true)
-        if(selectedUnits == "metric"){
+        if(selectedUnits == false){
             directions.units(Unit.METRIC)
         }else{
             directions.units(Unit.IMPERIAL)
@@ -193,6 +203,11 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfoWin
         Log.d(TAG, "mCurrentLocation latidude ${mCurrentLocation.latitude}")
         Log.d(TAG, "mCurrentLocation longidude ${mCurrentLocation.longitude}")
 
+        if(selectedUnits == false){
+
+        }else{
+            selectedDistance = (selectedDistance*1.609).roundToInt();
+        }
         // Use the user's location in the Retrofit request
         val retrofitBuilder = Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create())
@@ -373,6 +388,9 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfoWin
 
     override fun onInfoWindowClick(marker: Marker) {
         Log.d(TAG, "onInfoWindowClick: INFO WINDOW CLICKED")
+        if (marker.title != null && marker.title!!.contains("Trip #")) {
+            return
+        }
         val builder = AlertDialog.Builder(this)
         builder.setTitle("Directions to ${marker.title}")
             .setMessage("Do you want to calculate directions to this hotspot?")

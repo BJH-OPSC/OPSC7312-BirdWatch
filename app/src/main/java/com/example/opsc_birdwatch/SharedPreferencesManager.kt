@@ -5,9 +5,9 @@ import android.content.SharedPreferences
 class SharedPreferencesManager(private val context: Context) {
     private val sharedPreferences: SharedPreferences = context.getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE)
 
-    fun isImperialSystemEnabled(): Boolean {
+   /* fun isImperialSystemEnabled(): Boolean {
         return sharedPreferences.getBoolean("isImperialEnabled", false)
-    }
+    }*/
 
     fun setUnit(isEnabled: Boolean) {
         val editor = sharedPreferences.edit()
@@ -15,9 +15,9 @@ class SharedPreferencesManager(private val context: Context) {
         editor.apply()
     }
     // Set a float value
-    fun setMaxDistance(defaultValue: Float) {
+    fun setMaxDistance(defaultValue: Int) {
         val editor = sharedPreferences.edit()
-        editor.putFloat("MaxDistance", defaultValue)
+        editor.putInt("MaxDistance", defaultValue)
         editor.apply()
     }
 
@@ -27,7 +27,11 @@ class SharedPreferencesManager(private val context: Context) {
 
 
     // Get a float value, with a default value if not found
-    fun getMaxDistance(defaultValue: Float): Float {
-        return sharedPreferences.getFloat("MaxDistance", defaultValue)
+    fun getMaxDistance(defaultValue: Int): Int {
+        return sharedPreferences.getInt("MaxDistance", defaultValue)
+    }
+
+    fun getSetDistance():Int{
+        return sharedPreferences.getInt("MaxDistance", 20)
     }
 }

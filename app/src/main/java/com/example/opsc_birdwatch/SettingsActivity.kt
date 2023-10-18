@@ -6,6 +6,7 @@ import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
+import android.widget.Button
 import android.widget.EditText
 import android.widget.Switch
 import android.widget.Toast
@@ -33,20 +34,20 @@ class SettingsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
 
         decisionSwitch = findViewById(R.id.decisionSwitch)
         maxDistanceEditText = findViewById(R.id.MaxDistanceEditText)
-
+        var applyButton = findViewById<Button>(R.id.apply_button)
         val isImperialEnabled = sharedPreferencesManager.getUnit() // Use the SharedPreferencesManager
-        val maxDistanceFloat = maxDistanceEditText.text.toString()
-        val maxDistance = if (maxDistanceFloat.isNotBlank()) {
+        val maxDistanceInt = maxDistanceEditText.text.toString()
+        val maxDistance = if (maxDistanceInt.isNotBlank()) {
             try {
-                maxDistanceFloat.toFloat()
+                maxDistanceInt.toInt()
             } catch (e: NumberFormatException) {
                 Toast.makeText(this, "Invalid max distance", Toast.LENGTH_SHORT).show()
 
-                20.0f
+                20
             }
         } else {
             Toast.makeText(this, "Please enter max distance", Toast.LENGTH_SHORT).show()
-            20.0f
+            20
         }
         // Set the initial state of the switch
         decisionSwitch.isChecked = isImperialEnabled
@@ -55,10 +56,13 @@ class SettingsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
         decisionSwitch.setOnCheckedChangeListener { _, isChecked ->
             // Save the user's preference when the switch state changes
             sharedPreferencesManager.setUnit(isChecked)
-            sharedPreferencesManager.setMaxDistance(maxDistance)
+            //sharedPreferencesManager.setMaxDistance(maxDistance)
+        }
+        applyButton.setOnClickListener {
+        sharedPreferencesManager.setMaxDistance(maxDistance)
         }
 
-        drawerLayout = findViewById<DrawerLayout>(R.id.drawer_layout)
+drawerLayout = findViewById<DrawerLayout>(R.id.drawer_layout)
 
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         // setSupportActionBar(toolbar)

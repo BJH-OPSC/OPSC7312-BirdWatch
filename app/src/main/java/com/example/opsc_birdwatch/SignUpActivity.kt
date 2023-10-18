@@ -8,7 +8,7 @@ import android.widget.Button
 import android.widget.EditText
 
 class SignUpActivity : AppCompatActivity() {
-    private val account: HashMap<String, String> = HashMap()
+   // private val account: HashMap<String, String> = HashMap()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
