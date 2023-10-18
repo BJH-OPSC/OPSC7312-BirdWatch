@@ -51,7 +51,7 @@ class SettingsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
         maxDistanceEditText.setText(maxDistance.toString())
         applyButton.setOnClickListener {
             val maxDistanceString = maxDistanceEditText.text.toString()
-            if (maxDistanceString.isNotBlank()) {
+            if (maxDistanceString.isNotBlank() && maxDistanceString.toInt() <= 500) {
                 try {
                     maxDistance = maxDistanceString.toInt()
                     sharedPreferencesManager.setMaxDistance(maxDistance)
@@ -60,7 +60,7 @@ class SettingsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
                     Toast.makeText(this, "Invalid max distance", Toast.LENGTH_SHORT).show()
                 }
             } else {
-                Toast.makeText(this, "Please enter max distance", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Please enter max distance that's less than 500km/310mi", Toast.LENGTH_SHORT).show()
             }
             Log.d(TAG, "onCreate: MAX DISTANCE INT THING $maxDistanceInt")
             Log.d(TAG, "onCreate: MAX DISTANCE IS ${sharedPreferencesManager.getMaxDistance()}")
