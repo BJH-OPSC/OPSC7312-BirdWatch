@@ -1,6 +1,5 @@
 package com.example.opsc_birdwatch
 
-import android.app.Activity
 import android.content.ContentValues.TAG
 import android.content.pm.PackageManager
 import android.location.Location
@@ -38,7 +37,7 @@ class ListObservationsFragment : Fragment() {
     private lateinit var adapter: birdAdapter
     lateinit var helperClass: HelperClass
 
-    private var boolTrue: Boolean = false
+    lateinit var mCurrentLocation : Location
     private lateinit var editText: EditText
 
     // TODO: Rename and change types of parameters
@@ -101,10 +100,14 @@ class ListObservationsFragment : Fragment() {
     }
 
     fun btnAddClick(){
-        val name = editText.text.toString()
-        val loc = "here"
-        val date = getCurrentDateTime()
-        saveEntry(name, loc, date)
+        if(editText.text.isEmpty()){
+            val name = editText.text.toString()
+
+            //put getLocation here pls
+            val loc = "here"
+            val date = getCurrentDateTime()
+            saveEntry(name, loc, date)
+        }
     }
 
     fun btnRefreshClick(){
@@ -150,14 +153,18 @@ class ListObservationsFragment : Fragment() {
 
     fun getLocation(callback: (Location) -> Unit){
         Log.d(TAG, "getLocation:called.")
-        if(ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION)!= PackageManager.PERMISSION_GRANTED){
+
+        if(ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION)!= PackageManager.PERMISSION_GRANTED) {
             return
         }
 
-        val mFusedLocationClient: FusedLocationProviderClient = LocationServices.getFusedLocationClient(this)
+        val mFusedLocationClient: FusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireContext())
+
         mFusedLocationClient.lastLocation.addOnSuccessListener{
-            location:Location?-> if(location != null){
-                Log.d(TAG, "Latitude: ${location.latitude}, Longitude: ${location.longitude}")callback(location)
+            location:Location?->
+            if(location != null){
+                Log.d(TAG, "Latitude: ${location.latitude}, Longitude: ${location.longitude}")
+                callback(location)
             }else{
                 Log.e(TAG, "Last known location is null.")
             }
