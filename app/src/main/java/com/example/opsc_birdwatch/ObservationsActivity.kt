@@ -15,6 +15,7 @@ class ObservationsActivity : AppCompatActivity(), NavigationView.OnNavigationIte
     private lateinit var drawerLayout: DrawerLayout
 
     private lateinit var helperClass: HelperClass
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_observations)
@@ -33,11 +34,11 @@ class ObservationsActivity : AppCompatActivity(), NavigationView.OnNavigationIte
 
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, HomeFragment()).commit()
-            navigationView.setCheckedItem(R.id.nav_home)
+                .replace(R.id.fragment_container, ListObservationsFragment()).commit()
+            navigationView.setCheckedItem(R.id.nav_list)
         }
     }
-//-----------------------------------------------------------------------------------------------\\
+
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.nav_home -> {
@@ -68,8 +69,6 @@ class ObservationsActivity : AppCompatActivity(), NavigationView.OnNavigationIte
                         .replace(R.id.fragment_container, AboutFragment()).commit()
                 }
             }
-
-            R.id.nav_login -> {startActivity(Intent(this, SignInActivity::class.java))}
 
             R.id.nav_logout -> Toast.makeText(this, "Logged Out!", Toast.LENGTH_SHORT).show()
         }
