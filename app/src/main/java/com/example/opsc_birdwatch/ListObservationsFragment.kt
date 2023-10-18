@@ -1,11 +1,9 @@
 package com.example.opsc_birdwatch
 
 import android.content.ContentValues.TAG
-import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
 import android.util.Log
-import android.Manifest
 import android.location.Geocoder
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -14,13 +12,8 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
-import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
-import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.model.LatLng
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -94,11 +87,6 @@ class ListObservationsFragment : Fragment() {
 
     private fun getBirdData(): List<BirdItem> {
         val birdList = mutableListOf<BirdItem>()
-        // Add your bird data to the list
-        birdList.add(BirdItem(R.drawable.bird_svgrepo_com, "Bird 1", "Date 1", "Location 1"))
-
-
-        // Add more birds as needed
         return birdList
     }
 
@@ -112,7 +100,7 @@ class ListObservationsFragment : Fragment() {
 
     private fun getLocationName(location: Location): String {
         val geocoder = Geocoder(requireContext())
-        var returnName: String = ""
+        var returnName = ""
         try {
             Log.d(TAG, "New Location - Latitude: ${location.latitude}, Longitude: ${location.longitude}")
             val addresses = geocoder.getFromLocation(location.latitude, location.longitude, 1)
