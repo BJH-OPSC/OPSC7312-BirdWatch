@@ -1,10 +1,12 @@
 package com.example.opsc_birdwatch
 
+import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.widget.Button
 import android.widget.EditText
@@ -22,7 +24,7 @@ class SettingsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
     private lateinit var decisionSwitch: Switch
     private lateinit var maxDistanceEditText: EditText
     private lateinit var sharedPreferencesManager: SharedPreferencesManager
-
+    private var maxDistance = 20
     private lateinit var drawerLayout: DrawerLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,18 +39,6 @@ class SettingsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
         var applyButton = findViewById<Button>(R.id.apply_button)
         val isImperialEnabled = sharedPreferencesManager.getUnit() // Use the SharedPreferencesManager
         val maxDistanceInt = maxDistanceEditText.text.toString()
-        val maxDistance = if (maxDistanceInt.isNotBlank()) {
-            try {
-                maxDistanceInt.toInt()
-            } catch (e: NumberFormatException) {
-                Toast.makeText(this, "Invalid max distance", Toast.LENGTH_SHORT).show()
-
-                20
-            }
-        } else {
-            Toast.makeText(this, "Please enter max distance", Toast.LENGTH_SHORT).show()
-            20
-        }
         // Set the initial state of the switch
         decisionSwitch.isChecked = isImperialEnabled
 
@@ -58,10 +48,23 @@ class SettingsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
             sharedPreferencesManager.setUnit(isChecked)
             //sharedPreferencesManager.setMaxDistance(maxDistance)
         }
+        maxDistanceEditText.setText(maxDistance.toString())
         applyButton.setOnClickListener {
-        sharedPreferencesManager.setMaxDistance(maxDistance)
+            val maxDistanceString = maxDistanceEditText.text.toString()
+            if (maxDistanceString.isNotBlank()) {
+                try {
+                    maxDistance = maxDistanceString.toInt()
+                    sharedPreferencesManager.setMaxDistance(maxDistance)
+                    Toast.makeText(this, "Max distance saved: $maxDistance", Toast.LENGTH_SHORT).show()
+                } catch (e: NumberFormatException) {
+                    Toast.makeText(this, "Invalid max distance", Toast.LENGTH_SHORT).show()
+                }
+            } else {
+                Toast.makeText(this, "Please enter max distance", Toast.LENGTH_SHORT).show()
+            }
+            Log.d(TAG, "onCreate: MAX DISTANCE INT THING $maxDistanceInt")
+            Log.d(TAG, "onCreate: MAX DISTANCE IS ${sharedPreferencesManager.getMaxDistance()}")
         }
-
 drawerLayout = findViewById<DrawerLayout>(R.id.drawer_layout)
 
         val toolbar = findViewById<Toolbar>(R.id.toolbar)

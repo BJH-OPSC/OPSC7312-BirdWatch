@@ -27,8 +27,8 @@ class SharedPreferencesManager(private val context: Context) {
 
 
     // Get a float value, with a default value if not found
-    fun getMaxDistance(defaultValue: Int): Int {
-        return sharedPreferences.getInt("MaxDistance", defaultValue)
+    fun getMaxDistance(): Int {
+        return sharedPreferences.getInt("MaxDistance", 50)
     }
 
     fun getSetDistance():Int{
