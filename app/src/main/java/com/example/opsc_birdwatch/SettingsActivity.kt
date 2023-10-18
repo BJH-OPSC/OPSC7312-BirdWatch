@@ -65,7 +65,7 @@ class SettingsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
             Log.d(TAG, "onCreate: MAX DISTANCE INT THING $maxDistanceInt")
             Log.d(TAG, "onCreate: MAX DISTANCE IS ${sharedPreferencesManager.getMaxDistance()}")
         }
-drawerLayout = findViewById<DrawerLayout>(R.id.drawer_layout)
+        drawerLayout = findViewById<DrawerLayout>(R.id.drawer_layout)
 
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         // setSupportActionBar(toolbar)
@@ -77,11 +77,9 @@ drawerLayout = findViewById<DrawerLayout>(R.id.drawer_layout)
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
 
-        if (savedInstanceState == null) {
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, HomeFragment()).commit()
-            navigationView.setCheckedItem(R.id.nav_home)
-        }
+        navigationView.setCheckedItem(R.id.nav_settings)
+
+
     }
 //----------------------------------------------------------------------------------------------------------\\
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
