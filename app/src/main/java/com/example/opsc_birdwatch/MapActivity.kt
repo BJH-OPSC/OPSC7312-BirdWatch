@@ -58,7 +58,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfoWin
     private var mCurrentLocation: Location = Location("dummy_provider")
     private var mGeoApiContext: GeoApiContext? = null
     private var mPolyLinesData: ArrayList<PolylineData> = ArrayList()
-    private var selectedDistance: Int = 100
+    private var selectedDistance: Int = 20
     private var mSelectedMarker: Marker? = null
     private var mTripMarkers: ArrayList<Marker> = ArrayList()
     private var selectedUnits: Boolean = false
