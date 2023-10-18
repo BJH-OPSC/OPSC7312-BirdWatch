@@ -1,6 +1,12 @@
 package com.example.opsc_birdwatch
 
+import android.app.Activity
+import android.content.ContentValues.TAG
+import android.content.pm.PackageManager
+import android.location.Location
 import android.os.Bundle
+import android.util.Log
+import android.Manifest
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -8,8 +14,11 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -137,6 +146,24 @@ class ListObservationsFragment : Fragment() {
         val cal = Calendar.getInstance()
         val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
         return sdf.format(cal.time)
+    }
+
+    fun getLocation(callback: (Location) -> Unit){
+        Log.d(TAG, "getLocation:called.")
+        if(ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION)!= PackageManager.PERMISSION_GRANTED){
+            return
+        }
+
+        val mFusedLocationClient: FusedLocationProviderClient = LocationServices.getFusedLocationClient(this)
+        mFusedLocationClient.lastLocation.addOnSuccessListener{
+            location:Location?-> if(location != null){
+                Log.d(TAG, "Latitude: ${location.latitude}, Longitude: ${location.longitude}")callback(location)
+            }else{
+                Log.e(TAG, "Last known location is null.")
+            }
+        }.addOnFailureListener {
+                e-> Log.e(TAG, "Error getting last known location: ${e.message}")
+        }
     }
 
     companion object {
