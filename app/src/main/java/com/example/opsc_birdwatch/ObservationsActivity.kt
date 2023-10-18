@@ -37,7 +37,7 @@ class ObservationsActivity : AppCompatActivity(), NavigationView.OnNavigationIte
             navigationView.setCheckedItem(R.id.nav_home)
         }
     }
-
+//-----------------------------------------------------------------------------------------------\\
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.nav_home -> {
