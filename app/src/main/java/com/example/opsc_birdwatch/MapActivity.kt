@@ -8,6 +8,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
+import android.content.res.Resources
 import android.location.Location
 import android.location.LocationManager
 import android.os.Bundle
@@ -74,8 +75,15 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfoWin
         //shared preferences
         sharedPreferences = getSharedPreferences("MyAppPrefs", MODE_PRIVATE)
         sharedPreferencesManager = SharedPreferencesManager(applicationContext)
-        selectedDistance = sharedPreferencesManager.getMaxDistance()
-        selectedUnits=sharedPreferencesManager.getUnit()
+       // selectedUnits=sharedPreferencesManager.getUnit()
+                try {
+                    selectedDistance = sharedPreferencesManager.getMaxDistance()
+                    selectedUnits=sharedPreferencesManager.getUnit()
+
+                } catch (e: Resources.NotFoundException) {
+                    selectedDistance =20
+                    selectedUnits = false
+                }
 
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
