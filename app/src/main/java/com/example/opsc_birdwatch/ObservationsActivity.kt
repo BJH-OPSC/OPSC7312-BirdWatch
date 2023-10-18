@@ -35,7 +35,7 @@ class ObservationsActivity : AppCompatActivity(), NavigationView.OnNavigationIte
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, ListObservationsFragment()).commit()
-            navigationView.setCheckedItem(R.id.nav_home)
+            navigationView.setCheckedItem(R.id.nav_list)
         }
     }
 

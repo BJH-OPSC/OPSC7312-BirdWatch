@@ -62,7 +62,7 @@ class SettingsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, HomeFragment()).commit()
-            navigationView.setCheckedItem(R.id.nav_home)
+            navigationView.setCheckedItem(R.id.nav_settings)
         }
     }
 
