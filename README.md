@@ -24,12 +24,8 @@ To install, follow these steps:
    - Select your device or emulator from the list, and Android Studio will build and install the app.
    - The app should automatically start on the selected device or emulator.
    - NB: in the case that the project doesnt build(sdk error only)
-Method 1:
- 	- add ANDROID_HOME variable in "Environment Variables' settings
-	- C:\Users\USER\AppData\Local\Android\Sdk ,this is generally where sdk files are stored
-	- paste the location of your sdk file in the 'value' column and press 'OK'
-
-Method 2(Recommended):
+   - 
+     Method 1(Recommended):
 	-Open the local.properties file: 
 		This file is usually located in the root directory of your Android Studio project.
 
@@ -41,7 +37,14 @@ Method 2(Recommended):
 	- For example, 
 		if the Android SDK is located at C:\Users\JohnDoe\AppData\Local\Android\Sdk, 
 		you should update the line to look like this: sdk.dir=C:\\Users\\JohnDoe\\AppData\\Local\\Android\\Sdk.
-  	- sync gradle (again if already done) and continue	
+  	- sync gradle (again if already done) and continue
+   
+Method 2:
+ 	- add ANDROID_HOME variable in "Environment Variables' settings
+	- C:\Users\USER\AppData\Local\Android\Sdk ,this is generally where sdk files are stored
+	- paste the location of your sdk file in the 'value' column and press 'OK'
+
+
 
    - In Android Studio, click the "Run" button (a green triangle) in the toolbar or press Shift + F10.
    - Select your device or emulator from the list, and Android Studio will build and install the app.
