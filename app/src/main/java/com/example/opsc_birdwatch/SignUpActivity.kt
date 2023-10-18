@@ -16,17 +16,21 @@ class SignUpActivity : AppCompatActivity() {
 
         val usernameEditText = findViewById<EditText>(R.id.editTextUsername)
         val passwordEditText = findViewById<EditText>(R.id.editTextPassword)
+        val confirmPasswordEditText = findViewById<EditText>(R.id.editTextConfirmPassword)
         val registerButton = findViewById<Button>(R.id.buttonRegister)
+        val signIn = findViewById<Button>(R.id.buttonSignIn)
 
+        //Register Button
         registerButton.setOnClickListener {
-            val username = usernameEditText.text
-            val password = passwordEditText.text
+            val username = usernameEditText.text.toString()
+            val password = passwordEditText.text.toString()
+            val confirmPassword = confirmPasswordEditText.text.toString()
 
             // After successful registration, navigate to the login screen
-            if (AccountManager.getUserPassword(username.toString()) != null || username == null ||password == null) {
+            if ( username.isEmpty() || password.isEmpty()) {
                 // Show an error message
                 val alertDialog = AlertDialog.Builder(this)
-                alertDialog.setTitle("UnSuccessful Register")
+                alertDialog.setTitle("Unsuccessful Register")
                 alertDialog.setMessage("Invalid Username and/or Password")
                 alertDialog.setPositiveButton("OK") { dialog, _ ->
                     // when the user clicks OK
@@ -34,9 +38,27 @@ class SignUpActivity : AppCompatActivity() {
                 }
                 alertDialog.show()
                 //usernameEditText.setText("Error: Invalid")
-            } else {
+            } else if (AccountManager.getUserPassword(username) != null) {
+                // Show an error message if the username already exists
+                val alertDialog = AlertDialog.Builder(this)
+                alertDialog.setTitle("Unsuccessful Register")
+                alertDialog.setMessage("Username already exists. Please choose another username.")
+                alertDialog.setPositiveButton("OK") { dialog, _ ->
+                    dialog.dismiss()
+                }
+                alertDialog.show()
+            }else if (!password.equals(confirmPassword)) {
+                // Show an error message if the username already exists
+                val alertDialog = AlertDialog.Builder(this)
+                alertDialog.setTitle("Unsuccessful Register")
+                alertDialog.setMessage("Passwords Do Not Match")
+                alertDialog.setPositiveButton("OK") { dialog, _ ->
+                    dialog.dismiss()
+                }
+                alertDialog.show()
+            }else {
                 // Register the user
-                AccountManager.addUser(username.toString(), password.toString())
+                AccountManager.addUser(username, password)
                 val alertDialog = AlertDialog.Builder(this)
                 alertDialog.setTitle("Successful Register")
                 alertDialog.setMessage("You Have Successfully Registered")
@@ -50,10 +72,17 @@ class SignUpActivity : AppCompatActivity() {
                 alertDialog.show()
 
 
-
             }
         }
+        //-----------------------------------------------------------------------------------------------\\
+        //sign in link
+        signIn.setOnClickListener {
+            // Start the RegisterActivity
+            val intent = Intent(this, SignInActivity::class.java)
+            startActivity(intent)
+            finish()
 
-
+        }
     }
 }
+//------------------------------------------------End of File-----------------------------------------\\

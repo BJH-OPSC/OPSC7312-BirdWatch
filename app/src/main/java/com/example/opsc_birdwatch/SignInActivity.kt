@@ -17,7 +17,7 @@ class SignInActivity : AppCompatActivity() {
         val register = findViewById<Button>(R.id.buttonSignUp)
         val usernameEditText = findViewById<EditText>(R.id.editTextUsername)
 
-
+        //login Button
         loginButton.setOnClickListener {
             val username = usernameEditText.text.toString()
             val password = findViewById<EditText>(R.id.editTextPassword).text.toString()
@@ -48,7 +48,8 @@ class SignInActivity : AppCompatActivity() {
                 alertDialog.show()
             }
         }
-
+        //-------------------------------------------------------------------------------\\
+        //register page button
         register.setOnClickListener {
             // Start the RegisterActivity
             val intent = Intent(this, SignUpActivity::class.java)
@@ -58,3 +59,4 @@ class SignInActivity : AppCompatActivity() {
         }
     }
 }
+//------------------------------------------------End of File-----------------------------------------\\

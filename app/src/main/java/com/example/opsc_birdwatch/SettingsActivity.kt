@@ -76,7 +76,7 @@ class SettingsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
             navigationView.setCheckedItem(R.id.nav_home)
         }
     }
-
+//----------------------------------------------------------------------------------------------------------\\
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.nav_home -> {
@@ -126,3 +126,4 @@ class SettingsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
     }
 
 }
+//------------------------------------------------End of File-----------------------------------------\\
