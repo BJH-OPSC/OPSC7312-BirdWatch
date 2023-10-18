@@ -2,23 +2,36 @@ package com.example.opsc_birdwatch
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
+import android.Manifest
+import android.content.ContentValues
 import android.os.Bundle
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.widget.Toolbar
+import androidx.core.app.ActivityCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
+import android.content.pm.PackageManager
+import android.location.Location
+import android.util.Log
+import com.google.android.gms.location.*
 
 class ObservationsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     private lateinit var drawerLayout: DrawerLayout
 
     private lateinit var helperClass: HelperClass
 
+    private lateinit var mFusedLocationClient: FusedLocationProviderClient
+
+    private val PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 3
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_observations)
+
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
         drawerLayout = findViewById<DrawerLayout>(R.id.drawer_layout)
 
@@ -37,6 +50,8 @@ class ObservationsActivity : AppCompatActivity(), NavigationView.OnNavigationIte
                 .replace(R.id.fragment_container, ListObservationsFragment()).commit()
             navigationView.setCheckedItem(R.id.nav_list)
         }
+
+        getLastKnownLocation()
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
@@ -95,4 +110,35 @@ class ObservationsActivity : AppCompatActivity(), NavigationView.OnNavigationIte
 
         return true
     }
+
+    private fun getLastKnownLocation() {
+        Log.d(ContentValues.TAG, "getLastKnownLocation: called.")
+
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            val intent = Intent(this, MapActivity::class.java)
+            startActivity(intent)
+            finish()
+        } else {
+            // Permission is granted, proceed to get the last known location
+            val fragment = ListObservationsFragment()
+            val transaction = supportFragmentManager.beginTransaction()
+            transaction.add(R.id.fragment_container, fragment, "ListObservationsFragment")
+            transaction.commit()
+            mFusedLocationClient.lastLocation
+                .addOnSuccessListener { location: Location? ->
+                    if (location != null) {
+                        Log.d(ContentValues.TAG, "New Location - Latitude: ${location.latitude}, Longitude: ${location.longitude}")
+                        fragment.getLocation(location)
+                        Log.d(ContentValues.TAG, "getLastKnownLocation: PASSED TO FRAGMENT")
+                    } else {
+                        Log.e(ContentValues.TAG, "Last known location is null.")
+                    }
+                }
+        }
+    }
+
 }

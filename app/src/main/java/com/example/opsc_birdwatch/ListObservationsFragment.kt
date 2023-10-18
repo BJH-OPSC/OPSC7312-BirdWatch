@@ -6,6 +6,7 @@ import android.location.Location
 import android.os.Bundle
 import android.util.Log
 import android.Manifest
+import android.location.Geocoder
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -18,6 +19,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.model.LatLng
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -37,7 +40,7 @@ class ListObservationsFragment : Fragment() {
     private lateinit var adapter: birdAdapter
     lateinit var helperClass: HelperClass
 
-    lateinit var mCurrentLocation : Location
+    private var mCurrentLocation: Location = Location("dummy_provider")
     private lateinit var editText: EditText
 
     // TODO: Rename and change types of parameters
@@ -99,12 +102,46 @@ class ListObservationsFragment : Fragment() {
         return birdList
     }
 
+    fun getLocation(location: Location?){
+        Log.d(TAG, "getLocation: FRAGMENT GETLOCATION HAS RUN")
+        if (location != null) {
+            mCurrentLocation = location
+            Log.d(TAG, "getLocation: MCURRENTLOCATION HAS THE LOCATION ${mCurrentLocation.latitude} AND ${mCurrentLocation.longitude}")
+        }
+    }
+
+    private fun getLocationName(location: Location): String {
+        val geocoder = Geocoder(requireContext())
+        var returnName: String = ""
+        try {
+            Log.d(TAG, "New Location - Latitude: ${location.latitude}, Longitude: ${location.longitude}")
+            val addresses = geocoder.getFromLocation(location.latitude, location.longitude, 1)
+            Log.d(TAG, "ADDRESSES: ${addresses?.get(0)}")
+            if (addresses != null) {
+                if (addresses.isNotEmpty()) {
+                    val address = addresses[0]
+                    val cityName = address.locality
+                    val addressString = address.getAddressLine(0)
+                    Log.d(TAG, "ADDRESS: ${address.countryName} AND $addressString")
+                    returnName = "$cityName, $addressString"
+                    Log.d(TAG, "getLocationName THIS IS THE NAME: $returnName")
+                } else {
+                    Log.d(TAG, "getLocationNameFromCoordinates: COULD NOT GET LOCATION NAME")
+                    returnName = ""
+                }
+            }
+        } catch (e: Exception) {
+            Log.d(TAG, "getLocationNameFromCoordinates: EXCEPTION $e")
+        }
+        return returnName
+    }
+
     fun btnAddClick(){
         if(editText.text.isNotEmpty()){
             val name = editText.text.toString()
 
             //put getLocation here pls
-            val loc = "here"
+            val loc = getLocationName(mCurrentLocation)
 
             val date = getCurrentDateTime()
             saveEntry(name, loc, date)
@@ -176,28 +213,6 @@ class ListObservationsFragment : Fragment() {
     }
 }
     */
-
-    fun getLocation(callback: (Location) -> Unit){
-        Log.d(TAG, "getLocation:called.")
-
-        if(ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION)!= PackageManager.PERMISSION_GRANTED) {
-            return
-        }
-
-        val mFusedLocationClient: FusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireContext())
-
-        mFusedLocationClient.lastLocation.addOnSuccessListener{
-            location:Location?->
-            if(location != null){
-                Log.d(TAG, "Latitude: ${location.latitude}, Longitude: ${location.longitude}")
-                callback(location)
-            }else{
-                Log.e(TAG, "Last known location is null.")
-            }
-        }.addOnFailureListener {
-                e-> Log.e(TAG, "Error getting last known location: ${e.message}")
-        }
-    }
 
     companion object {
         /**
