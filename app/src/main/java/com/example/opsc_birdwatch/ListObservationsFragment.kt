@@ -5,8 +5,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.EditText
-import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import java.text.SimpleDateFormat
@@ -28,6 +29,7 @@ class ListObservationsFragment : Fragment() {
     private lateinit var adapter: birdAdapter
     lateinit var helperClass: HelperClass
 
+    private var boolTrue: Boolean = false
     private lateinit var editText: EditText
 
     // TODO: Rename and change types of parameters
@@ -51,7 +53,22 @@ class ListObservationsFragment : Fragment() {
 
         editText = view.findViewById(R.id.editTextBird)
 
+        //helperClass.BirdMap
         val birdList = getBirdData()
+
+        val addButton = view.findViewById<Button>(R.id.btnAdd)
+        val refButton = view.findViewById<Button>(R.id.btnRefresh)
+
+        addButton?.setOnClickListener {
+            btnAddClick()
+        }
+
+        refButton?.setOnClickListener {
+            btnRefreshClick()
+        }
+
+        helperClass = HelperClass()
+        recyclerView = view.findViewById(R.id.recyclerView)
 
         adapter = birdAdapter(birdList)
         recyclerView.adapter = adapter
@@ -63,38 +80,57 @@ class ListObservationsFragment : Fragment() {
 
     }
 
+
     private fun getBirdData(): List<BirdItem> {
         val birdList = mutableListOf<BirdItem>()
         // Add your bird data to the list
         birdList.add(BirdItem(R.drawable.bird_svgrepo_com, "Bird 1", "Date 1", "Location 1"))
-        birdList.add(BirdItem(R.drawable.bird_svgrepo_com, "Bird 2", "Date 2", "Location 2"))
+
+
         // Add more birds as needed
         return birdList
     }
 
     fun btnAddClick(){
         val name = editText.text.toString()
-        //val loc
+        val loc = "here"
         val date = getCurrentDateTime()
         saveEntry(name, name, date)
     }
 
-    fun btnRefreshClick(view:View){
-
-        val refreshedData = getUpdatedList()
+    fun btnRefreshClick(){
+        val birdList = updateList(helperClass.BirdMap)
 
 
         // Notify the adapter that the data has changed
-        adapter.notifyDataSetChanged()
+
+
+        adapter = birdAdapter(birdList)
+        recyclerView.adapter = adapter
+
+        val layoutManager = LinearLayoutManager(context)
+        recyclerView.layoutManager = layoutManager
+
+        Toast.makeText(requireContext(),"Refreshed!", Toast.LENGTH_LONG).show()
+    }
+
+
+    fun updateList(birdMap: HashMap<String, HelperClass.Bird>): List<BirdItem>{
+        val birdList = mutableListOf<BirdItem>()
+
+        if(birdMap.isNotEmpty()){
+            for ((birdName, bird) in birdMap) {
+                // Use the birdName as the name, and get other details from the Bird object
+                birdList.add(BirdItem(R.drawable.bird_svgrepo_com, birdName, bird.dateTime, bird.location))
+            }
+        }
+
+        return birdList
     }
 
     fun saveEntry(name: String, location: String, date: String){
-        helperClass.addToList(name, name, date, location)
-        parentFragmentManager.popBackStack()
-    }
-
-    fun getUpdatedList(){
-
+        helperClass.addToList(name, name, location, date)
+        Toast.makeText(requireContext(),"Saved!", Toast.LENGTH_LONG).show()
     }
 
     fun getCurrentDateTime(): String {
