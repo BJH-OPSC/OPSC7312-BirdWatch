@@ -15,6 +15,7 @@ class ObservationsActivity : AppCompatActivity(), NavigationView.OnNavigationIte
     private lateinit var drawerLayout: DrawerLayout
 
     private lateinit var helperClass: HelperClass
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_observations)
@@ -33,7 +34,7 @@ class ObservationsActivity : AppCompatActivity(), NavigationView.OnNavigationIte
 
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, HomeFragment()).commit()
+                .replace(R.id.fragment_container, ListObservationsFragment()).commit()
             navigationView.setCheckedItem(R.id.nav_home)
         }
     }
