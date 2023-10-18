@@ -41,17 +41,23 @@ class SettingsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
         val maxDistanceInt = maxDistanceEditText.text.toString()
         // Set the initial state of the switch
         decisionSwitch.isChecked = isImperialEnabled
-
         // Handle switch state changes
         decisionSwitch.setOnCheckedChangeListener { _, isChecked ->
             // Save the user's preference when the switch state changes
             sharedPreferencesManager.setUnit(isChecked)
             //sharedPreferencesManager.setMaxDistance(maxDistance)
         }
+        //checks if imperial
+        var maxInt = 500
+        if (sharedPreferencesManager.getUnit() == true) {
+            maxInt = 310
+        }
+
+
         maxDistanceEditText.setText(maxDistance.toString())
         applyButton.setOnClickListener {
             val maxDistanceString = maxDistanceEditText.text.toString()
-            if (maxDistanceString.isNotBlank() && maxDistanceString.toInt() <= 500) {
+            if (maxDistanceString.isNotBlank() && maxDistanceString.toInt() <= maxInt) {
                 try {
                     maxDistance = maxDistanceString.toInt()
                     sharedPreferencesManager.setMaxDistance(maxDistance)
