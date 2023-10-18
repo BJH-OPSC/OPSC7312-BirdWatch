@@ -176,31 +176,6 @@ class ListObservationsFragment : Fragment() {
         return sdf.format(cal.time)
     }
 
-    /*
-    fun getLocation(callback: (String) -> Unit) {
-    Log.d(TAG, "getLocation: called.")
-
-    if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-        callback("Permission not granted")
-        return
-    }
-
-    val mFusedLocationClient: FusedLocationProviderClient = LocationServices.getFusedLocationClient(requireContext())
-    mFusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
-        if (location != null) {
-            val locationString = "Latitude: ${location.latitude}, Longitude: ${location.longitude}"
-            Log.d(TAG, locationString)
-            callback(locationString)
-        } else {
-            Log.e(TAG, "Last known location is null.")
-            callback("Last known location is null")
-        }
-    }.addOnFailureListener { e ->
-        Log.e(TAG, "Error getting last known location: ${e.message}")
-        callback("Error getting last known location: ${e.message}")
-    }
-}
-    */
 
     companion object {
         /**
