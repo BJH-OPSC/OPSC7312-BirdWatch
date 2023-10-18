@@ -29,7 +29,7 @@
             android:layout_margin="16dp"
             android:checked="false"
             android:paddingLeft="6dp"
-            android:text="Make a Decision"
+            android:text="Use Imperial System(mi)"
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
