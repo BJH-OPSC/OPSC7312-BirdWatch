@@ -1,9 +1,9 @@
 -- Merging decision tree log ---
 manifest
-ADDED from C:\Users\mattb\AndroidStudioProjects\OPSC7312-BirdWatch\app\src\main\AndroidManifest.xml:2:1-53:12
-INJECTED from C:\Users\mattb\AndroidStudioProjects\OPSC7312-BirdWatch\app\src\main\AndroidManifest.xml:2:1-53:12
-INJECTED from C:\Users\mattb\AndroidStudioProjects\OPSC7312-BirdWatch\app\src\main\AndroidManifest.xml:2:1-53:12
-INJECTED from C:\Users\mattb\AndroidStudioProjects\OPSC7312-BirdWatch\app\src\main\AndroidManifest.xml:2:1-53:12
+ADDED from C:\Users\mattb\AndroidStudioProjects\OPSC7312-BirdWatch\app\src\main\AndroidManifest.xml:2:1-52:12
+INJECTED from C:\Users\mattb\AndroidStudioProjects\OPSC7312-BirdWatch\app\src\main\AndroidManifest.xml:2:1-52:12
+INJECTED from C:\Users\mattb\AndroidStudioProjects\OPSC7312-BirdWatch\app\src\main\AndroidManifest.xml:2:1-52:12
+INJECTED from C:\Users\mattb\AndroidStudioProjects\OPSC7312-BirdWatch\app\src\main\AndroidManifest.xml:2:1-52:12
 MERGED from [androidx.databinding:viewbinding:7.4.2] C:\Users\mattb\.gradle\caches\transforms-3\0b639c4f3b3e2f9f22ab5b5410c9e8c8\transformed\viewbinding-7.4.2\AndroidManifest.xml:2:1-7:12
 MERGED from [com.google.android.material:material:1.10.0] C:\Users\mattb\.gradle\caches\transforms-3\8183fc709b9b4a671fa3eda614e666ba\transformed\material-1.10.0\AndroidManifest.xml:17:1-24:12
 MERGED from [com.google.android.gms:play-services-maps:18.1.0] C:\Users\mattb\.gradle\caches\transforms-3\9ccc0cc5914f82a92fbd0a7e0c27873b\transformed\play-services-maps-18.1.0\AndroidManifest.xml:17:1-44:12
@@ -52,22 +52,22 @@ MERGED from [androidx.documentfile:documentfile:1.0.0] C:\Users\mattb\.gradle\ca
 MERGED from [androidx.localbroadcastmanager:localbroadcastmanager:1.0.0] C:\Users\mattb\.gradle\caches\transforms-3\2ff53fee4bc33a1da5cdbfe55cfab510\transformed\localbroadcastmanager-1.0.0\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.print:print:1.0.0] C:\Users\mattb\.gradle\caches\transforms-3\a21766c7c1a00190a294c68fee7e28e6\transformed\print-1.0.0\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.annotation:annotation-experimental:1.3.0] C:\Users\mattb\.gradle\caches\transforms-3\9fae957ef0e1266a83e5188cb210102e\transformed\annotation-experimental-1.3.0\AndroidManifest.xml:17:1-22:12
-INJECTED from C:\Users\mattb\AndroidStudioProjects\OPSC7312-BirdWatch\app\src\main\AndroidManifest.xml:2:1-53:12
-INJECTED from C:\Users\mattb\AndroidStudioProjects\OPSC7312-BirdWatch\app\src\main\AndroidManifest.xml:2:1-53:12
-INJECTED from C:\Users\mattb\AndroidStudioProjects\OPSC7312-BirdWatch\app\src\main\AndroidManifest.xml:2:1-53:12
+INJECTED from C:\Users\mattb\AndroidStudioProjects\OPSC7312-BirdWatch\app\src\main\AndroidManifest.xml:2:1-52:12
+INJECTED from C:\Users\mattb\AndroidStudioProjects\OPSC7312-BirdWatch\app\src\main\AndroidManifest.xml:2:1-52:12
+INJECTED from C:\Users\mattb\AndroidStudioProjects\OPSC7312-BirdWatch\app\src\main\AndroidManifest.xml:2:1-52:12
 	package
 		INJECTED from C:\Users\mattb\AndroidStudioProjects\OPSC7312-BirdWatch\app\src\main\AndroidManifest.xml
-		ADDED from C:\Users\mattb\AndroidStudioProjects\OPSC7312-BirdWatch\app\src\main\AndroidManifest.xml:2:1-53:12
+		ADDED from C:\Users\mattb\AndroidStudioProjects\OPSC7312-BirdWatch\app\src\main\AndroidManifest.xml:2:1-52:12
 		INJECTED from C:\Users\mattb\AndroidStudioProjects\OPSC7312-BirdWatch\app\src\main\AndroidManifest.xml
 	android:versionName
 		INJECTED from C:\Users\mattb\AndroidStudioProjects\OPSC7312-BirdWatch\app\src\main\AndroidManifest.xml
-		ADDED from C:\Users\mattb\AndroidStudioProjects\OPSC7312-BirdWatch\app\src\main\AndroidManifest.xml:2:1-53:12
+		ADDED from C:\Users\mattb\AndroidStudioProjects\OPSC7312-BirdWatch\app\src\main\AndroidManifest.xml:2:1-52:12
 		INJECTED from C:\Users\mattb\AndroidStudioProjects\OPSC7312-BirdWatch\app\src\main\AndroidManifest.xml
 	xmlns:tools
 		ADDED from C:\Users\mattb\AndroidStudioProjects\OPSC7312-BirdWatch\app\src\main\AndroidManifest.xml:3:5-51
 	android:versionCode
 		INJECTED from C:\Users\mattb\AndroidStudioProjects\OPSC7312-BirdWatch\app\src\main\AndroidManifest.xml
-		ADDED from C:\Users\mattb\AndroidStudioProjects\OPSC7312-BirdWatch\app\src\main\AndroidManifest.xml:2:1-53:12
+		ADDED from C:\Users\mattb\AndroidStudioProjects\OPSC7312-BirdWatch\app\src\main\AndroidManifest.xml:2:1-52:12
 		INJECTED from C:\Users\mattb\AndroidStudioProjects\OPSC7312-BirdWatch\app\src\main\AndroidManifest.xml
 	xmlns:android
 		ADDED from C:\Users\mattb\AndroidStudioProjects\OPSC7312-BirdWatch\app\src\main\AndroidManifest.xml:2:11-69
@@ -86,7 +86,7 @@ MERGED from [com.google.android.gms:play-services-maps:18.1.0] C:\Users\mattb\.g
 	android:name
 		ADDED from C:\Users\mattb\AndroidStudioProjects\OPSC7312-BirdWatch\app\src\main\AndroidManifest.xml:7:22-64
 application
-ADDED from C:\Users\mattb\AndroidStudioProjects\OPSC7312-BirdWatch\app\src\main\AndroidManifest.xml:9:5-51:19
+ADDED from C:\Users\mattb\AndroidStudioProjects\OPSC7312-BirdWatch\app\src\main\AndroidManifest.xml:9:5-50:19
 MERGED from [com.google.android.material:material:1.10.0] C:\Users\mattb\.gradle\caches\transforms-3\8183fc709b9b4a671fa3eda614e666ba\transformed\material-1.10.0\AndroidManifest.xml:22:5-20
 MERGED from [com.google.android.material:material:1.10.0] C:\Users\mattb\.gradle\caches\transforms-3\8183fc709b9b4a671fa3eda614e666ba\transformed\material-1.10.0\AndroidManifest.xml:22:5-20
 MERGED from [com.google.android.gms:play-services-maps:18.1.0] C:\Users\mattb\.gradle\caches\transforms-3\9ccc0cc5914f82a92fbd0a7e0c27873b\transformed\play-services-maps-18.1.0\AndroidManifest.xml:36:5-42:19
@@ -166,29 +166,29 @@ ADDED from C:\Users\mattb\AndroidStudioProjects\OPSC7312-BirdWatch\app\src\main\
 	android:name
 		ADDED from C:\Users\mattb\AndroidStudioProjects\OPSC7312-BirdWatch\app\src\main\AndroidManifest.xml:34:13-45
 activity#com.example.opsc_birdwatch.MapActivity
-ADDED from C:\Users\mattb\AndroidStudioProjects\OPSC7312-BirdWatch\app\src\main\AndroidManifest.xml:36:9-44:20
+ADDED from C:\Users\mattb\AndroidStudioProjects\OPSC7312-BirdWatch\app\src\main\AndroidManifest.xml:36:9-39:20
 	android:exported
 		ADDED from C:\Users\mattb\AndroidStudioProjects\OPSC7312-BirdWatch\app\src\main\AndroidManifest.xml:38:13-36
 	android:name
 		ADDED from C:\Users\mattb\AndroidStudioProjects\OPSC7312-BirdWatch\app\src\main\AndroidManifest.xml:37:13-40
-intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
-ADDED from C:\Users\mattb\AndroidStudioProjects\OPSC7312-BirdWatch\app\src\main\AndroidManifest.xml:39:9-43:25
-action#android.intent.action.MAIN
-ADDED from C:\Users\mattb\AndroidStudioProjects\OPSC7312-BirdWatch\app\src\main\AndroidManifest.xml:40:13-65
-	android:name
-		ADDED from C:\Users\mattb\AndroidStudioProjects\OPSC7312-BirdWatch\app\src\main\AndroidManifest.xml:40:21-62
-category#android.intent.category.LAUNCHER
-ADDED from C:\Users\mattb\AndroidStudioProjects\OPSC7312-BirdWatch\app\src\main\AndroidManifest.xml:42:13-73
-	android:name
-		ADDED from C:\Users\mattb\AndroidStudioProjects\OPSC7312-BirdWatch\app\src\main\AndroidManifest.xml:42:23-70
 activity#com.example.opsc_birdwatch.MainActivity
-ADDED from C:\Users\mattb\AndroidStudioProjects\OPSC7312-BirdWatch\app\src\main\AndroidManifest.xml:45:9-50:20
+ADDED from C:\Users\mattb\AndroidStudioProjects\OPSC7312-BirdWatch\app\src\main\AndroidManifest.xml:40:9-49:20
 	android:exported
-		ADDED from C:\Users\mattb\AndroidStudioProjects\OPSC7312-BirdWatch\app\src\main\AndroidManifest.xml:47:13-36
+		ADDED from C:\Users\mattb\AndroidStudioProjects\OPSC7312-BirdWatch\app\src\main\AndroidManifest.xml:42:13-36
 	android:theme
-		ADDED from C:\Users\mattb\AndroidStudioProjects\OPSC7312-BirdWatch\app\src\main\AndroidManifest.xml:48:13-54
+		ADDED from C:\Users\mattb\AndroidStudioProjects\OPSC7312-BirdWatch\app\src\main\AndroidManifest.xml:43:13-54
 	android:name
-		ADDED from C:\Users\mattb\AndroidStudioProjects\OPSC7312-BirdWatch\app\src\main\AndroidManifest.xml:46:13-41
+		ADDED from C:\Users\mattb\AndroidStudioProjects\OPSC7312-BirdWatch\app\src\main\AndroidManifest.xml:41:13-41
+intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
+ADDED from C:\Users\mattb\AndroidStudioProjects\OPSC7312-BirdWatch\app\src\main\AndroidManifest.xml:44:13-48:29
+action#android.intent.action.MAIN
+ADDED from C:\Users\mattb\AndroidStudioProjects\OPSC7312-BirdWatch\app\src\main\AndroidManifest.xml:45:17-69
+	android:name
+		ADDED from C:\Users\mattb\AndroidStudioProjects\OPSC7312-BirdWatch\app\src\main\AndroidManifest.xml:45:25-66
+category#android.intent.category.LAUNCHER
+ADDED from C:\Users\mattb\AndroidStudioProjects\OPSC7312-BirdWatch\app\src\main\AndroidManifest.xml:47:17-77
+	android:name
+		ADDED from C:\Users\mattb\AndroidStudioProjects\OPSC7312-BirdWatch\app\src\main\AndroidManifest.xml:47:27-74
 uses-sdk
 INJECTED from C:\Users\mattb\AndroidStudioProjects\OPSC7312-BirdWatch\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from C:\Users\mattb\AndroidStudioProjects\OPSC7312-BirdWatch\app\src\main\AndroidManifest.xml

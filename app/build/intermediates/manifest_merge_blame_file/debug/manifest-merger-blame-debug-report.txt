@@ -53,7 +53,7 @@
 32-->[androidx.core:core:1.12.0] C:\Users\mattb\.gradle\caches\transforms-3\20d491d20da37fcfbc5fbd8633b6137d\transformed\core-1.12.0\AndroidManifest.xml:26:22-94
 33
 34    <application
-34-->C:\Users\mattb\AndroidStudioProjects\OPSC7312-BirdWatch\app\src\main\AndroidManifest.xml:9:5-51:19
+34-->C:\Users\mattb\AndroidStudioProjects\OPSC7312-BirdWatch\app\src\main\AndroidManifest.xml:9:5-50:19
 35        android:allowBackup="true"
 35-->C:\Users\mattb\AndroidStudioProjects\OPSC7312-BirdWatch\app\src\main\AndroidManifest.xml:10:9-35
 36        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
@@ -107,30 +107,30 @@
 62            android:exported="false" />
 62-->C:\Users\mattb\AndroidStudioProjects\OPSC7312-BirdWatch\app\src\main\AndroidManifest.xml:35:13-37
 63        <activity
-63-->C:\Users\mattb\AndroidStudioProjects\OPSC7312-BirdWatch\app\src\main\AndroidManifest.xml:36:9-44:20
+63-->C:\Users\mattb\AndroidStudioProjects\OPSC7312-BirdWatch\app\src\main\AndroidManifest.xml:36:9-39:20
 64            android:name="com.example.opsc_birdwatch.MapActivity"
 64-->C:\Users\mattb\AndroidStudioProjects\OPSC7312-BirdWatch\app\src\main\AndroidManifest.xml:37:13-40
 65            android:exported="true" >
 65-->C:\Users\mattb\AndroidStudioProjects\OPSC7312-BirdWatch\app\src\main\AndroidManifest.xml:38:13-36
-66            <intent-filter>
-66-->C:\Users\mattb\AndroidStudioProjects\OPSC7312-BirdWatch\app\src\main\AndroidManifest.xml:39:9-43:25
-67                <action android:name="android.intent.action.MAIN" />
-67-->C:\Users\mattb\AndroidStudioProjects\OPSC7312-BirdWatch\app\src\main\AndroidManifest.xml:40:13-65
-67-->C:\Users\mattb\AndroidStudioProjects\OPSC7312-BirdWatch\app\src\main\AndroidManifest.xml:40:21-62
-68
-69                <category android:name="android.intent.category.LAUNCHER" />
-69-->C:\Users\mattb\AndroidStudioProjects\OPSC7312-BirdWatch\app\src\main\AndroidManifest.xml:42:13-73
-69-->C:\Users\mattb\AndroidStudioProjects\OPSC7312-BirdWatch\app\src\main\AndroidManifest.xml:42:23-70
-70            </intent-filter>
-71        </activity>
-72        <activity
-72-->C:\Users\mattb\AndroidStudioProjects\OPSC7312-BirdWatch\app\src\main\AndroidManifest.xml:45:9-50:20
-73            android:name="com.example.opsc_birdwatch.MainActivity"
-73-->C:\Users\mattb\AndroidStudioProjects\OPSC7312-BirdWatch\app\src\main\AndroidManifest.xml:46:13-41
-74            android:exported="true"
-74-->C:\Users\mattb\AndroidStudioProjects\OPSC7312-BirdWatch\app\src\main\AndroidManifest.xml:47:13-36
-75            android:theme="@style/Theme.MainActivity" >
-75-->C:\Users\mattb\AndroidStudioProjects\OPSC7312-BirdWatch\app\src\main\AndroidManifest.xml:48:13-54
+66        </activity>
+67        <activity
+67-->C:\Users\mattb\AndroidStudioProjects\OPSC7312-BirdWatch\app\src\main\AndroidManifest.xml:40:9-49:20
+68            android:name="com.example.opsc_birdwatch.MainActivity"
+68-->C:\Users\mattb\AndroidStudioProjects\OPSC7312-BirdWatch\app\src\main\AndroidManifest.xml:41:13-41
+69            android:exported="true"
+69-->C:\Users\mattb\AndroidStudioProjects\OPSC7312-BirdWatch\app\src\main\AndroidManifest.xml:42:13-36
+70            android:theme="@style/Theme.MainActivity" >
+70-->C:\Users\mattb\AndroidStudioProjects\OPSC7312-BirdWatch\app\src\main\AndroidManifest.xml:43:13-54
+71            <intent-filter>
+71-->C:\Users\mattb\AndroidStudioProjects\OPSC7312-BirdWatch\app\src\main\AndroidManifest.xml:44:13-48:29
+72                <action android:name="android.intent.action.MAIN" />
+72-->C:\Users\mattb\AndroidStudioProjects\OPSC7312-BirdWatch\app\src\main\AndroidManifest.xml:45:17-69
+72-->C:\Users\mattb\AndroidStudioProjects\OPSC7312-BirdWatch\app\src\main\AndroidManifest.xml:45:25-66
+73
+74                <category android:name="android.intent.category.LAUNCHER" />
+74-->C:\Users\mattb\AndroidStudioProjects\OPSC7312-BirdWatch\app\src\main\AndroidManifest.xml:47:17-77
+74-->C:\Users\mattb\AndroidStudioProjects\OPSC7312-BirdWatch\app\src\main\AndroidManifest.xml:47:27-74
+75            </intent-filter>
 76        </activity>
 77        <!-- Needs to be explicitly declared on P+ -->
 78        <uses-library

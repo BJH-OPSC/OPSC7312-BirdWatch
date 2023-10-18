@@ -21,8 +21,6 @@ import androidx.core.content.ContextCompat
 import com.example.opsc_birdwatch.databinding.ActivityMapBinding
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.GoogleMap.OnPolylineClickListener
@@ -39,6 +37,7 @@ import retrofit2.*
 import retrofit2.converter.gson.GsonConverterFactory
 
 import android.view.MenuItem
+import com.google.android.gms.location.*
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener, OnPolylineClickListener, BottomNavigationView.OnNavigationItemSelectedListener {
@@ -59,6 +58,10 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfoWin
     private var mSelectedMarker: Marker? = null
     private var mTripMarkers: ArrayList<Marker> = ArrayList()
     private var selectedUnits: String = "metric"
+    private var cameraMovedToUserLocation = false
+    private var lastHotspotLoadLocation: Location? = null
+    private val hotspotReloadDistanceThreshold = 10000
+    private var currentLocationCallback: LocationCallback? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
@@ -85,7 +88,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfoWin
         }
         mMap.setOnInfoWindowClickListener(this)
         mMap.setOnPolylineClickListener(this)
-        getLastKnownLocation()
+        getDeviceLocation()
     }
 
     private fun calculateDirections(marker: Marker){
@@ -205,7 +208,8 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfoWin
             longitude = mCurrentLocation.longitude,
             distance = selectedDistance
         )
-
+        Log.d(TAG, "mCurrentLocation latidude CHECKED AFTER RETROFIT BUILD*****${mCurrentLocation.latitude}")
+        Log.d(TAG, "mCurrentLocation longidude ${mCurrentLocation.longitude}")
         retrofitData.enqueue(object : Callback<List<Hotspot>?> {
             override fun onResponse(
                 call: Call<List<Hotspot>?>,
@@ -229,6 +233,41 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfoWin
         })
     }
 
+    private fun getDeviceLocation() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return
+        }
+        mMap.isMyLocationEnabled = true
+        val locationRequest = LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 3000).apply {
+            setMinUpdateDistanceMeters(20F)
+            setGranularity(Granularity.GRANULARITY_PERMISSION_LEVEL)
+            setWaitForAccurateLocation(true)
+        }.build()
+
+        val locationCallback = object : LocationCallback() {
+            override fun onLocationResult(p0: LocationResult) {
+                p0.lastLocation?.let { location ->
+                    mCurrentLocation = location
+                    Log.d(TAG, "New Location - Latitude: ${location.latitude}, Longitude: ${location.longitude}")
+                    if(!cameraMovedToUserLocation){
+                        val currentLatLng = LatLng(location.latitude, location.longitude)
+                        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 12f))
+                        cameraMovedToUserLocation = true
+                    }
+                    if (lastHotspotLoadLocation == null ||
+                        location.distanceTo(lastHotspotLoadLocation!!) >= hotspotReloadDistanceThreshold) {
+                        // Load hotspot markers only if the user has traveled a significant distance
+                        mMap.clear()
+                        getHotspots()
+                        lastHotspotLoadLocation = location
+                    }
+                }
+            }
+        }
+        currentLocationCallback = locationCallback
+        mFusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper())
+    }
+
     private fun getLastKnownLocation(){
         Log.d(TAG, "getLastKnownLocation: called.")
         if (ActivityCompat.checkSelfPermission(
@@ -239,20 +278,21 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfoWin
             return
         }
         mMap.isMyLocationEnabled = true
-        mFusedLocationClient.lastLocation
+        mFusedLocationClient.getCurrentLocation(LocationRequest.PRIORITY_HIGH_ACCURACY, null)
             .addOnSuccessListener { location: Location? ->
                 if (location != null) {
                     mCurrentLocation = location
                     Log.d(TAG, "Latitude: ${location.latitude}, Longitude: ${location.longitude}")
+                    Log.d(TAG, "\"McurrentLATITUDE: ${mCurrentLocation.latitude}, mCurrentLONGITUDE: ${mCurrentLocation.longitude}")
                     val currentLatLng = LatLng(location.latitude, location.longitude)
                     mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 12f))
                     getHotspots()
                 } else {
-                    Log.e(TAG, "Last known location is null.")
+                    Log.e(TAG, "Current location is null.")
                 }
             }
             .addOnFailureListener { e ->
-                Log.e(TAG, "Error getting last known location: ${e.message}")
+                Log.e(TAG, "Error getting current location: ${e.message}")
             }
     }
 
@@ -339,7 +379,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfoWin
                     && grantResults[0] == PackageManager.PERMISSION_GRANTED
                 ) {
                     mLocationPermissionGranted = true
-                    getLastKnownLocation()
+                    getDeviceLocation()
                 }
             }
         }
@@ -369,6 +409,16 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfoWin
                 getLocationPermission()
             }
         }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        stopLocationUpdates()
+    }
+
+    private fun stopLocationUpdates() {
+        mFusedLocationClient.flushLocations()
+        currentLocationCallback?.let { mFusedLocationClient.removeLocationUpdates(it) }
     }
 
     override fun onInfoWindowClick(marker: Marker) {
