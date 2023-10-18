@@ -100,30 +100,28 @@ class ListObservationsFragment : Fragment() {
     }
 
     fun btnAddClick(){
-        if(editText.text.isEmpty()){
+        if(editText.text.isNotEmpty()){
             val name = editText.text.toString()
 
             //put getLocation here pls
             val loc = "here"
             val date = getCurrentDateTime()
             saveEntry(name, loc, date)
+        }else{
+            Toast.makeText(requireContext(),"Invalid Input", Toast.LENGTH_LONG).show()
         }
     }
 
     fun btnRefreshClick(){
         val birdList = updateList(helperClass.BirdMap)
-
-
         // Notify the adapter that the data has changed
-
-
         adapter = birdAdapter(birdList)
         recyclerView.adapter = adapter
 
         val layoutManager = LinearLayoutManager(context)
         recyclerView.layoutManager = layoutManager
 
-        Toast.makeText(requireContext(),"Refreshed!", Toast.LENGTH_LONG).show()
+        Toast.makeText(requireContext(),"Refreshed!", Toast.LENGTH_SHORT).show()
     }
 
 
@@ -135,14 +133,15 @@ class ListObservationsFragment : Fragment() {
                 // Use the birdName as the name, and get other details from the Bird object
                 birdList.add(BirdItem(R.drawable.bird_svgrepo_com, birdName, bird.dateTime, bird.location))
             }
+        }else{
+            Toast.makeText(requireContext(),"No Saved Observations", Toast.LENGTH_LONG).show()
         }
-
         return birdList
     }
 
     fun saveEntry(name: String, location: String, date: String){
         helperClass.addToList(name, name, location, date)
-        Toast.makeText(requireContext(),"Saved!", Toast.LENGTH_LONG).show()
+        Toast.makeText(requireContext(),"Saved!", Toast.LENGTH_SHORT).show()
     }
 
     fun getCurrentDateTime(): String {
