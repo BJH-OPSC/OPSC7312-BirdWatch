@@ -1,5 +1,6 @@
 package com.example.opsc_birdwatch
 
+//Data class for a hotspot object to be used in eBird API call
 data class Hotspot(
     val countryCode: String,
     val lat: Double,
