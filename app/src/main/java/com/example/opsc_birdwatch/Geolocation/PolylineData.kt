@@ -3,7 +3,7 @@ package com.example.opsc_birdwatch
 import com.google.android.gms.maps.model.Polyline
 import com.google.maps.model.DirectionsLeg
 
-
+//class to store data of polylines
 class PolylineData(
     private var polyline: Polyline?,
     private var leg: DirectionsLeg?
