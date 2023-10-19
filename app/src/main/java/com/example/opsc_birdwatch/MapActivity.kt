@@ -44,7 +44,7 @@ import com.google.android.gms.location.*
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener, OnPolylineClickListener, BottomNavigationView.OnNavigationItemSelectedListener {
-    // *********CAN ADD FUNCTION TO RESET MAP SO THAT POLYLINES ARE NO LONGER VISIBLE, CURRENTLY HAVE TO CLICK ON A NEW LOCATION AND GET DIRECTIONS TO CLEAR PREVIOUS POLYLINES***************
+    //declaring class variables
     private lateinit var sharedPreferencesManager: SharedPreferencesManager
     private lateinit var sharedPreferences: SharedPreferences
     private val API_KEY = "AIzaSyAHuVhTH57FC4TbT01iA0uhep_7M5RRX-o"
@@ -67,11 +67,13 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfoWin
     private var lastHotspotLoadLocation: Location? = null
     private val hotspotReloadDistanceThreshold = 10000
     private var currentLocationCallback: LocationCallback? = null
+    
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         binding = ActivityMapBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        
         //shared preferences
         sharedPreferences = getSharedPreferences("MyAppPrefs", MODE_PRIVATE)
         sharedPreferencesManager = SharedPreferencesManager(applicationContext)
@@ -94,6 +96,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfoWin
         navigationView.setOnNavigationItemSelectedListener(this)
     }
 
+    
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
         mMap.uiSettings.isZoomControlsEnabled = true
@@ -109,6 +112,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfoWin
         getDeviceLocation()
     }
 
+    //function to get direction from current location to marker using DirectionsApi
     private fun calculateDirections(marker: Marker){
         Log.d(TAG, "calculateDirections: calculating directions.")
 
@@ -153,12 +157,14 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfoWin
             })
     }
 
+    //function to remove trip markers of previously selected directions
     private fun removeTripMarkers(){
         for(marker in mTripMarkers){
             marker.remove()
         }
     }
 
+    //function to re-enable the disabled hotspot marker
     private fun resetSelectedMarker(){
         if(mSelectedMarker != null){
             mSelectedMarker!!.isVisible = true
@@ -167,6 +173,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfoWin
         }
     }
 
+    //function to draw the polylines for the direction's routes on the map
     private fun addPolylinesToMap(result: DirectionsResult) {
         Handler(Looper.getMainLooper()).post {
             Log.d(TAG, "run: result routes: " + result.routes.size)
@@ -209,16 +216,18 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfoWin
         }
     }
 
+    //function to get nearby hotspots and store them in a List. Uses retrofit and eBird API
     private fun getHotspots(){
         Log.d(TAG, "getHotspots: Called GETHOTSPOTS")
         Log.d(TAG, "mCurrentLocation latidude ${mCurrentLocation.latitude}")
         Log.d(TAG, "mCurrentLocation longidude ${mCurrentLocation.longitude}")
 
+        //convert miles to kilometeres if the user has selected imperial
         if(selectedUnits){
             selectedDistance = (selectedDistance*1.609).roundToInt()
         }
         Log.d(TAG, "SELECTED DISTANCE: $selectedDistance")
-        // Use the user's location in the Retrofit request
+        
         val retrofitBuilder = Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create())
             .baseUrl(BASE_URL)
@@ -254,6 +263,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfoWin
         })
     }
 
+    //function to enable live location updates and retrieve the user's current location
     private fun getDeviceLocation() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return
@@ -289,6 +299,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfoWin
         mFusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper())
     }
 
+    //unused function to get the last known location, replaced by the getDeviceLocation function
     private fun getLastKnownLocation(){
         Log.d(TAG, "getLastKnownLocation: called.")
         if (ActivityCompat.checkSelfPermission(
@@ -316,6 +327,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfoWin
             }
     }
 
+    //function to check whether google services are enabled
     private fun checkMapServices(): Boolean {
         if (isServicesOK()) {
             if (isMapsEnabled()) {
@@ -325,6 +337,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfoWin
         return false
     }
 
+    //function to create an alert if the user does not have GPS services enabled
     private fun buildAlertMessageNoGps() {
         val alertDialogBuilder = AlertDialog.Builder(this)
         alertDialogBuilder.setMessage("This application requires GPS to work properly, do you want to enable it?")
@@ -338,6 +351,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfoWin
         alert.show()
     }
 
+    //function to check if gps services are enabled
     private fun isMapsEnabled(): Boolean {
         val manager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
         if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
@@ -347,6 +361,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfoWin
         return true
     }
 
+    //function to request location permissions if the user does not have them enabled for the app
     private fun getLocationPermission() {
         if (ContextCompat.checkSelfPermission(
                 this.applicationContext,
@@ -355,7 +370,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfoWin
             == PackageManager.PERMISSION_GRANTED
         ) {
             mLocationPermissionGranted = true
-            return //GETLOCATIONHERE
+            return
         } else {
             ActivityCompat.requestPermissions(
                 this, arrayOf<String>(Manifest.permission.ACCESS_FINE_LOCATION),
@@ -364,6 +379,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfoWin
         }
     }
 
+    //function to check if the user has google services available
     private fun isServicesOK(): Boolean {
         Log.d(TAG, "isServicesOK: checking google services version")
         val available =
@@ -384,6 +400,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfoWin
         return false
     }
 
+    //function to handle the result of the user interacting with the location permissions request
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<String?>,
@@ -405,6 +422,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfoWin
         }
     }
 
+    // Handle the result of a GPS location service request.
     @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -412,7 +430,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfoWin
         when (requestCode) {
             PERMISSIONS_REQUEST_ENABLE_GPS -> {
                 if (mLocationPermissionGranted) {
-                    return //GETLOCATIONHERE
+                    return
                 } else {
                     getLocationPermission()
                 }
@@ -420,6 +438,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfoWin
         }
     }
 
+    //function to handle the resumption of the map activity
     override fun onResume(){
         super.onResume()
         if(checkMapServices()){
@@ -431,16 +450,19 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfoWin
         }
     }
 
+    //function to handle the pausing of the map activity. stops location updates
     override fun onPause() {
         super.onPause()
         stopLocationUpdates()
     }
 
+    //function to clear the locations from the FusedLocationClient and remove location updates
     private fun stopLocationUpdates() {
         mFusedLocationClient.flushLocations()
         currentLocationCallback?.let { mFusedLocationClient.removeLocationUpdates(it) }
     }
 
+    //function to handle the user clicking on the infoWindow of a marker
     override fun onInfoWindowClick(marker: Marker) {
         Log.d(TAG, "onInfoWindowClick: INFO WINDOW CLICKED")
         if (marker.title != null && marker.title!!.contains("Trip #")) {
@@ -459,6 +481,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfoWin
         builder.show()
     }
 
+    //function to handle when the user clicks on a polyline on a route
     override fun onPolylineClick(polyline: Polyline) {
         var index = 0
         for (polylineData in mPolyLinesData) {
@@ -491,6 +514,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfoWin
         }
     }
 
+    //function to zoom the map camera to show the calculated route clearly
     private fun zoomRoute(lstLatLngRoute: List<LatLng?>?) {
         if (lstLatLngRoute == null || lstLatLngRoute.isEmpty()) return
         val boundsBuilder = LatLngBounds.Builder()
@@ -504,6 +528,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfoWin
         )
     }
 
+    //function for the bottom navigation bar to go to appropriate activities
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.menu_exit -> {
