@@ -45,24 +45,15 @@ class SignInActivity : AppCompatActivity() {
             val password = findViewById<EditText>(R.id.editTextPassword).text.toString()
             val storedPassword = AccountManager.getUserPassword(username)
 
-            if (storedPassword != null && storedPassword == password) {
+            if (username.isNotEmpty() && password.isNotEmpty()) {
                 // Successful login
                 loginUser(username,password);
-                val alertDialog = AlertDialog.Builder(this)
-                alertDialog.setTitle("Successful Login")
-                alertDialog.setMessage("You Have Successfully Logged In")
-                alertDialog.setPositiveButton("OK") { dialog, _ ->
-                    // when the user clicks OK
-                    dialog.dismiss()
-                    finish()
-                }
-                alertDialog.show()
 
             } else {
                 //login Failed, show an error message
                 val alertDialog = AlertDialog.Builder(this)
                 alertDialog.setTitle("Unsuccessful Login")
-                alertDialog.setMessage("Invalid Username and/or Password")
+                alertDialog.setMessage("Invalid Username and/or Password: Username Must be Valid Email Address")
                 alertDialog.setPositiveButton("OK") { dialog, _ ->
                     // when the user clicks OK
                     dialog.dismiss()
@@ -82,12 +73,22 @@ class SignInActivity : AppCompatActivity() {
     }
 
     private fun loginUser(email: String, password: String) {
-
+///online auth service functionality: firebase auth
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d(TAG, "signInWithEmail:success")
+                    val alertDialog = AlertDialog.Builder(this)
+                    alertDialog.setTitle("Successful Login")
+                    alertDialog.setMessage("You Have Successfully Logged In")
+                    alertDialog.setPositiveButton("OK") { dialog, _ ->
+                        // when the user clicks OK
+                        dialog.dismiss()
+                        finish()
+                    }
+                    alertDialog.show()
+
                     val user = auth.currentUser
                 } else {
                     // If sign in fails, display a message to the user.

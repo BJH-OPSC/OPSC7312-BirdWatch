@@ -10,10 +10,14 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.constraintlayout.helper.widget.MotionEffect.TAG
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
+import com.google.firebase.auth.FirebaseAuthUserCollisionException
+import com.google.firebase.auth.FirebaseAuthWeakPasswordException
 
 class SignUpActivity : AppCompatActivity() {
     // private val account: HashMap<String, String> = HashMap()
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
+    private val TAG = "SignUpActivity"
 
     public override fun onStart() {
         super.onStart()
@@ -28,8 +32,10 @@ class SignUpActivity : AppCompatActivity() {
                 dialog.dismiss()
                 finish()
             }
-            alertDialog.show()        }
+            alertDialog.show()
+        }
     }
+
     //----------------------------------------------------------------------------------------\\
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -105,23 +111,29 @@ class SignUpActivity : AppCompatActivity() {
 
         }
     }
-//----------------------------------------------------------------------------------------------------------\\
+
+    //----------------------------------------------------------------------------------------------------------\\
     private fun createUser(email: String, password: String) {
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     Log.d(TAG, "createUserWithEmail:success")
                     val user = auth.currentUser
+                    // User creation was successful, you can proceed with any necessary actions
                 } else {
-                    // If sign in fails, display a message to the user.
+                    // If sign in fails, handle the error
                     Log.w(TAG, "createUserWithEmail:failure", task.exception)
-                    Toast.makeText(
-                        baseContext,
-                        "Authentication failed.",
-                        Toast.LENGTH_SHORT,
-                    ).show()
+                    val errorText = when (task.exception) {
+                        is FirebaseAuthWeakPasswordException -> "Weak password. Please choose a stronger one."
+                        is FirebaseAuthInvalidCredentialsException -> "Invalid email address."
+                        is FirebaseAuthUserCollisionException -> "Email address is already in use."
+                        else -> "Authentication failed. Please try again later."
+                    }
+                    Toast.makeText(baseContext, errorText, Toast.LENGTH_SHORT).show()
                 }
             }
     }
+
 }
+
 //------------------------------------------------End of File-----------------------------------------\\

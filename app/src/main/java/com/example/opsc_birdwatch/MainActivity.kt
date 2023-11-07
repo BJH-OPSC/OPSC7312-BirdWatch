@@ -11,6 +11,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
+import com.google.firebase.auth.FirebaseAuth
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
@@ -76,7 +77,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
             R.id.nav_login -> {startActivity(Intent(this, SignInActivity::class.java))}
 
-            R.id.nav_logout -> Toast.makeText(this, "Logged Out!", Toast.LENGTH_SHORT).show()
+            R.id.nav_logout -> signOutUser()
         }
         drawerLayout.closeDrawer(GravityCompat.START)
         return true
@@ -91,5 +92,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         } else {
             onBackPressedDispatcher.onBackPressed()
         }
+    }
+    private fun signOutUser() {
+        val auth = FirebaseAuth.getInstance()
+        auth.signOut()
+        Toast.makeText(this, "Logged Out!", Toast.LENGTH_SHORT).show()
     }
 }
