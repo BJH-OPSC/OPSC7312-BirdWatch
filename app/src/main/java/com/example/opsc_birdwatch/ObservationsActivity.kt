@@ -3,6 +3,7 @@ package com.example.opsc_birdwatch
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.Manifest
+import android.app.AlertDialog
 import android.content.ContentValues
 import android.os.Bundle
 import android.view.MenuItem
@@ -16,7 +17,10 @@ import com.google.android.material.navigation.NavigationView
 import android.content.pm.PackageManager
 import android.location.Location
 import android.util.Log
+import androidx.constraintlayout.helper.widget.MotionEffect
 import com.google.android.gms.location.*
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 
 class ObservationsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     private lateinit var drawerLayout: DrawerLayout
@@ -140,5 +144,49 @@ class ObservationsActivity : AppCompatActivity(), NavigationView.OnNavigationIte
                 }
         }
     }
+    //-----------------------------------------------------------------------------------------\\
+    private fun observationsFirestore(BirdName: Boolean, Location:Double){
+        val currentUser = FirebaseAuth.getInstance().currentUser
+        if (currentUser != null) {
+            val db = FirebaseFirestore.getInstance()
+            val noteData = hashMapOf(
+                "BirdName" to BirdName,
+                "Location" to Location,
+                "user" to currentUser.uid
+            )
+
+            db.collection("BirdObservations")
+                .add(noteData)
+                .addOnSuccessListener { documentReference ->
+                    // Document added successfully
+                    Log.d(MotionEffect.TAG, "data saved:success")
+                    val alertDialog = AlertDialog.Builder(this)
+                    alertDialog.setTitle("Successfully Saved")
+                    alertDialog.setMessage("Settings Saved")
+                    alertDialog.setPositiveButton("OK") { dialog, _ ->
+                        // when the user clicks OK
+                        dialog.dismiss()
+                        finish()
+                    }
+                    alertDialog.show()
+                }
+                .addOnFailureListener { e ->
+                    // Handle errors
+                    Log.d(MotionEffect.TAG, e.message.toString())
+                    Log.d(MotionEffect.TAG, "data saved:failure")
+                    val alertDialog = AlertDialog.Builder(this)
+                    alertDialog.setTitle("unsuccessfully Saved")
+                    alertDialog.setMessage("Settings Not Saved")
+                    alertDialog.setPositiveButton("OK") { dialog, _ ->
+                        // when the user clicks OK
+                        dialog.dismiss()
+                        finish()
+                    }
+                    alertDialog.show()
+                }
+        }
+
+    }
 
 }
+//---------------------------------------------End of File--------------------------------------------------\\

@@ -1,7 +1,7 @@
 package com.example.opsc_birdwatch
 
+import android.app.AlertDialog
 import android.content.ContentValues.TAG
-import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
@@ -14,9 +14,14 @@ import android.widget.Switch
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.widget.Toolbar
+import androidx.constraintlayout.helper.widget.MotionEffect
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
+import com.google.firebase.Firebase
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.firestore
 
 
 class SettingsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -26,6 +31,8 @@ class SettingsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
     private lateinit var sharedPreferencesManager: SharedPreferencesManager
     private var maxDistance = 20
     private lateinit var drawerLayout: DrawerLayout
+    val db = Firebase.firestore
+    val currentUser = FirebaseAuth.getInstance().currentUser
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,9 +49,11 @@ class SettingsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
         // Set the initial state of the switch
         decisionSwitch.isChecked = isImperialEnabled
         // Handle switch state changes
+        var isImperial = false;
         decisionSwitch.setOnCheckedChangeListener { _, isChecked ->
             // Save the user's preference when the switch state changes
             sharedPreferencesManager.setUnit(isChecked)
+            isImperial= isChecked;
             //sharedPreferencesManager.setMaxDistance(maxDistance)
         }
         //checks if imperial
@@ -59,6 +68,7 @@ class SettingsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
             val maxDistanceString = maxDistanceEditText.text.toString()
             if (maxDistanceString.isNotBlank() && maxDistanceString.toInt() <= maxInt) {
                 try {
+                    settingsFirestore(isImperial,maxDistance)
                     maxDistance = maxDistanceString.toInt()
                     sharedPreferencesManager.setMaxDistance(maxDistance)
                     Toast.makeText(this, "Max distance saved: $maxDistance", Toast.LENGTH_SHORT).show()
@@ -134,6 +144,49 @@ class SettingsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
         } else {
             onBackPressedDispatcher.onBackPressed()
         }
+    }
+
+    private fun settingsFirestore(system: Boolean, maxDistance:Int){
+        val currentUser = FirebaseAuth.getInstance().currentUser
+        if (currentUser != null) {
+            val db = FirebaseFirestore.getInstance()
+            val noteData = hashMapOf(
+                "ImperialSystem" to system,
+                "MaxDistance" to maxDistance,
+                "user" to currentUser.uid
+            )
+
+            db.collection("Settings")
+                .add(noteData)
+                .addOnSuccessListener { documentReference ->
+                    // Document added successfully
+                    Log.d(MotionEffect.TAG, "data saved:success")
+                    val alertDialog = AlertDialog.Builder(this)
+                    alertDialog.setTitle("Successfully Saved")
+                    alertDialog.setMessage("Settings Saved")
+                    alertDialog.setPositiveButton("OK") { dialog, _ ->
+                        // when the user clicks OK
+                        dialog.dismiss()
+                        finish()
+                    }
+                    alertDialog.show()
+                }
+                .addOnFailureListener { e ->
+                    // Handle errors
+                    Log.d(MotionEffect.TAG, e.message.toString())
+                    Log.d(MotionEffect.TAG, "data saved:failure")
+                    val alertDialog = AlertDialog.Builder(this)
+                    alertDialog.setTitle("unsuccessfully Saved")
+                    alertDialog.setMessage("Settings Not Saved")
+                    alertDialog.setPositiveButton("OK") { dialog, _ ->
+                        // when the user clicks OK
+                        dialog.dismiss()
+                        finish()
+                    }
+                    alertDialog.show()
+                }
+        }
+
     }
 
 }
