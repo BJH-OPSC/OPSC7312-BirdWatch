@@ -17,6 +17,8 @@ import com.google.android.material.navigation.NavigationView
 import android.content.pm.PackageManager
 import android.location.Location
 import android.util.Log
+import android.widget.Button
+import android.widget.EditText
 import androidx.constraintlayout.helper.widget.MotionEffect
 import com.google.android.gms.location.*
 import com.google.firebase.auth.FirebaseAuth
@@ -30,6 +32,7 @@ class ObservationsActivity : AppCompatActivity(), NavigationView.OnNavigationIte
     private lateinit var mFusedLocationClient: FusedLocationProviderClient
 
     private val PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 3
+    var BirdName="";
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -137,6 +140,9 @@ class ObservationsActivity : AppCompatActivity(), NavigationView.OnNavigationIte
                     if (location != null) {
                         Log.d(ContentValues.TAG, "New Location - Latitude: ${location.latitude}, Longitude: ${location.longitude}")
                         fragment.getLocation(location)
+                        BirdName = findViewById<EditText>(R.id.editTextBird).toString()
+                        observationsFirestore(BirdName, location) // Call the function to save the observation
+
                         Log.d(ContentValues.TAG, "getLastKnownLocation: PASSED TO FRAGMENT")
                     } else {
                         Log.e(ContentValues.TAG, "Last known location is null.")
@@ -145,24 +151,25 @@ class ObservationsActivity : AppCompatActivity(), NavigationView.OnNavigationIte
         }
     }
     //-----------------------------------------------------------------------------------------\\
-    private fun observationsFirestore(BirdName: Boolean, Location:Double){
+    private fun observationsFirestore(BirdName: String, location: Location){
         val currentUser = FirebaseAuth.getInstance().currentUser
         if (currentUser != null) {
             val db = FirebaseFirestore.getInstance()
-            val noteData = hashMapOf(
+            val observationData = hashMapOf(
                 "BirdName" to BirdName,
-                "Location" to Location,
+                "Latitude" to location.latitude,
+                "Longitude" to location.longitude,
                 "user" to currentUser.uid
             )
 
             db.collection("BirdObservations")
-                .add(noteData)
+                .add(observationData)
                 .addOnSuccessListener { documentReference ->
                     // Document added successfully
                     Log.d(MotionEffect.TAG, "data saved:success")
                     val alertDialog = AlertDialog.Builder(this)
                     alertDialog.setTitle("Successfully Saved")
-                    alertDialog.setMessage("Settings Saved")
+                    alertDialog.setMessage("Observation Saved")
                     alertDialog.setPositiveButton("OK") { dialog, _ ->
                         // when the user clicks OK
                         dialog.dismiss()
@@ -176,7 +183,7 @@ class ObservationsActivity : AppCompatActivity(), NavigationView.OnNavigationIte
                     Log.d(MotionEffect.TAG, "data saved:failure")
                     val alertDialog = AlertDialog.Builder(this)
                     alertDialog.setTitle("unsuccessfully Saved")
-                    alertDialog.setMessage("Settings Not Saved")
+                    alertDialog.setMessage("Observation Not Saved")
                     alertDialog.setPositiveButton("OK") { dialog, _ ->
                         // when the user clicks OK
                         dialog.dismiss()

@@ -150,14 +150,14 @@ class SettingsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
         val currentUser = FirebaseAuth.getInstance().currentUser
         if (currentUser != null) {
             val db = FirebaseFirestore.getInstance()
-            val noteData = hashMapOf(
+            val settingsData = hashMapOf(
                 "ImperialSystem" to system,
                 "MaxDistance" to maxDistance,
                 "user" to currentUser.uid
             )
 
             db.collection("Settings")
-                .add(noteData)
+                .add(settingsData)
                 .addOnSuccessListener { documentReference ->
                     // Document added successfully
                     Log.d(MotionEffect.TAG, "data saved:success")
