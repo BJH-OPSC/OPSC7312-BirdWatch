@@ -43,7 +43,6 @@ class ListObservationsFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
-    var BirdName="";
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -135,9 +134,8 @@ class ListObservationsFragment : Fragment() {
 
             //put getLocation here pls
             val loc = getLocationName(mCurrentLocation)
-            BirdName = editText.toString()
             Log.d(mCurrentLocation.longitude.toString(),mCurrentLocation.latitude.toString())
-            observationsFirestore(BirdName,mCurrentLocation) // Calls the function to save the observation
+            observationsFirestore(name,mCurrentLocation) // Calls the function to save the observation
             val date = getCurrentDateTime()
             saveEntry(name, loc, date)
         }else{
