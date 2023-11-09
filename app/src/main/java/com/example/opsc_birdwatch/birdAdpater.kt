@@ -61,6 +61,7 @@ class birdAdapter(private  val itemList: List<BirdItem>):
                     val birdName = doc.getString("BirdName")
                     val latitude = doc.getDouble("Latitude")
                     val longitude = doc.getDouble("Longitude")
+                    val date = doc.getString("Date")
 
                    /* if (birdName != null && latitude != null && longitude != null) {
                         val birdItem = BirdItem(
