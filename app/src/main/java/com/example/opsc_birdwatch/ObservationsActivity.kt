@@ -32,7 +32,6 @@ class ObservationsActivity : AppCompatActivity(), NavigationView.OnNavigationIte
     private lateinit var mFusedLocationClient: FusedLocationProviderClient
 
     private val PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 3
-    var BirdName="";
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -140,8 +139,6 @@ class ObservationsActivity : AppCompatActivity(), NavigationView.OnNavigationIte
                     if (location != null) {
                         Log.d(ContentValues.TAG, "New Location - Latitude: ${location.latitude}, Longitude: ${location.longitude}")
                         fragment.getLocation(location)
-                        BirdName = findViewById<EditText>(R.id.editTextBird).toString()
-                        observationsFirestore(BirdName, location) // Call the function to save the observation
 
                         Log.d(ContentValues.TAG, "getLastKnownLocation: PASSED TO FRAGMENT")
                     } else {
@@ -151,49 +148,7 @@ class ObservationsActivity : AppCompatActivity(), NavigationView.OnNavigationIte
         }
     }
     //-----------------------------------------------------------------------------------------\\
-    private fun observationsFirestore(BirdName: String, location: Location){
-        val currentUser = FirebaseAuth.getInstance().currentUser
-        if (currentUser != null) {
-            val db = FirebaseFirestore.getInstance()
-            val observationData = hashMapOf(
-                "BirdName" to BirdName,
-                "Latitude" to location.latitude,
-                "Longitude" to location.longitude,
-                "user" to currentUser.uid
-            )
 
-            db.collection("BirdObservations")
-                .add(observationData)
-                .addOnSuccessListener { documentReference ->
-                    // Document added successfully
-                    Log.d(MotionEffect.TAG, "data saved:success")
-                    val alertDialog = AlertDialog.Builder(this)
-                    alertDialog.setTitle("Successfully Saved")
-                    alertDialog.setMessage("Observation Saved")
-                    alertDialog.setPositiveButton("OK") { dialog, _ ->
-                        // when the user clicks OK
-                        dialog.dismiss()
-                        finish()
-                    }
-                    alertDialog.show()
-                }
-                .addOnFailureListener { e ->
-                    // Handle errors
-                    Log.d(MotionEffect.TAG, e.message.toString())
-                    Log.d(MotionEffect.TAG, "data saved:failure")
-                    val alertDialog = AlertDialog.Builder(this)
-                    alertDialog.setTitle("unsuccessfully Saved")
-                    alertDialog.setMessage("Observation Not Saved")
-                    alertDialog.setPositiveButton("OK") { dialog, _ ->
-                        // when the user clicks OK
-                        dialog.dismiss()
-                        finish()
-                    }
-                    alertDialog.show()
-                }
-        }
-
-    }
 
 }
 //---------------------------------------------End of File--------------------------------------------------\\
