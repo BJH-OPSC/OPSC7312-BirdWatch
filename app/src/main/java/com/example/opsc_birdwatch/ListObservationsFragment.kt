@@ -6,6 +6,7 @@ import android.location.Location
 import android.os.Bundle
 import android.util.Log
 import android.location.Geocoder
+import android.os.Build
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +14,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.constraintlayout.helper.widget.MotionEffect
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -128,6 +130,7 @@ class ListObservationsFragment : Fragment() {
         return returnName
     }
 
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     fun btnAddClick(){
         if(editText.text.isNotEmpty()){
             val name = editText.text.toString()
@@ -180,6 +183,7 @@ class ListObservationsFragment : Fragment() {
         val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
         return sdf.format(cal.time)
     }
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     private fun observationsFirestore(BirdName: String, location: Location){
         val currentUser = FirebaseAuth.getInstance().currentUser
         val OA = ObservationsActivity()
@@ -205,6 +209,8 @@ class ListObservationsFragment : Fragment() {
                         dialog.dismiss()
                     }
                     alertDialog.show()
+                    val notificationHelper = NotificationHelper(this.requireContext())
+                    notificationHelper.showNotification("Bird Observation Saved", "You have successfully saved a bird observation!")
                 }
                 .addOnFailureListener { e ->
                     // Handle errors
