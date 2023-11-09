@@ -1,5 +1,6 @@
 package com.example.opsc_birdwatch
 
+import android.app.AlertDialog
 import android.content.ContentValues.TAG
 import android.location.Location
 import android.os.Bundle
@@ -12,8 +13,11 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import androidx.constraintlayout.helper.widget.MotionEffect
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -130,7 +134,8 @@ class ListObservationsFragment : Fragment() {
 
             //put getLocation here pls
             val loc = getLocationName(mCurrentLocation)
-
+            Log.d(mCurrentLocation.longitude.toString(),mCurrentLocation.latitude.toString())
+            observationsFirestore(name,mCurrentLocation) // Calls the function to save the observation
             val date = getCurrentDateTime()
             saveEntry(name, loc, date)
         }else{
@@ -175,7 +180,48 @@ class ListObservationsFragment : Fragment() {
         val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
         return sdf.format(cal.time)
     }
+    private fun observationsFirestore(BirdName: String, location: Location){
+        val currentUser = FirebaseAuth.getInstance().currentUser
+        val OA = ObservationsActivity()
+        if (currentUser != null) {
+            val db = FirebaseFirestore.getInstance()
+            val observationData = hashMapOf(
+                "BirdName" to BirdName,
+                "Latitude" to location.latitude,
+                "Longitude" to location.longitude,
+                "user" to currentUser.uid
+            )
 
+            db.collection("BirdObservations")
+                .add(observationData)
+                .addOnSuccessListener { documentReference ->
+                    // Document added successfully
+                    Log.d(MotionEffect.TAG, "data saved:success")
+                    val alertDialog = AlertDialog.Builder(requireActivity())
+                    alertDialog.setTitle("Successfully Saved")
+                    alertDialog.setMessage("Observation Saved")
+                    alertDialog.setPositiveButton("OK") { dialog, _ ->
+                        // when the user clicks OK
+                        dialog.dismiss()
+                    }
+                    alertDialog.show()
+                }
+                .addOnFailureListener { e ->
+                    // Handle errors
+                    Log.d(MotionEffect.TAG, e.message.toString())
+                    Log.d(MotionEffect.TAG, "data saved:failure")
+                    val alertDialog = AlertDialog.Builder(requireActivity())
+                    alertDialog.setTitle("unsuccessfully Saved")
+                    alertDialog.setMessage("Observation Not Saved")
+                    alertDialog.setPositiveButton("OK") { dialog, _ ->
+                        // when the user clicks OK
+                        dialog.dismiss()
+                    }
+                    alertDialog.show()
+                }
+        }
+
+    }
     companion object {
         /**
          * Use this factory method to create a new instance of
@@ -195,4 +241,5 @@ class ListObservationsFragment : Fragment() {
                 }
             }
     }
+
 }
