@@ -46,7 +46,7 @@ class birdAdapter(private  val itemList: List<BirdItem>):
         holder.tvDate.text = item.dateTime
         holder.tvLocation.text = item.location
     }
-    fun fetchBirdData(UserID: String) {
+    fun fetchBirdData(UserID: String,holder: ViewHolder, position: Int, onComplete: (List<BirdItem>) -> Unit) {
         // Reference to the Firestore collection
         val collectionRef = db.collection(collectionName)
         val userID = auth.currentUser
@@ -55,14 +55,25 @@ class birdAdapter(private  val itemList: List<BirdItem>):
         collectionRef.whereEqualTo("user", UserID)
             .get()
             .addOnSuccessListener { querySnapshot ->
+                val birdItemList = mutableListOf<BirdItem>()
                 for (doc in querySnapshot) {
                     // doc.data contains the document data
                     val birdName = doc.getString("BirdName")
                     val latitude = doc.getDouble("Latitude")
                     val longitude = doc.getDouble("Longitude")
 
+                   /* if (birdName != null && latitude != null && longitude != null) {
+                        val birdItem = BirdItem(
+                           // R.drawable.bird_image, // Replace with the appropriate image resource
 
+                            //   birdName,
+                           // "", // You can add a timestamp here if needed
+                           // "Lat: $latitude, Long: $longitude"
+                        )
+                        birdItemList.add(birdItem)
+                    }*/
                 }
+                onComplete(birdItemList)
             }
             .addOnSuccessListener { querySnapshot ->
                 for (doc in querySnapshot) {
