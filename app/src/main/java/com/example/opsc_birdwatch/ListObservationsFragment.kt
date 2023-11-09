@@ -174,7 +174,7 @@ class ListObservationsFragment : Fragment() {
         helperClass.addToList(name, name, location, date)
         Toast.makeText(requireContext(),"Saved!", Toast.LENGTH_SHORT).show()
     }
-
+    //---------------------------------------------------------------------------------------\\
     fun getCurrentDateTime(): String {
         val cal = Calendar.getInstance()
         val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
