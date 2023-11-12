@@ -1,12 +1,12 @@
 package com.example.opsc_birdwatch
 
+import android.content.ContentValues.TAG
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.constraintlayout.helper.widget.MotionEffect.TAG
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -15,9 +15,9 @@ import com.google.firebase.firestore.FirebaseFirestore
 data class BirdItem(val img: Int ,val name: String, val dateTime: String, val location: String)
 
 // Reference to a Firestore collection
-private val db = FirebaseFirestore.getInstance()
-private const val collectionName = "BirdObservations"
-private val auth: FirebaseAuth = FirebaseAuth.getInstance()
+val db = FirebaseFirestore.getInstance()
+const val collectionName = "BirdObservations"
+val auth: FirebaseAuth = FirebaseAuth.getInstance()
 
 class birdAdapter(private  val itemList: List<BirdItem>):
     RecyclerView.Adapter<birdAdapter.ViewHolder>() {
@@ -58,20 +58,20 @@ class birdAdapter(private  val itemList: List<BirdItem>):
                 val birdItemList = mutableListOf<BirdItem>()
                 for (doc in querySnapshot) {
                     // doc.data contains the document data
-                    val birdName = doc.getString("BirdName")
-                    val latitude = doc.getDouble("Latitude")
-                    val longitude = doc.getDouble("Longitude")
+                    val birdName = doc.getString("name")
+                    val locationString = doc.getString("location")
+                    val date = doc.getString("dateTime")
 
-                   /* if (birdName != null && latitude != null && longitude != null) {
+                    if (birdName != null && locationString != null && date != null) {
                         val birdItem = BirdItem(
-                           // R.drawable.bird_image, // Replace with the appropriate image resource
-
-                            //   birdName,
-                           // "", // You can add a timestamp here if needed
-                           // "Lat: $latitude, Long: $longitude"
+                            // Replace R.drawable.bird_image with the appropriate image resource
+                            R.drawable.bird_svgrepo_com,
+                            birdName,
+                            date,
+                            locationString
                         )
                         birdItemList.add(birdItem)
-                    }*/
+                    }
                 }
                 onComplete(birdItemList)
             }

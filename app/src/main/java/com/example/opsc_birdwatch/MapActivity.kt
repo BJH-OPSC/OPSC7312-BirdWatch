@@ -9,6 +9,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.content.res.Resources
+import android.location.Geocoder
 import android.location.Location
 import android.location.LocationManager
 import android.os.Bundle
@@ -40,9 +41,9 @@ import retrofit2.*
 import retrofit2.converter.gson.GsonConverterFactory
 
 import android.view.MenuItem
+import androidx.constraintlayout.helper.widget.MotionEffect
 import com.google.android.gms.location.*
 import com.google.android.material.bottomnavigation.BottomNavigationView
-
 class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener, OnPolylineClickListener, BottomNavigationView.OnNavigationItemSelectedListener {
     //declaring class variables
     private lateinit var sharedPreferencesManager: SharedPreferencesManager
@@ -67,6 +68,8 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfoWin
     private var lastHotspotLoadLocation: Location? = null
     private val hotspotReloadDistanceThreshold = 10000
     private var currentLocationCallback: LocationCallback? = null
+
+    private val markerBirdList = mutableListOf<BirdDataItem>()
     
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -222,12 +225,12 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfoWin
         Log.d(TAG, "mCurrentLocation latidude ${mCurrentLocation.latitude}")
         Log.d(TAG, "mCurrentLocation longidude ${mCurrentLocation.longitude}")
 
-        //convert miles to kilometeres if the user has selected imperial
+        //convert miles to kilometres if the user has selected imperial
         if(selectedUnits){
             selectedDistance = (selectedDistance*1.609).roundToInt()
         }
         Log.d(TAG, "SELECTED DISTANCE: $selectedDistance")
-        
+
         val retrofitBuilder = Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create())
             .baseUrl(BASE_URL)
@@ -253,6 +256,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfoWin
                         .position(hotspotLocation)
                         .title(hotspot.locName)
                         .snippet("Last Observed: ${hotspot.latestObsDt}\nSpecies Spotted: ${hotspot.numSpeciesAllTime}")
+                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))
                     mMap.addMarker(hotspotMarkerOptions)
                 }
             }
@@ -261,6 +265,64 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfoWin
                 Log.d(TAG, "onFailure: $t")
             }
         })
+
+        fetchBirdData { markerBirdList ->
+            for (birdItem in markerBirdList) {
+                Log.d(TAG, "getObsMarkers: MARKER BIRD LIST" + birdItem.birdName)
+                val birdMarkerOptions = MarkerOptions()
+                    .position(LatLng(birdItem.latitude, birdItem.longitude))
+                    .title(birdItem.birdName)
+                    .snippet("Last Observed: ${birdItem.date}\nSpecies Spotted: ${1}")
+                mMap.addMarker(birdMarkerOptions)
+            }
+        }
+    }
+
+    private fun fetchBirdData(onComplete: (List<BirdDataItem>) -> kotlin.Unit) {
+        // Reference to the Firestore collection
+        val collectionRef = db.collection(collectionName)
+        val userID = auth.currentUser
+
+
+        // Query the collection based on the "user" field (assuming "user" is the correct field name)
+        collectionRef.whereEqualTo("user", userID)
+            .get()
+            .addOnSuccessListener { querySnapshot ->
+                for (doc in querySnapshot) {
+                    // doc.data contains the document data
+                    val birdName = doc.getString("BirdName")
+                    val latitude = doc.getString("Latitude")
+                    val longitude = doc.getString("Longitude")
+                    val date = doc.getString("Date")
+
+                    if (birdName != null && longitude != null && latitude != null && date != null) {
+                        val birdDataItem = BirdDataItem(birdName, latitude.toDouble(), longitude.toDouble(), date)
+                        markerBirdList.add(birdDataItem)
+                    }
+                }
+
+                onComplete(markerBirdList)
+            }
+            .addOnFailureListener { e ->
+                Log.d(MotionEffect.TAG, "fetchBirdData: failure " + e.message.toString())
+            }
+
+    }
+
+    private fun getCoordinatesFromLocation(
+        geocoder: Geocoder,
+        locationString: String
+    ): Pair<Double, Double> {
+        val addresses = geocoder.getFromLocationName(locationString, 1)
+
+        if (addresses != null) {
+            if (addresses.isNotEmpty()) {
+                val latitude = addresses[0].latitude
+                val longitude = addresses[0].longitude
+                return Pair(latitude, longitude)
+            }
+        }
+        return Pair(0.0, 0.0)
     }
 
     //function to enable live location updates and retrieve the user's current location
@@ -547,3 +609,9 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfoWin
         return true
     }
 }
+data class BirdDataItem(
+    val birdName: String,
+    val latitude: Double,
+    val longitude: Double,
+    val date: String
+)
