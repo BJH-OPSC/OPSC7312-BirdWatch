@@ -44,6 +44,7 @@ import android.view.MenuItem
 import androidx.constraintlayout.helper.widget.MotionEffect
 import com.google.android.gms.location.*
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.auth.FirebaseAuth
 
 class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener, OnPolylineClickListener, BottomNavigationView.OnNavigationItemSelectedListener {
     //declaring class variables
@@ -69,8 +70,6 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfoWin
     private var lastHotspotLoadLocation: Location? = null
     private val hotspotReloadDistanceThreshold = 10000
     private var currentLocationCallback: LocationCallback? = null
-
-    private val markerBirdList = mutableListOf<BirdDataItem>()
     
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -271,8 +270,8 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfoWin
                 Log.d(TAG, "getObsMarkers: MARKER BIRD LIST" + birdItem.birdName)
                 val birdMarkerOptions = MarkerOptions()
                     .position(LatLng(birdItem.latitude, birdItem.longitude))
-                    .title(birdItem.birdName)
-                    .snippet("Last Observed: ${birdItem.date}\nSpecies Spotted: ${1}")
+                    .title("Bird Observation")
+                    .snippet("Last Observed: ${birdItem.date}\nBird Spotted: ${birdItem.birdName}")
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))
                 mMap.addMarker(birdMarkerOptions)
             }
@@ -281,11 +280,18 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfoWin
 
     private fun fetchBirdData(onComplete: (List<BirdDataItem>) -> kotlin.Unit) {
         // Reference to the Firestore collection
+        Log.d(TAG, "fetchBirdData: Called")
         try {
 
             val collectionRef = db.collection(collectionName)
-            val userID = auth.currentUser
+            val user = FirebaseAuth.getInstance().currentUser
+            val userID = user?.uid
 
+            if (userID != null) {
+                Log.d("ContentValues", "fetchBirdData: userID $userID")
+            } else {
+                Log.d("ContentValues", "fetchBirdData: User is not authenticated")
+            }
             val query = collectionRef.whereEqualTo("user", userID)
 
             // Query the collection based on the "user" field (assuming "user" is the correct field name)
@@ -294,14 +300,14 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfoWin
                 .addOnCompleteListener() { task ->
                     if (task.isSuccessful) {
                         val birdList = mutableListOf<BirdDataItem>()
-
+                        Log.d(TAG, "fetchBirdData: TASK SUCCESSFUL")
                         for (doc in task.result) {
                             // doc.data contains the document data
                             val birdName = doc.getString("BirdName")
                             val latitude = doc.getDouble("Latitude")
                             val longitude = doc.getDouble("Longitude")
                             val date = doc.getString("Date")
-
+                            Log.d(TAG, "fetchBirdData: ${date} ${birdName} ${latitude} ${longitude}")
                             if (birdName != null && longitude != null && latitude != null && date != null) {
                                 //val birdDataItem = BirdDataItem(birdName, latitude.toDouble(), longitude.toDouble(), date)
                                 // markerBirdList.add(birdDataItem)
@@ -332,22 +338,6 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfoWin
             Log.v("YourTag", "An error occurred", e)
 
         }
-    }
-
-    private fun getCoordinatesFromLocation(
-        geocoder: Geocoder,
-        locationString: String
-    ): Pair<Double, Double> {
-        val addresses = geocoder.getFromLocationName(locationString, 1)
-
-        if (addresses != null) {
-            if (addresses.isNotEmpty()) {
-                val latitude = addresses[0].latitude
-                val longitude = addresses[0].longitude
-                return Pair(latitude, longitude)
-            }
-        }
-        return Pair(0.0, 0.0)
     }
 
     //function to enable live location updates and retrieve the user's current location
