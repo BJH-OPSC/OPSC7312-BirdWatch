@@ -44,6 +44,7 @@ import android.view.MenuItem
 import androidx.constraintlayout.helper.widget.MotionEffect
 import com.google.android.gms.location.*
 import com.google.android.material.bottomnavigation.BottomNavigationView
+
 class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener, OnPolylineClickListener, BottomNavigationView.OnNavigationItemSelectedListener {
     //declaring class variables
     private lateinit var sharedPreferencesManager: SharedPreferencesManager
@@ -81,14 +82,14 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfoWin
         sharedPreferences = getSharedPreferences("MyAppPrefs", MODE_PRIVATE)
         sharedPreferencesManager = SharedPreferencesManager(applicationContext)
        // selectedUnits=sharedPreferencesManager.getUnit()
-                try {
-                    selectedDistance = sharedPreferencesManager.getMaxDistance()
-                    selectedUnits=sharedPreferencesManager.getUnit()
+        try {
+            selectedDistance = sharedPreferencesManager.getMaxDistance()
+            selectedUnits=sharedPreferencesManager.getUnit()
 
-                } catch (e: Resources.NotFoundException) {
-                    selectedDistance =20
-                    selectedUnits = false
-                }
+        } catch (e: Resources.NotFoundException) {
+            selectedDistance =20
+            selectedUnits = false
+        }
 
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -256,7 +257,6 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfoWin
                         .position(hotspotLocation)
                         .title(hotspot.locName)
                         .snippet("Last Observed: ${hotspot.latestObsDt}\nSpecies Spotted: ${hotspot.numSpeciesAllTime}")
-                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))
                     mMap.addMarker(hotspotMarkerOptions)
                 }
             }
@@ -266,13 +266,14 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfoWin
             }
         })
 
-        fetchBirdData { markerBirdList ->
-            for (birdItem in markerBirdList) {
+        fetchBirdData { birdList ->
+            for (birdItem in birdList) {
                 Log.d(TAG, "getObsMarkers: MARKER BIRD LIST" + birdItem.birdName)
                 val birdMarkerOptions = MarkerOptions()
                     .position(LatLng(birdItem.latitude, birdItem.longitude))
                     .title(birdItem.birdName)
                     .snippet("Last Observed: ${birdItem.date}\nSpecies Spotted: ${1}")
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))
                 mMap.addMarker(birdMarkerOptions)
             }
         }
@@ -280,33 +281,57 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfoWin
 
     private fun fetchBirdData(onComplete: (List<BirdDataItem>) -> kotlin.Unit) {
         // Reference to the Firestore collection
-        val collectionRef = db.collection(collectionName)
-        val userID = auth.currentUser
+        try {
 
+            val collectionRef = db.collection(collectionName)
+            val userID = auth.currentUser
 
-        // Query the collection based on the "user" field (assuming "user" is the correct field name)
-        collectionRef.whereEqualTo("user", userID)
-            .get()
-            .addOnSuccessListener { querySnapshot ->
-                for (doc in querySnapshot) {
-                    // doc.data contains the document data
-                    val birdName = doc.getString("BirdName")
-                    val latitude = doc.getString("Latitude")
-                    val longitude = doc.getString("Longitude")
-                    val date = doc.getString("Date")
+            val query = collectionRef.whereEqualTo("user", userID)
 
-                    if (birdName != null && longitude != null && latitude != null && date != null) {
-                        val birdDataItem = BirdDataItem(birdName, latitude.toDouble(), longitude.toDouble(), date)
-                        markerBirdList.add(birdDataItem)
+            // Query the collection based on the "user" field (assuming "user" is the correct field name)
+
+            query.get()
+                .addOnCompleteListener() { task ->
+                    if (task.isSuccessful) {
+                        val birdList = mutableListOf<BirdDataItem>()
+
+                        for (doc in task.result) {
+                            // doc.data contains the document data
+                            val birdName = doc.getString("BirdName")
+                            val latitude = doc.getDouble("Latitude")
+                            val longitude = doc.getDouble("Longitude")
+                            val date = doc.getString("Date")
+
+                            if (birdName != null && longitude != null && latitude != null && date != null) {
+                                //val birdDataItem = BirdDataItem(birdName, latitude.toDouble(), longitude.toDouble(), date)
+                                // markerBirdList.add(birdDataItem)
+
+                                val birdDataItem = BirdDataItem(birdName, latitude, longitude, date)
+                                birdList.add(birdDataItem)
+
+                            }
+                        }
+                        onComplete(birdList)
+
+                    } else {
+                        Log.d(
+                            MotionEffect.TAG,
+                            "fetchBirdData: failure " + task.exception?.message.toString()
+                        )
                     }
+
+                }
+                .addOnFailureListener { e ->
+                    Log.d(MotionEffect.TAG, "fetchBirdData: failure " + e.message.toString())
+
                 }
 
-                onComplete(markerBirdList)
-            }
-            .addOnFailureListener { e ->
-                Log.d(MotionEffect.TAG, "fetchBirdData: failure " + e.message.toString())
-            }
+        } catch (e: Exception) {
+            // Handle the exception here
+            Log.e("FirebaseFunctionError", "An error occurred: ${e.message}")
+            Log.v("YourTag", "An error occurred", e)
 
+        }
     }
 
     private fun getCoordinatesFromLocation(
