@@ -14,10 +14,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 
 data class BirdItem(val img: Int ,val name: String, val dateTime: String, val location: String)
 
-// Reference to a Firestore collection
-private val db = FirebaseFirestore.getInstance()
-private const val collectionName = "BirdObservations"
-private val auth: FirebaseAuth = FirebaseAuth.getInstance()
+
 
 class birdAdapter(private  val itemList: List<BirdItem>):
     RecyclerView.Adapter<birdAdapter.ViewHolder>() {
@@ -46,50 +43,5 @@ class birdAdapter(private  val itemList: List<BirdItem>):
         holder.tvDate.text = item.dateTime
         holder.tvLocation.text = item.location
     }
-    fun fetchBirdData(UserID: String,holder: ViewHolder, position: Int, onComplete: (List<BirdItem>) -> Unit) {
-        // Reference to the Firestore collection
-        val collectionRef = db.collection(collectionName)
-        val userID = auth.currentUser
 
-        // Query the collection based on the "birdname" field
-        collectionRef.whereEqualTo("user", UserID)
-            .get()
-            .addOnSuccessListener { querySnapshot ->
-                val birdItemList = mutableListOf<BirdItem>()
-                for (doc in querySnapshot) {
-                    // doc.data contains the document data
-                    val birdName = doc.getString("BirdName")
-                    val latitude = doc.getDouble("Latitude")
-                    val longitude = doc.getDouble("Longitude")
-                    val date = doc.getString("Date")
-
-                   /* if (birdName != null && latitude != null && longitude != null) {
-                        val birdItem = BirdItem(
-                           // R.drawable.bird_image, // Replace with the appropriate image resource
-
-                            //   birdName,
-                           // "", // You can add a timestamp here if needed
-                           // "Lat: $latitude, Long: $longitude"
-                        )
-                        birdItemList.add(birdItem)
-                    }*/
-                }
-                onComplete(birdItemList)
-            }
-            .addOnSuccessListener { querySnapshot ->
-                for (doc in querySnapshot) {
-                    // doc.data contains the document data
-                    val data = doc.data
-                    Log.d(TAG, "fetchBirdData: success ")
-                    // Handle the data as needed
-                    // For example, you can populate a list of objects with this data
-                }
-            }
-            .addOnFailureListener { e ->
-                // Handle the error
-                // This will be called if there is an issue with retrieving the data
-                Log.d(TAG, "fetchBirdData: failure "+ e.message.toString())
-
-            }
-    }
 }
