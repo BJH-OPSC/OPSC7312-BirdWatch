@@ -19,6 +19,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.OPSC_BirdWatch"
         tools:targetApi="31">
+        <activity
+            android:name=".activityAchievements"
+            android:exported="false" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -38,8 +41,7 @@
             android:exported="false" />
         <activity
             android:name=".MapActivity"
-            android:exported="true">
-        </activity>
+            android:exported="true"></activity>
         <activity
             android:name=".MainActivity"
             android:exported="true"
