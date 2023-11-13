@@ -283,12 +283,10 @@ class ListObservationsFragment : Fragment() {
 
                    }
 
-                   // Here you can use birdItemList as needed
-                   // For example, pass it to another function or update your UI
+
                }
                .addOnFailureListener { e ->
-                   // Handle the error
-                   // This will be called if there is an issue with retrieving the data
+                   
                    Log.d(MotionEffect.TAG, "fetchBirdData: failure " + e.message.toString())
                }
        }catch (e: Exception){

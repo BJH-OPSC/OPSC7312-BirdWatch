@@ -114,14 +114,14 @@ class SignUpActivity : AppCompatActivity() {
 
     //----------------------------------------------------------------------------------------------------------\\
     private fun createUser(email: String, password: String) {
-        auth.createUserWithEmailAndPassword(email, password)
+        auth.createUserWithEmailAndPassword(email.trim(), password.trim())
             .addOnCompleteListener(this) { task ->
+                // User creation was successful
                 if (task.isSuccessful) {
                     Log.d(TAG, "createUserWithEmail:success")
                     val user = auth.currentUser
-                    // User creation was successful, you can proceed with any necessary actions
                 } else {
-                    // If sign in fails, handle the error
+                    // If sign in fails
                     Log.w(TAG, "createUserWithEmail:failure", task.exception)
                     val errorText = when (task.exception) {
                         is FirebaseAuthWeakPasswordException -> "Weak password. Please choose a stronger one."
