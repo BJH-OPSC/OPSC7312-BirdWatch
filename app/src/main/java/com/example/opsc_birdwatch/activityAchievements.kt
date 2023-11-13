@@ -48,6 +48,8 @@ class activityAchievements : AppCompatActivity(), NavigationView.OnNavigationIte
         adapter = AchievementAdapter(achievements)
         recyclerView.adapter = adapter
 
+
+
         fetchAchievements()
         adapter.notifyDataSetChanged()
 
@@ -77,7 +79,7 @@ class activityAchievements : AppCompatActivity(), NavigationView.OnNavigationIte
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
 
-        navigationView.setCheckedItem(R.id.nav_settings)
+        navigationView.setCheckedItem(R.id.nav_home)
     }
 
     private fun achievementFirestore(id: String, status: Boolean){
