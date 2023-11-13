@@ -23,7 +23,7 @@ class AchievementAdapter(private var achievements: List<HelperClass.Achievement>
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val achievement = achievements[position]
-        holder.bind(achievement)
+        holder.bind(achievement, achievement.id.toString(), achievement.isUnlocked)
     }
 
     override fun getItemCount(): Int = achievements.size
@@ -40,10 +40,15 @@ class AchievementAdapter(private var achievements: List<HelperClass.Achievement>
         private val textViewDescription: TextView = itemView.findViewById(R.id.textViewDescription)
         private val textViewStatus: TextView = itemView.findViewById(R.id.textViewStatus)
 
-        fun bind(achievement: HelperClass.Achievement) {
+        fun bind(achievement: HelperClass.Achievement, achID: String, achStatus: Boolean) {
+
+
+            // Check if the achievement is in the fetched achievements list
+            //val isFetched = HelperClass.AchievementManager.fetchedAchievements.any { it.id == achievement.id }
+
             // Extract level prefix from achievement name
-            val levelPrefix = getLevelPrefix(achievement.id)
-            val isUnlocked = achievement.isUnlocked
+            val levelPrefix = getLevelPrefix(achID)
+            val isUnlocked = achStatus
 
             // Set image resource based on level prefix
             val imageResource = when (levelPrefix) {
@@ -66,14 +71,18 @@ class AchievementAdapter(private var achievements: List<HelperClass.Achievement>
                 imageViewAchievement.colorFilter = colorFilter
             }
 
+
+
+
             textViewName.text = achievement.name
             textViewDescription.text = achievement.description
             textViewStatus.text = if (achievement.isUnlocked) "Unlocked" else "Locked"
         }
 
         private fun getLevelPrefix(achievementName: String): String {
-            // Assuming the naming scheme is consistent (e.g., "gold-something")
-            return achievementName.substringBefore('-').toLowerCase()
+            val prefix = achievementName.substringBefore('-').toLowerCase()
+            Log.d("AchievementAdapter", "Achievement ID: $achievementName, Level Prefix: $prefix")
+            return prefix
         }
     }
 }

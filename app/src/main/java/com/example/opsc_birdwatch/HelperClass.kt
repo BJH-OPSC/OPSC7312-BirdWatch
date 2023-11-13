@@ -1,5 +1,11 @@
 package com.example.opsc_birdwatch
 
+import android.app.AlertDialog
+import android.util.Log
+import androidx.constraintlayout.helper.widget.MotionEffect
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+
 
 class HelperClass {
 
@@ -9,10 +15,11 @@ class HelperClass {
 
     fun addToList(usersName: String, name: String, dateTime: String, location: String){
 
-
         val bird = Bird(name, dateTime, location)
         //BirdMap[usersName] = bird
         BirdMap.put(usersName, bird)
+
+        Log.d("HelperClass", "Achievement ID: $bird")
     }
 
   /*  fun fetchBirdData(UserID: String, holder: birdAdapter.ViewHolder, position: Int, onComplete: (List<BirdItem>) -> Unit) {
@@ -64,6 +71,7 @@ class HelperClass {
     }*/
 
 
+
     data class Achievement(
         val id: String,
         val name: String,
@@ -90,14 +98,21 @@ class HelperClass {
         // Add other progress-related properties if needed
     )
 
+    val achievementList: MutableList<Achievement> = mutableListOf()
+
     object AchievementManager {
+        var fetchedAchievements: List<Achievement> = emptyList()
+
         private val unlockedAchievements = mutableListOf<Achievement>()
 
         private val unlockedAchievementsMap = mutableMapOf<String, AchievementProgress>()
 
 
         // Define a list of achievements
-        private val achievementList = listOf(
+        //the number at value is the condition that must be met
+        //for single time achievements (login, settings change) its easier to make their conditions = 1
+        //then in the check just pass it a 1
+        var achievementList = listOf(
             Achievement("Bronze-Travel", "Junior Traveler", "Achieve 5km of travel", listOf(Condition(ConditionType.DISTANCE_TRAVELED, 5.0))),
             Achievement("Silver-Travel", "Experienced Traveler", "Achieve 10km of travel", listOf(Condition(ConditionType.DISTANCE_TRAVELED, 10.0))),
             Achievement("Gold-Travel", "Pro Traveler", "Achieve 15km of travel", listOf(Condition(ConditionType.DISTANCE_TRAVELED, 15.0))),
@@ -109,6 +124,8 @@ class HelperClass {
             Achievement("marker_placed", "Explorer", "Place your first marker on the map", listOf(Condition(ConditionType.MARKER_PLACED, 1))),
 
             Achievement("settings_changed", "Mechanic", "Change the settings to your preferences", listOf(Condition(ConditionType.SETTINGS_CHANGE, 1))),
+
+            Achievement("login_first", "Welcome Aboards", "Logged in for the first time", listOf(Condition(ConditionType.LOGGED_IN, 1))),
             // Add other achievements as needed
         )
 
@@ -133,6 +150,9 @@ class HelperClass {
         private fun newUnlockAchievement(achievementId: String, achievement: Achievement) {
             achievement.isUnlocked = true
             // Logic to handle unlocking achievement
+
+            //if im understanding correcting then this should save the stuff to the firebase database
+            achievementFirestore(achievementId, achievement.isUnlocked)
             println("Achievement Unlocked: $achievementId")
         }
 
@@ -147,7 +167,7 @@ class HelperClass {
 
 
 
-        //-------------------------------------------------------------------------------------------------old stuff
+
         fun trackDistanceTraveled(distance: Double) {
             checkAndUnlockAchievements(ConditionType.DISTANCE_TRAVELED, distance)
             trackAchievements(ConditionType.DISTANCE_TRAVELED, distance)
@@ -156,6 +176,7 @@ class HelperClass {
         fun trackBirdsAdded(count: Int) {
             checkAndUnlockAchievements(ConditionType.BIRDS_ADDED, count)
             trackAchievements(ConditionType.BIRDS_ADDED, count)
+            Log.d("HelperClass", "Achievement ID: birdcount")
         }
 
         fun trackMarkerPlaced() {
@@ -166,13 +187,71 @@ class HelperClass {
         fun trackLoginFirst() {
             checkAndUnlockAchievements(ConditionType.LOGGED_IN, 1)
             trackAchievements(ConditionType.LOGGED_IN, 1)
+            Log.d("HelperClass", "Achievement ID: login")
         }
 
         fun trackSettingsChanged() {
             checkAndUnlockAchievements(ConditionType.SETTINGS_CHANGE, 1)
             trackAchievements(ConditionType.SETTINGS_CHANGE, 1)
+            Log.d("HelperClass", "Achievement ID: settingschanged")
         }
 
+
+
+        private fun achievementFirestore(id: String, status: Boolean){
+            val currentUser = FirebaseAuth.getInstance().currentUser
+            val userId = currentUser?.uid
+            Log.d("User", "user: ${currentUser}")
+
+            if (userId != null) {
+
+                val db = FirebaseFirestore.getInstance()
+
+                for(achievement in HelperClass.AchievementManager.achievementList){
+
+                    val achievementData = hashMapOf(
+                        "id" to achievement.id,
+                        "isUnlocked" to achievement.isUnlocked,
+                        "user" to currentUser.uid
+                    )
+                    Log.d("Achievements id:",achievement.id.toString())
+                    db.collection("Achievements")
+                        .add(achievementData)
+                        .addOnSuccessListener { documentReference ->
+                            // Document added successfully
+                            Log.d(MotionEffect.TAG, "data saved:success")
+
+                            //------------------had to comment out the alertdialog cos it cant function outside of an activity
+
+                            //val alertDialog = AlertDialog.Builder(this)
+                            //alertDialog.setTitle("Successfully Saved")
+                            //alertDialog.setMessage("Achievement Saved")
+                            //alertDialog.setPositiveButton("OK") { dialog, _ ->
+                                // when the user clicks OK
+                            //    dialog.dismiss()
+                            //}
+                            //alertDialog.show()
+                        }
+                        .addOnFailureListener { e ->
+                            // Handle errors
+                            Log.d(MotionEffect.TAG, e.message.toString())
+                            Log.d(MotionEffect.TAG, "data saved:failure")
+                            //val alertDialog = AlertDialog.Builder(this)
+                            //alertDialog.setTitle("unsuccessfully Saved")
+                            //alertDialog.setMessage("Achievement Not Saved")
+                            //alertDialog.setPositiveButton("OK") { dialog, _ ->
+                                // when the user clicks OK
+                            //    dialog.dismiss()
+                            //}
+                            //alertDialog.show()
+                        }
+                }
+
+            }
+
+        }
+
+        //-------------------------------------------------------------------------------------------------old stuff
         private fun checkAndUnlockAchievements(type: ConditionType, value: Number) {
             val relevantAchievements = achievementList.filter { it.conditions.any { it.type == type } }
 
@@ -209,6 +288,8 @@ class HelperClass {
         fun getAllAchievements(): List<Achievement> {
             return achievementList.toList()
         }
+
+
 
 
     }

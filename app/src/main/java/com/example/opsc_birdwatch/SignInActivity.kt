@@ -28,7 +28,9 @@ class SignInActivity : AppCompatActivity() {
                 dialog.dismiss()
                 finish()
             }
-            alertDialog.show()        }
+            alertDialog.show()
+            HelperClass.AchievementManager.trackLoginFirst()
+        }
     }
 //----------------------------------------------------------------------------------------------------\\
     override fun onCreate(savedInstanceState: Bundle?) {

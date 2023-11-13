@@ -35,6 +35,8 @@ private const val ARG_PARAM2 = "param2"
  */
 class ListObservationsFragment : Fragment() {
 
+    private var birdCounter: Int = 0
+
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: birdAdapter
     lateinit var helperClass: HelperClass
@@ -66,6 +68,7 @@ class ListObservationsFragment : Fragment() {
 
         //helperClass.BirdMap
         val birdList = getBirdData()
+
 
         val addButton = view.findViewById<Button>(R.id.btnAdd)
         val refButton = view.findViewById<Button>(R.id.btnRefresh)
@@ -141,7 +144,7 @@ class ListObservationsFragment : Fragment() {
             Log.d(mCurrentLocation.longitude.toString(),mCurrentLocation.latitude.toString())
             observationsFirestore(name,mCurrentLocation) // Calls the function to save the observation
             val date = getCurrentDateTime()
-            fetchBirdData()
+
             saveEntry(name, loc, date)
         }else{
             Toast.makeText(requireContext(),"Invalid Input", Toast.LENGTH_LONG).show()
@@ -149,6 +152,8 @@ class ListObservationsFragment : Fragment() {
     }
 
     fun btnRefreshClick(){
+        fetchBirdData()
+
         val birdList = updateList(helperClass.BirdMap)
         // Notify the adapter that the data has changed
         adapter = birdAdapter(birdList)
@@ -157,6 +162,7 @@ class ListObservationsFragment : Fragment() {
         val layoutManager = LinearLayoutManager(context)
         recyclerView.layoutManager = layoutManager
 
+        adapter.notifyDataSetChanged()
         Toast.makeText(requireContext(),"Refreshed!", Toast.LENGTH_SHORT).show()
     }
 
@@ -168,6 +174,11 @@ class ListObservationsFragment : Fragment() {
             for ((birdName, bird) in birdMap) {
                 // Use the birdName as the name, and get other details from the Bird object
                 birdList.add(BirdItem(R.drawable.bird_svgrepo_com, birdName, bird.dateTime, bird.location))
+
+                //get number of birds
+                birdCounter = birdList.size
+                //perform a check to see if it meets the conditions for the achievement
+                HelperClass.AchievementManager.trackBirdsAdded(birdCounter)
             }
         }else{
             Toast.makeText(requireContext(),"No Saved Observations", Toast.LENGTH_LONG).show()
@@ -188,8 +199,8 @@ class ListObservationsFragment : Fragment() {
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     private fun observationsFirestore(BirdName: String, location: Location){
         val currentUser = FirebaseAuth.getInstance().currentUser
-        //val OA = ObservationsActivity()
-        if (currentUser != null) {
+        val userId = currentUser?.uid        //val OA = ObservationsActivity()
+        if (userId != null) {
             //requireActivity();
             val db = FirebaseFirestore.getInstance()
             val observationData = hashMapOf(
@@ -197,7 +208,7 @@ class ListObservationsFragment : Fragment() {
                 "Latitude" to location.latitude,
                 "Longitude" to location.longitude,
                 "Date" to getCurrentDateTime(),
-                "user" to currentUser.uid
+                "user" to currentUser?.uid
             )
 
             db.collection("BirdObservations")
@@ -244,7 +255,7 @@ class ListObservationsFragment : Fragment() {
                Log.d("ContentValues", "fetchBirdData: User is not authenticated")
            }
            // Query the collection based on the "user" field
-           collectionRef.whereEqualTo("user", currentUser)
+           collectionRef.whereEqualTo("user", userId)
                .get()
                .addOnSuccessListener { querySnapshot ->
                    val birdItemList = mutableListOf<BirdItem>()
@@ -255,9 +266,11 @@ class ListObservationsFragment : Fragment() {
                        val latitude = doc.getDouble("Latitude")
                        val longitude = doc.getDouble("Longitude")
                        val date = doc.getString("Date")
+                       Log.d("ContentValues", "fetchBirdData: $birdName")
                        var Location = Pair(latitude, longitude).toString()
 
                        if (birdName != null && latitude != null && longitude != null && date != null) {
+
 
                            saveEntry(
                                birdName.toString(),
