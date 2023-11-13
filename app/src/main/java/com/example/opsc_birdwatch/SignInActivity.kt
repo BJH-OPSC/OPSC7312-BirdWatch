@@ -29,7 +29,7 @@ class SignInActivity : AppCompatActivity() {
                 finish()
             }
             alertDialog.show()
-            HelperClass.AchievementManager.trackLoginFirst()
+            HelperClass.AchievementManager.trackLoginFirst(this.applicationContext)
         }
     }
 //----------------------------------------------------------------------------------------------------\\

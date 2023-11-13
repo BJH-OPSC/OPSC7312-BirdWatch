@@ -74,7 +74,7 @@ class SettingsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
                     Toast.makeText(this, "Max distance saved: $maxDistance", Toast.LENGTH_SHORT).show()
 
                     //grant settings changed achievement
-                    HelperClass.AchievementManager.trackSettingsChanged()
+                    HelperClass.AchievementManager.trackSettingsChanged(this.applicationContext)
                 } catch (e: NumberFormatException) {
                     Toast.makeText(this, "Invalid max distance", Toast.LENGTH_SHORT).show()
                 }

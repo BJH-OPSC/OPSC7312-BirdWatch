@@ -1,7 +1,10 @@
 package com.example.opsc_birdwatch
 
 import android.app.AlertDialog
+import android.content.Context
+import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.constraintlayout.helper.widget.MotionEffect
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -107,7 +110,6 @@ class HelperClass {
 
         private val unlockedAchievementsMap = mutableMapOf<String, AchievementProgress>()
 
-
         // Define a list of achievements
         //the number at value is the condition that must be met
         //for single time achievements (login, settings change) its easier to make their conditions = 1
@@ -173,10 +175,11 @@ class HelperClass {
             trackAchievements(ConditionType.DISTANCE_TRAVELED, distance)
         }
 
-        fun trackBirdsAdded(count: Int) {
+        fun trackBirdsAdded(count: Int, context: Context) {
             checkAndUnlockAchievements(ConditionType.BIRDS_ADDED, count)
             trackAchievements(ConditionType.BIRDS_ADDED, count)
             Log.d("HelperClass", "Achievement ID: birdcount")
+            showNotification(context, "Achievement Unlocked!", "You have tracked quite a few birds!")
         }
 
         fun trackMarkerPlaced() {
@@ -184,16 +187,18 @@ class HelperClass {
             trackAchievements(ConditionType.MARKER_PLACED, 1)
         }
 
-        fun trackLoginFirst() {
+        fun trackLoginFirst(context: Context) {
             checkAndUnlockAchievements(ConditionType.LOGGED_IN, 1)
             trackAchievements(ConditionType.LOGGED_IN, 1)
             Log.d("HelperClass", "Achievement ID: login")
+            showNotification(context, "Achievement Unlocked!", "You have logged in for the first time!")
         }
 
-        fun trackSettingsChanged() {
+        fun trackSettingsChanged(context: Context) {
             checkAndUnlockAchievements(ConditionType.SETTINGS_CHANGE, 1)
             trackAchievements(ConditionType.SETTINGS_CHANGE, 1)
             Log.d("HelperClass", "Achievement ID: settingschanged")
+            showNotification(context, "Achievement Unlocked!", "You have changed your settings! Keep on watching those birds!")
         }
 
 
@@ -290,7 +295,11 @@ class HelperClass {
         }
 
 
-
+        @RequiresApi(Build.VERSION_CODES.TIRAMISU)
+        private fun showNotification(context: Context, title: String?, message: String?) {
+            val notificationHelper = NotificationHelper(context)
+            notificationHelper.showNotification(title, message)
+        }
 
     }
 

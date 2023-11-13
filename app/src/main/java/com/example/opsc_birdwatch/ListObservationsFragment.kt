@@ -178,7 +178,7 @@ class ListObservationsFragment : Fragment() {
                 //get number of birds
                 birdCounter = birdList.size
                 //perform a check to see if it meets the conditions for the achievement
-                HelperClass.AchievementManager.trackBirdsAdded(birdCounter)
+                HelperClass.AchievementManager.trackBirdsAdded(birdCounter, this.requireContext())
             }
         }else{
             Toast.makeText(requireContext(),"No Saved Observations", Toast.LENGTH_LONG).show()
