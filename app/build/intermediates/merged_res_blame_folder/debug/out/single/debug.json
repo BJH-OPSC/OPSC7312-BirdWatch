@@ -1,11 +1,11 @@
 [
     {
-        "merged": "C:\\Users\\danja\\.gradle\\daemon\\7.5\\com.example.opsc_birdwatch.app-merged_res-39:\\drawable_stock10.jpg.flat",
-        "source": "C:\\Users\\danja\\.gradle\\daemon\\7.5\\com.example.opsc_birdwatch.app-main-41:\\drawable\\stock10.jpg"
-    },
-    {
         "merged": "C:\\Users\\danja\\.gradle\\daemon\\7.5\\com.example.opsc_birdwatch.app-merged_res-39:\\drawable_baseline_home_24.xml.flat",
         "source": "C:\\Users\\danja\\.gradle\\daemon\\7.5\\com.example.opsc_birdwatch.app-main-41:\\drawable\\baseline_home_24.xml"
+    },
+    {
+        "merged": "C:\\Users\\danja\\.gradle\\daemon\\7.5\\com.example.opsc_birdwatch.app-merged_res-39:\\drawable_stock10.jpg.flat",
+        "source": "C:\\Users\\danja\\.gradle\\daemon\\7.5\\com.example.opsc_birdwatch.app-main-41:\\drawable\\stock10.jpg"
     },
     {
         "merged": "C:\\Users\\danja\\.gradle\\daemon\\7.5\\com.example.opsc_birdwatch.app-merged_res-39:\\drawable_baseline_add_24.xml.flat",
@@ -28,16 +28,12 @@
         "source": "C:\\Users\\danja\\.gradle\\daemon\\7.5\\com.example.opsc_birdwatch.app-main-41:\\drawable\\baseline_settings_24.xml"
     },
     {
-        "merged": "com.example.opsc_birdwatch.app-merged_res-39:/layout_activity_settings.xml.flat",
-        "source": "com.example.opsc_birdwatch.app-main-41:/layout/activity_settings.xml"
+        "merged": "C:\\Users\\danja\\.gradle\\daemon\\7.5\\com.example.opsc_birdwatch.app-merged_res-39:\\layout_activity_achievements.xml.flat",
+        "source": "C:\\Users\\danja\\.gradle\\daemon\\7.5\\com.example.opsc_birdwatch.app-main-41:\\layout\\activity_achievements.xml"
     },
     {
         "merged": "C:\\Users\\danja\\.gradle\\daemon\\7.5\\com.example.opsc_birdwatch.app-merged_res-39:\\drawable_signup_removebg_preview.png.flat",
         "source": "C:\\Users\\danja\\.gradle\\daemon\\7.5\\com.example.opsc_birdwatch.app-main-41:\\drawable\\signup_removebg_preview.png"
-    },
-    {
-        "merged": "C:\\Users\\danja\\.gradle\\daemon\\7.5\\com.example.opsc_birdwatch.app-merged_res-39:\\layout_activity_achievements.xml.flat",
-        "source": "C:\\Users\\danja\\.gradle\\daemon\\7.5\\com.example.opsc_birdwatch.app-main-41:\\layout\\activity_achievements.xml"
     },
     {
         "merged": "C:\\Users\\danja\\.gradle\\daemon\\7.5\\com.example.opsc_birdwatch.app-merged_res-39:\\drawable_contour_line.xml.flat",
@@ -246,6 +242,10 @@
     {
         "merged": "C:\\Users\\danja\\.gradle\\daemon\\7.5\\com.example.opsc_birdwatch.app-merged_res-39:\\mipmap-anydpi-v26_ic_launcher.xml.flat",
         "source": "C:\\Users\\danja\\.gradle\\daemon\\7.5\\com.example.opsc_birdwatch.app-main-41:\\mipmap-anydpi-v26\\ic_launcher.xml"
+    },
+    {
+        "merged": "com.example.opsc_birdwatch.app-merged_res-39:/layout_activity_achievements.xml.flat",
+        "source": "com.example.opsc_birdwatch.app-main-41:/layout/activity_achievements.xml"
     },
     {
         "merged": "C:\\Users\\danja\\.gradle\\daemon\\7.5\\com.example.opsc_birdwatch.app-merged_res-39:\\drawable_stock3.jpg.flat",

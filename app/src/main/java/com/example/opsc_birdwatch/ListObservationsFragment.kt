@@ -141,7 +141,7 @@ class ListObservationsFragment : Fragment() {
             Log.d(mCurrentLocation.longitude.toString(),mCurrentLocation.latitude.toString())
             observationsFirestore(name,mCurrentLocation) // Calls the function to save the observation
             val date = getCurrentDateTime()
-            fetchBirdData()
+
             saveEntry(name, loc, date)
         }else{
             Toast.makeText(requireContext(),"Invalid Input", Toast.LENGTH_LONG).show()
@@ -149,6 +149,8 @@ class ListObservationsFragment : Fragment() {
     }
 
     fun btnRefreshClick(){
+        fetchBirdData()
+
         val birdList = updateList(helperClass.BirdMap)
         // Notify the adapter that the data has changed
         adapter = birdAdapter(birdList)
@@ -157,6 +159,7 @@ class ListObservationsFragment : Fragment() {
         val layoutManager = LinearLayoutManager(context)
         recyclerView.layoutManager = layoutManager
 
+        adapter.notifyDataSetChanged()
         Toast.makeText(requireContext(),"Refreshed!", Toast.LENGTH_SHORT).show()
     }
 
@@ -183,9 +186,6 @@ class ListObservationsFragment : Fragment() {
     fun saveEntry(name: String, location: String, date: String){
         helperClass.addToList(name, name, location, date)
         Toast.makeText(requireContext(),"Saved!", Toast.LENGTH_SHORT).show()
-
-
-
     }
     //---------------------------------------------------------------------------------------\\
     fun getCurrentDateTime(): String {
@@ -260,9 +260,11 @@ class ListObservationsFragment : Fragment() {
                        val latitude = doc.getDouble("Latitude")
                        val longitude = doc.getDouble("Longitude")
                        val date = doc.getString("Date")
+                       Log.d("ContentValues", "fetchBirdData: $birdName")
                        var Location = Pair(latitude, longitude).toString()
 
                        if (birdName != null && latitude != null && longitude != null && date != null) {
+
 
                            saveEntry(
                                birdName.toString(),
