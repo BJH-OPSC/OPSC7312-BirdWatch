@@ -38,7 +38,8 @@ class ListObservationsFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: birdAdapter
     lateinit var helperClass: HelperClass
-
+    // Reference to a Firestore collection
+    private val db = FirebaseFirestore.getInstance()
     private var mCurrentLocation: Location = Location("dummy_provider")
     private lateinit var editText: EditText
 
@@ -89,7 +90,7 @@ class ListObservationsFragment : Fragment() {
         return view
 
     }
-
+//-------------------------------------------------------------------------------------------\\
 
     private fun getBirdData(): List<BirdItem> {
         val birdList = mutableListOf<BirdItem>()
@@ -140,6 +141,7 @@ class ListObservationsFragment : Fragment() {
             Log.d(mCurrentLocation.longitude.toString(),mCurrentLocation.latitude.toString())
             observationsFirestore(name,mCurrentLocation) // Calls the function to save the observation
             val date = getCurrentDateTime()
+            fetchBirdData()
             saveEntry(name, loc, date)
         }else{
             Toast.makeText(requireContext(),"Invalid Input", Toast.LENGTH_LONG).show()
@@ -186,8 +188,9 @@ class ListObservationsFragment : Fragment() {
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     private fun observationsFirestore(BirdName: String, location: Location){
         val currentUser = FirebaseAuth.getInstance().currentUser
-        val OA = ObservationsActivity()
+        //val OA = ObservationsActivity()
         if (currentUser != null) {
+            //requireActivity();
             val db = FirebaseFirestore.getInstance()
             val observationData = hashMapOf(
                 "BirdName" to BirdName,
@@ -229,6 +232,57 @@ class ListObservationsFragment : Fragment() {
         }
 
     }
+    fun fetchBirdData() {
+       try { // Reference to the Firestore collection
+           val collectionRef = db.collection("BirdObservations")
+           val currentUser = FirebaseAuth.getInstance().currentUser
+           val userId = currentUser?.uid
+
+           if (userId != null) {
+               Log.d("ContentValues", "fetchBirdData: userID $userId")
+           } else {
+               Log.d("ContentValues", "fetchBirdData: User is not authenticated")
+           }
+           // Query the collection based on the "user" field
+           collectionRef.whereEqualTo("user", currentUser)
+               .get()
+               .addOnSuccessListener { querySnapshot ->
+                   val birdItemList = mutableListOf<BirdItem>()
+
+                   for (doc in querySnapshot) {
+                       // doc.data contains the document data
+                       val birdName = doc.getString("BirdName")
+                       val latitude = doc.getDouble("Latitude")
+                       val longitude = doc.getDouble("Longitude")
+                       val date = doc.getString("Date")
+                       var Location = Pair(latitude, longitude).toString()
+
+                       if (birdName != null && latitude != null && longitude != null && date != null) {
+
+                           saveEntry(
+                               birdName.toString(),
+                               Location,
+                               date.toString())
+                       } else{
+                           Log.d(MotionEffect.TAG, "fetchBirdData: failure ")
+
+                       }
+
+                   }
+
+                   // Here you can use birdItemList as needed
+                   // For example, pass it to another function or update your UI
+               }
+               .addOnFailureListener { e ->
+                   // Handle the error
+                   // This will be called if there is an issue with retrieving the data
+                   Log.d(MotionEffect.TAG, "fetchBirdData: failure " + e.message.toString())
+               }
+       }catch (e: Exception){
+           Log.d(TAG, "fetchBirdData: "+e.message.toString())
+       }
+    }
+
     companion object {
         /**
          * Use this factory method to create a new instance of
@@ -250,3 +304,4 @@ class ListObservationsFragment : Fragment() {
     }
 
 }
+//--------------------------------------------End of File-----------------------------------------------------------------\\
