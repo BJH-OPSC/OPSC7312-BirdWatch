@@ -41,8 +41,8 @@ class SignInActivity : AppCompatActivity() {
 
         //login Button
         loginButton.setOnClickListener {
-            val username = usernameEditText.text.toString()
-            val password = findViewById<EditText>(R.id.editTextPassword).text.toString()
+            val username = usernameEditText.text.toString().trim()
+            val password = findViewById<EditText>(R.id.editTextPassword).text.toString().trim()
             val storedPassword = AccountManager.getUserPassword(username)
 
             if (username.isNotEmpty() && password.isNotEmpty()) {
