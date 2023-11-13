@@ -134,7 +134,7 @@ class SettingsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
 
             R.id.nav_login -> {startActivity(Intent(this, SignInActivity::class.java))}
 
-            R.id.nav_logout -> Toast.makeText(this, "Logged Out!", Toast.LENGTH_SHORT).show()
+            R.id.nav_logout -> signOutUser()
         }
         drawerLayout.closeDrawer(GravityCompat.START)
         return true
@@ -148,7 +148,11 @@ class SettingsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
             onBackPressedDispatcher.onBackPressed()
         }
     }
-
+    private fun signOutUser() {
+        val auth = FirebaseAuth.getInstance()
+        auth.signOut()
+        Toast.makeText(this, "Logged Out!", Toast.LENGTH_SHORT).show()
+    }
     private fun settingsFirestore(system: Boolean, maxDistance:Int){
         val currentUser = FirebaseAuth.getInstance().currentUser
         if (currentUser != null) {

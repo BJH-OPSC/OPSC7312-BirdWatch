@@ -197,7 +197,11 @@ class activityAchievements : AppCompatActivity(), NavigationView.OnNavigationIte
 
         return updatedList
     }
-
+    private fun signOutUser() {
+        val auth = FirebaseAuth.getInstance()
+        auth.signOut()
+        Toast.makeText(this, "Logged Out!", Toast.LENGTH_SHORT).show()
+    }
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.nav_home -> {
@@ -231,8 +235,9 @@ class activityAchievements : AppCompatActivity(), NavigationView.OnNavigationIte
 
             R.id.nav_login -> {startActivity(Intent(this, SignInActivity::class.java))}
 
-            R.id.nav_logout -> Toast.makeText(this, "Logged Out!", Toast.LENGTH_SHORT).show()
+            R.id.nav_logout -> signOutUser()
         }
+
         drawerLayout.closeDrawer(GravityCompat.START)
         return true
     }

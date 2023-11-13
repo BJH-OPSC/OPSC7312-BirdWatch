@@ -92,12 +92,16 @@ class ObservationsActivity : AppCompatActivity(), NavigationView.OnNavigationIte
             }
             R.id.nav_login -> {startActivity(Intent(this, SignInActivity::class.java))}
 
-            R.id.nav_logout -> Toast.makeText(this, "Logged Out!", Toast.LENGTH_SHORT).show()
+            R.id.nav_logout -> signOutUser()
         }
         drawerLayout.closeDrawer(GravityCompat.START)
         return true
     }
-
+    private fun signOutUser() {
+        val auth = FirebaseAuth.getInstance()
+        auth.signOut()
+        Toast.makeText(this, "Logged Out!", Toast.LENGTH_SHORT).show()
+    }
     //onBackPressed function will determine what to do when the back button on the phone is pressed
     //checks if nav drawer is open, if yes then close it
     override fun onBackPressed() {
