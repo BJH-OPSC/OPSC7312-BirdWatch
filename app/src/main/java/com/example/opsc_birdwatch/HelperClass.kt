@@ -9,9 +9,12 @@ class HelperClass {
 
     fun addToList(usersName: String, name: String, dateTime: String, location: String){
 
+
         val bird = Bird(name, dateTime, location)
-        BirdMap[usersName] = bird
+        //BirdMap[usersName] = bird
+        BirdMap.put(usersName, bird)
     }
+
   /*  fun fetchBirdData(UserID: String, holder: birdAdapter.ViewHolder, position: Int, onComplete: (List<BirdItem>) -> Unit) {
         // Reference to the Firestore collection
         val collectionRef = db.collection(collectionName)
@@ -65,57 +68,109 @@ class HelperClass {
         val id: String,
         val name: String,
         val description: String,
-        val conditions: List<Condition>
+        val conditions: List<Condition>,
+        var isUnlocked: Boolean = false
     )
 
     data class Condition(
         val type: ConditionType,
-        val target: String,
-        val value: Any // Use Any to handle both Int and Double
+        val value: Any
     )
 
     enum class ConditionType {
         DISTANCE_TRAVELED,
         BIRDS_ADDED,
-        MARKER_PLACED
+        MARKER_PLACED,
+        LOGGED_IN,
+        SETTINGS_CHANGE
     }
+
+    private data class AchievementProgress(
+        var isUnlocked: Boolean = false
+        // Add other progress-related properties if needed
+    )
 
     object AchievementManager {
         private val unlockedAchievements = mutableListOf<Achievement>()
 
+        private val unlockedAchievementsMap = mutableMapOf<String, AchievementProgress>()
+
+
         // Define a list of achievements
         private val achievementList = listOf(
-            Achievement(
-                id = "distance_5km",
-                name = "Novice Traveler",
-                description = "Travel 5 kilometers",
-                conditions = listOf(Condition(ConditionType.DISTANCE_TRAVELED, "", 5))
-            ),
-            Achievement(
-                id = "birds_5",
-                name = "Bird Spotter",
-                description = "Add 5 birds to the observation list",
-                conditions = listOf(Condition(ConditionType.BIRDS_ADDED, "", 5))
-            ),
-            Achievement(
-                id = "marker_placed",
-                name = "Navigator",
-                description = "Place your first marker on the map",
-                conditions = listOf(Condition(ConditionType.MARKER_PLACED, "", 1))
-            )
-            // Add more achievements as needed
+            Achievement("Bronze-Travel", "Junior Traveler", "Achieve 5km of travel", listOf(Condition(ConditionType.DISTANCE_TRAVELED, 5.0))),
+            Achievement("Silver-Travel", "Experienced Traveler", "Achieve 10km of travel", listOf(Condition(ConditionType.DISTANCE_TRAVELED, 10.0))),
+            Achievement("Gold-Travel", "Pro Traveler", "Achieve 15km of travel", listOf(Condition(ConditionType.DISTANCE_TRAVELED, 15.0))),
+
+            Achievement("Bronze-Birds", "Junior Observer", "Observe 5 birds", listOf(Condition(ConditionType.BIRDS_ADDED, 5))),
+            Achievement("Silver-Birds", "Experienced Observer", "Observe 10 birds", listOf(Condition(ConditionType.BIRDS_ADDED, 10))),
+            Achievement("Gold-Birds", "Pro Observer", "Observe 15 birds", listOf(Condition(ConditionType.BIRDS_ADDED, 15))),
+
+            Achievement("marker_placed", "Explorer", "Place your first marker on the map", listOf(Condition(ConditionType.MARKER_PLACED, 1))),
+
+            Achievement("settings_changed", "Mechanic", "Change the settings to your preferences", listOf(Condition(ConditionType.SETTINGS_CHANGE, 1))),
+            // Add other achievements as needed
         )
 
-        fun trackDistanceTraveled(distance: Number) {
+        private fun trackAchievements(achievementId: String, type: ConditionType, userValue: Double) {
+            val achievement = achievementList.find { it.id == achievementId } ?: return
+            val achievementProgress = unlockedAchievementsMap.getOrPut(achievementId) { AchievementProgress() }
+
+            if (!achievementProgress.isUnlocked && meetsCondition(achievement, type, userValue)) {
+                newUnlockAchievement(achievementId, achievement)
+                achievementProgress.isUnlocked = true
+            }
+        }
+
+        private fun trackAchievements(type: ConditionType, userValue: Number) {
+            achievementList.forEach { achievement ->
+                if (!achievement.isUnlocked && meetsCondition(achievement, type, userValue.toDouble())) {
+                    unlockAchievement(achievement)
+                }
+            }
+        }
+
+        private fun newUnlockAchievement(achievementId: String, achievement: Achievement) {
+            achievement.isUnlocked = true
+            // Logic to handle unlocking achievement
+            println("Achievement Unlocked: $achievementId")
+        }
+
+        private fun meetsCondition(achievement: Achievement, type: ConditionType, userValue: Double): Boolean {
+            val condition = achievement.conditions.find { it.type == type } ?: return false
+            return userValue >= when (condition.value) {
+                is Int -> (condition.value as Int).toDouble()
+                is Double -> condition.value as Double
+                else -> throw IllegalArgumentException("Unsupported condition value type")
+            }
+        }
+
+
+
+        //-------------------------------------------------------------------------------------------------old stuff
+        fun trackDistanceTraveled(distance: Double) {
             checkAndUnlockAchievements(ConditionType.DISTANCE_TRAVELED, distance)
+            trackAchievements(ConditionType.DISTANCE_TRAVELED, distance)
         }
 
         fun trackBirdsAdded(count: Int) {
             checkAndUnlockAchievements(ConditionType.BIRDS_ADDED, count)
+            trackAchievements(ConditionType.BIRDS_ADDED, count)
         }
 
         fun trackMarkerPlaced() {
             checkAndUnlockAchievements(ConditionType.MARKER_PLACED, 1)
+            trackAchievements(ConditionType.MARKER_PLACED, 1)
+        }
+
+        fun trackLoginFirst() {
+            checkAndUnlockAchievements(ConditionType.LOGGED_IN, 1)
+            trackAchievements(ConditionType.LOGGED_IN, 1)
+        }
+
+        fun trackSettingsChanged() {
+            checkAndUnlockAchievements(ConditionType.SETTINGS_CHANGE, 1)
+            trackAchievements(ConditionType.SETTINGS_CHANGE, 1)
         }
 
         private fun checkAndUnlockAchievements(type: ConditionType, value: Number) {
@@ -142,12 +197,20 @@ class HelperClass {
             if (!unlockedAchievements.contains(achievement)) {
                 unlockedAchievements.add(achievement)
                 // You can notify the user, update UI, or store the achievement.
+                achievement.isUnlocked = true
+                println("Achievement Unlocked: ${achievement.name}")
             }
         }
 
         fun getUnlockedAchievements(): List<Achievement> {
             return unlockedAchievements.toList()
         }
+
+        fun getAllAchievements(): List<Achievement> {
+            return achievementList.toList()
+        }
+
+
     }
 
 }
