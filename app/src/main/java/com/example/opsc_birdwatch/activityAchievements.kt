@@ -34,7 +34,7 @@ class activityAchievements : AppCompatActivity() {
         val dividerItemDecoration = DividerItemDecoration(recyclerView.context, layoutManager.orientation)
         recyclerView.addItemDecoration(dividerItemDecoration)
 
-        val achievements = /*helperClass.AchievementManager.getUnlockedAchievements() + */ HelperClass.AchievementManager.getAllAchievements()
+        val achievements = HelperClass.AchievementManager.getAllAchievements()
         Log.d("AchievementAdapter", "Data size: ${achievements.size}")
         adapter = AchievementAdapter(achievements)
         recyclerView.adapter = adapter
@@ -43,20 +43,26 @@ class activityAchievements : AppCompatActivity() {
         buttonTriggerActions.setOnClickListener {
 
 
+            fetchAchievements()
+           // if(num1 > 9){
+
+
+           // }
 
             // Testing scenario
-            HelperClass.AchievementManager.trackDistanceTraveled(num2) // Assume the condition is 5.0 km
-            HelperClass.AchievementManager.trackBirdsAdded(num1) // Assume the condition is 5 birds
-            HelperClass.AchievementManager.trackMarkerPlaced()
+            //HelperClass.AchievementManager.trackDistanceTraveled(num2) // Assume the condition is 5.0 km
+            //HelperClass.AchievementManager.trackBirdsAdded(num1) // Assume the condition is 5 birds
+            //HelperClass.AchievementManager.trackMarkerPlaced()
 
-            num1 += 9
-            num2 += 8.0
-            Log.d("Numbers 1", "num1: ${num1}")
+            //num1 += 9
+            //num2 += 8.0
+            //Log.d("Numbers 1", "num1: ${num1}")
             //testing
 
+            //HelperClass.AchievementManager.trackMarkerPlaced()
 
             adapter.notifyDataSetChanged()
-            achievementFirestore()
+            //achievementFirestore()
             // Update the RecyclerView with the new data
             //adapter.updateData(helperClass.AchievementManager.getUnlockedAchievements() + helperClass.AchievementManager.getAllAchievements())
 
@@ -87,13 +93,13 @@ class activityAchievements : AppCompatActivity() {
                         // Document added successfully
                         Log.d(MotionEffect.TAG, "data saved:success")
                         val alertDialog = AlertDialog.Builder(this)
-                        alertDialog.setTitle("Successfully Saved")
-                        alertDialog.setMessage("Achievement Saved")
+                        //alertDialog.setTitle("Successfully Saved")
+                        //alertDialog.setMessage("Achievement Saved")
                         alertDialog.setPositiveButton("OK") { dialog, _ ->
                             // when the user clicks OK
                             dialog.dismiss()
                         }
-                        alertDialog.show()
+                        //alertDialog.show()
                     }
                     .addOnFailureListener { e ->
                         // Handle errors
@@ -110,44 +116,72 @@ class activityAchievements : AppCompatActivity() {
                     }
             }
 
-            fun fetchAchievements() {
-                try { // Reference to the Firestore collection
-                    val collectionRef =db.collection("Achievements")
 
-                    val currentUser = FirebaseAuth.getInstance().currentUser
-                    val userId = currentUser?.uid
+        }
 
-                    if (userId != null) {
-                        Log.d("ContentValues", "fetchBirdData: userID $userId")
-                    } else {
-                        Log.d("ContentValues", "fetchBirdData: User is not authenticated")
+    }
+
+    fun fetchAchievements() {
+        try { // Reference to the Firestore collection
+            val db = FirebaseFirestore.getInstance()
+            val collectionRef = db.collection("Achievements")
+
+            val currentUser = FirebaseAuth.getInstance().currentUser
+            val userId = currentUser?.uid
+
+            if (userId != null) {
+                Log.d("ContentValues", "fetchAchievement: userID $userId")
+            } else {
+                Log.d("ContentValues", "fetchAchievement: User is not authenticated")
+            }
+            // Query the collection based on the "user" field
+            collectionRef.whereEqualTo("user", userId)
+                .get()
+                .addOnSuccessListener { querySnapshot ->
+                    val fetchedAchievements = mutableListOf<Achievement>()
+
+                    for (doc in querySnapshot) {
+                        // doc.data contains the document data
+                        val achievementID = doc.getString("id")
+                        val achievementStatus = doc.getBoolean("isUnlocked")
+
+                        Log.d("ContentValues", "$achievementID" + "$achievementStatus")
+
+                        // Update the corresponding achievement in the list
+                        if (achievementID != null && achievementStatus != null) {
+                            HelperClass.AchievementManager.achievementList =
+                                updateAchievementStatus(achievementID, achievementStatus)
+
+                            // Notify the adapter that the data has changed
+                            adapter.updateData(HelperClass.AchievementManager.achievementList)
+                        }
                     }
-                    // Query the collection based on the "user" field
-                    collectionRef.whereEqualTo("user", userId)
-                        .get()
-                        .addOnSuccessListener { querySnapshot ->
-                            val birdItemList = mutableListOf<BirdItem>()
 
-                            for (doc in querySnapshot) {
-                                // doc.data contains the document data
-                                val birdName = doc.getString("id")
-                                val latitude = doc.getDouble("isUnlocked")
+                    //the fetched achievements in the AchievementManager
+                    HelperClass.AchievementManager.fetchedAchievements = fetchedAchievements
 
-
-                            }
-
-
-                        }
-                        .addOnFailureListener { e ->
-                            // Handle the error
-                            // This will be called if there is an issue with retrieving the data
-                            Log.d(MotionEffect.TAG, "fetchBirdData: failure " + e.message.toString())
-                        }
-                }catch (e: Exception){
-                    Log.d(ContentValues.TAG, "fetchBirdData: "+e.message.toString())
+                    // Notify the adapter with the updated data
+                    adapter.updateData(HelperClass.AchievementManager.achievementList + fetchedAchievements)
                 }
+                .addOnFailureListener { e ->
+                    // Handle the error
+                    // This will be called if there is an issue with retrieving the data
+                    Log.d(MotionEffect.TAG, "fetchAchievement: failure " + e.message.toString())
+                }
+        }catch (e: Exception){
+            Log.d(ContentValues.TAG, "fetchAchievement: "+e.message.toString())
+        }
+    }
+
+    private fun updateAchievementStatus(achievementID: String, isUnlocked: Boolean): List<HelperClass.Achievement> {
+        val updatedList = HelperClass.AchievementManager.achievementList.map { achievement ->
+            if (achievement.id == achievementID) {
+                achievement.copy(isUnlocked = isUnlocked)
+            } else {
+                achievement
             }
         }
 
+        return updatedList
     }
 }

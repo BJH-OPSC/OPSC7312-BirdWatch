@@ -100,13 +100,15 @@ class HelperClass {
     val achievementList: MutableList<Achievement> = mutableListOf()
 
     object AchievementManager {
+        var fetchedAchievements: List<Achievement> = emptyList()
+
         private val unlockedAchievements = mutableListOf<Achievement>()
 
         private val unlockedAchievementsMap = mutableMapOf<String, AchievementProgress>()
 
 
         // Define a list of achievements
-        val achievementList = listOf(
+        var achievementList = listOf(
             Achievement("Bronze-Travel", "Junior Traveler", "Achieve 5km of travel", listOf(Condition(ConditionType.DISTANCE_TRAVELED, 5.0))),
             Achievement("Silver-Travel", "Experienced Traveler", "Achieve 10km of travel", listOf(Condition(ConditionType.DISTANCE_TRAVELED, 10.0))),
             Achievement("Gold-Travel", "Pro Traveler", "Achieve 15km of travel", listOf(Condition(ConditionType.DISTANCE_TRAVELED, 15.0))),
