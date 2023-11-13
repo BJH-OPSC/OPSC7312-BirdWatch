@@ -9,6 +9,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.content.res.Resources
+import android.location.Geocoder
 import android.location.Location
 import android.location.LocationManager
 import android.os.Bundle
@@ -40,8 +41,10 @@ import retrofit2.*
 import retrofit2.converter.gson.GsonConverterFactory
 
 import android.view.MenuItem
+import androidx.constraintlayout.helper.widget.MotionEffect
 import com.google.android.gms.location.*
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.auth.FirebaseAuth
 
 class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener, OnPolylineClickListener, BottomNavigationView.OnNavigationItemSelectedListener {
     //declaring class variables
@@ -78,14 +81,14 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfoWin
         sharedPreferences = getSharedPreferences("MyAppPrefs", MODE_PRIVATE)
         sharedPreferencesManager = SharedPreferencesManager(applicationContext)
        // selectedUnits=sharedPreferencesManager.getUnit()
-                try {
-                    selectedDistance = sharedPreferencesManager.getMaxDistance()
-                    selectedUnits=sharedPreferencesManager.getUnit()
+        try {
+            selectedDistance = sharedPreferencesManager.getMaxDistance()
+            selectedUnits=sharedPreferencesManager.getUnit()
 
-                } catch (e: Resources.NotFoundException) {
-                    selectedDistance =20
-                    selectedUnits = false
-                }
+        } catch (e: Resources.NotFoundException) {
+            selectedDistance =20
+            selectedUnits = false
+        }
 
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -222,12 +225,12 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfoWin
         Log.d(TAG, "mCurrentLocation latidude ${mCurrentLocation.latitude}")
         Log.d(TAG, "mCurrentLocation longidude ${mCurrentLocation.longitude}")
 
-        //convert miles to kilometeres if the user has selected imperial
+        //convert miles to kilometres if the user has selected imperial
         if(selectedUnits){
             selectedDistance = (selectedDistance*1.609).roundToInt()
         }
         Log.d(TAG, "SELECTED DISTANCE: $selectedDistance")
-        
+
         val retrofitBuilder = Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create())
             .baseUrl(BASE_URL)
@@ -261,6 +264,80 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfoWin
                 Log.d(TAG, "onFailure: $t")
             }
         })
+
+        fetchBirdData { birdList ->
+            for (birdItem in birdList) {
+                Log.d(TAG, "getObsMarkers: MARKER BIRD LIST" + birdItem.birdName)
+                val birdMarkerOptions = MarkerOptions()
+                    .position(LatLng(birdItem.latitude, birdItem.longitude))
+                    .title("Bird Observation")
+                    .snippet("Last Observed: ${birdItem.date}\nBird Spotted: ${birdItem.birdName}")
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))
+                mMap.addMarker(birdMarkerOptions)
+            }
+        }
+    }
+
+    private fun fetchBirdData(onComplete: (List<BirdDataItem>) -> kotlin.Unit) {
+        // Reference to the Firestore collection
+        Log.d(TAG, "fetchBirdData: Called")
+        try {
+
+            val collectionRef = db.collection(collectionName)
+            val user = FirebaseAuth.getInstance().currentUser
+            val userID = user?.uid
+
+            if (userID != null) {
+                Log.d("ContentValues", "fetchBirdData: userID $userID")
+            } else {
+                Log.d("ContentValues", "fetchBirdData: User is not authenticated")
+            }
+            val query = collectionRef.whereEqualTo("user", userID)
+
+            // Query the collection based on the "user" field (assuming "user" is the correct field name)
+
+            query.get()
+                .addOnCompleteListener() { task ->
+                    if (task.isSuccessful) {
+                        val birdList = mutableListOf<BirdDataItem>()
+                        Log.d(TAG, "fetchBirdData: TASK SUCCESSFUL")
+                        for (doc in task.result) {
+                            // doc.data contains the document data
+                            val birdName = doc.getString("BirdName")
+                            val latitude = doc.getDouble("Latitude")
+                            val longitude = doc.getDouble("Longitude")
+                            val date = doc.getString("Date")
+                            Log.d(TAG, "fetchBirdData: ${date} ${birdName} ${latitude} ${longitude}")
+                            if (birdName != null && longitude != null && latitude != null && date != null) {
+                                //val birdDataItem = BirdDataItem(birdName, latitude.toDouble(), longitude.toDouble(), date)
+                                // markerBirdList.add(birdDataItem)
+
+                                val birdDataItem = BirdDataItem(birdName, latitude, longitude, date)
+                                birdList.add(birdDataItem)
+
+                            }
+                        }
+                        onComplete(birdList)
+
+                    } else {
+                        Log.d(
+                            MotionEffect.TAG,
+                            "fetchBirdData: failure " + task.exception?.message.toString()
+                        )
+                    }
+
+                }
+                .addOnFailureListener { e ->
+                    Log.d(MotionEffect.TAG, "fetchBirdData: failure " + e.message.toString())
+
+                }
+
+        } catch (e: Exception) {
+            // Handle the exception here
+            Log.e("FirebaseFunctionError", "An error occurred: ${e.message}")
+            Log.v("YourTag", "An error occurred", e)
+
+        }
     }
 
     //function to enable live location updates and retrieve the user's current location
@@ -547,3 +624,9 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfoWin
         return true
     }
 }
+data class BirdDataItem(
+    val birdName: String,
+    val latitude: Double,
+    val longitude: Double,
+    val date: String
+)

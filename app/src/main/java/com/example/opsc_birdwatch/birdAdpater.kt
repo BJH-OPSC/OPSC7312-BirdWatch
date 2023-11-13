@@ -1,20 +1,19 @@
 package com.example.opsc_birdwatch
 
+import android.content.ContentValues.TAG
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.constraintlayout.helper.widget.MotionEffect.TAG
+import androidx.constraintlayout.helper.widget.MotionEffect
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
 
 data class BirdItem(val img: Int ,val name: String, val dateTime: String, val location: String)
-
-
 
 class birdAdapter(private  val itemList: List<BirdItem>):
     RecyclerView.Adapter<birdAdapter.ViewHolder>() {

@@ -38,8 +38,8 @@
                 android:id="@+id/nav_logout"
                 android:icon="@drawable/baseline_logout_24"
                 android:title="Logout"
-                android:visible="false"
-                android:enabled="false"/>
+                android:visible="true"
+                android:enabled="true"/>
         </menu>
     </item>
 </menu>

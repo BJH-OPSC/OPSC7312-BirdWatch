@@ -85,6 +85,8 @@ class SignInActivity : AppCompatActivity() {
                     alertDialog.setPositiveButton("OK") { dialog, _ ->
                         // when the user clicks OK
                         dialog.dismiss()
+                        val intent = Intent(this, MainActivity::class.java)
+                        startActivity(intent)
                         finish()
                     }
                     alertDialog.show()
