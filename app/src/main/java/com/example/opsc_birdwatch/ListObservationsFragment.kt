@@ -184,8 +184,8 @@ class ListObservationsFragment : Fragment() {
     }
     private fun observationsFirestore(BirdName: String, location: Location){
         val currentUser = FirebaseAuth.getInstance().currentUser
-        //val OA = ObservationsActivity()
-        if (currentUser != null) {
+        val userId = currentUser?.uid        //val OA = ObservationsActivity()
+        if (userId != null) {
             //requireActivity();
             val db = FirebaseFirestore.getInstance()
             val observationData = hashMapOf(
@@ -193,7 +193,7 @@ class ListObservationsFragment : Fragment() {
                 "Latitude" to location.latitude,
                 "Longitude" to location.longitude,
                 "Date" to getCurrentDateTime(),
-                "user" to currentUser.uid
+                "user" to currentUser?.uid
             )
 
             db.collection("BirdObservations")
@@ -238,7 +238,7 @@ class ListObservationsFragment : Fragment() {
                Log.d("ContentValues", "fetchBirdData: User is not authenticated")
            }
            // Query the collection based on the "user" field
-           collectionRef.whereEqualTo("user", currentUser)
+           collectionRef.whereEqualTo("user", userId)
                .get()
                .addOnSuccessListener { querySnapshot ->
                    val birdItemList = mutableListOf<BirdItem>()
