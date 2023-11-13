@@ -75,14 +75,6 @@ class activityAchievements : AppCompatActivity() {
 
                 val achievementData = hashMapOf(
                     "id" to achievement.id,
-                    "name" to achievement.name,
-                    "description" to achievement.description,
-                    "conditions" to achievement.conditions.map { condition ->
-                        mapOf(
-                            "type" to condition.type.name,
-                            "value" to condition.value
-                        )
-                    },
                     "isUnlocked" to achievement.isUnlocked,
                     "user" to currentUser.uid
                 )
