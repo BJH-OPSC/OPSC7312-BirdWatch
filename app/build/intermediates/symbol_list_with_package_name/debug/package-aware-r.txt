@@ -1392,6 +1392,10 @@ color bright_foreground_inverse_material_dark
 color bright_foreground_inverse_material_light
 color bright_foreground_material_dark
 color bright_foreground_material_light
+color browser_actions_bg_grey
+color browser_actions_divider_color
+color browser_actions_text_color
+color browser_actions_title_color
 color button_material_dark
 color button_material_light
 color call_notification_answer_color
@@ -2198,6 +2202,8 @@ dimen abc_text_size_subtitle_material_toolbar
 dimen abc_text_size_title_material
 dimen abc_text_size_title_material_toolbar
 dimen appcompat_dialog_background_inset
+dimen browser_actions_context_menu_max_width
+dimen browser_actions_context_menu_min_padding
 dimen cardview_compat_inset_shadow
 dimen cardview_default_elevation
 dimen cardview_default_radius
@@ -2994,6 +3000,7 @@ drawable amu_bubble_mask
 drawable amu_bubble_shadow
 drawable avd_hide_password
 drawable avd_show_password
+drawable baseline_add_24
 drawable baseline_arrow_back_24
 drawable baseline_home_24
 drawable baseline_info_24
@@ -3001,8 +3008,11 @@ drawable baseline_list_24
 drawable baseline_login_24
 drawable baseline_logout_24
 drawable baseline_map_24
+drawable baseline_refresh_24
 drawable baseline_settings_24
 drawable binoculars_svgrepo_com
+drawable bird_svgrepo_com
+drawable bronzetrophyimg
 drawable btn_checkbox_checked_mtrl
 drawable btn_checkbox_checked_to_unchecked_mtrl_animation
 drawable btn_checkbox_unchecked_mtrl
@@ -3036,6 +3046,7 @@ drawable design_ic_visibility
 drawable design_ic_visibility_off
 drawable design_password_eye
 drawable design_snackbar_background
+drawable goldtrophyimg
 drawable googleg_disabled_color_18
 drawable googleg_standard_color_18
 drawable ic_arrow_back_black_24
@@ -3134,9 +3145,23 @@ drawable notification_tile_bg
 drawable notify_panel_notification_icon_bg
 drawable rounded_button
 drawable rounded_edit_text
+drawable signup_removebg_preview
+drawable silvertrophyimg
+drawable stcok9
+drawable stock10
+drawable stock12
+drawable stock14
+drawable stock15
+drawable stock2
+drawable stock2welcome
+drawable stock3
+drawable stock3welcome
+drawable stock4
+drawable stock7
 drawable test_level_drawable
 drawable tooltip_frame_dark
 drawable tooltip_frame_light
+drawable transparent_button_rounded
 id ALT
 id BOTTOM_END
 id BOTTOM_START
@@ -3241,6 +3266,17 @@ id bounce
 id bounceBoth
 id bounceEnd
 id bounceStart
+id browser_actions_header_text
+id browser_actions_menu_item_icon
+id browser_actions_menu_item_text
+id browser_actions_menu_items
+id browser_actions_menu_view
+id btnAchievements
+id btnAdd
+id btnList
+id btnMap
+id btnRefresh
+id button
 id buttonLogin
 id buttonPanel
 id buttonRegister
@@ -3321,6 +3357,7 @@ id easeInOut
 id easeOut
 id east
 id edge
+id editTextBird
 id editTextConfirmPassword
 id editTextPassword
 id editTextUsername
@@ -3377,6 +3414,9 @@ id ignore
 id ignoreRequest
 id image
 id imageView
+id imageView3
+id imageView4
+id imageViewAchievement
 id immediateStop
 id included
 id indeterminate
@@ -3385,6 +3425,7 @@ id invisible
 id inward
 id italic
 id item_touch_helper_previous_elevation
+id ivImage
 id jumpToEnd
 id jumpToStart
 id labeled
@@ -3531,6 +3572,7 @@ id progress_horizontal
 id radio
 id ratio
 id rectangles
+id recyclerView
 id report_drawn
 id reverseSawtooth
 id right
@@ -3624,6 +3666,9 @@ id textSpacerNoButtons
 id textSpacerNoTitle
 id textStart
 id textTop
+id textViewDescription
+id textViewName
+id textViewStatus
 id text_input_end_icon
 id text_input_error_icon
 id text_input_start_icon
@@ -3650,6 +3695,9 @@ id transition_position
 id transition_scene_layoutid_cache
 id transition_transform
 id triangle
+id txtDate
+id txtLocation
+id txtName
 id unchecked
 id uniform
 id unlabeled
@@ -3791,6 +3839,7 @@ layout abc_search_dropdown_item_icons_2line
 layout abc_search_view
 layout abc_select_dialog_material
 layout abc_tooltip
+layout activity_achievements
 layout activity_main
 layout activity_map
 layout activity_observations
@@ -3800,6 +3849,9 @@ layout activity_sign_up
 layout amu_info_window
 layout amu_text_bubble
 layout amu_webview
+layout birds_list
+layout browser_actions_context_menu_page
+layout browser_actions_context_menu_row
 layout custom_dialog
 layout custom_info_window
 layout design_bottom_navigation_item
@@ -3820,9 +3872,11 @@ layout design_text_input_start_icon
 layout fragment_about
 layout fragment_home
 layout fragment_list
+layout fragment_list_observations
 layout fragment_settings
 layout ime_base_split_test_activity
 layout ime_secondary_split_test_activity
+layout item_achievement
 layout m3_alert_dialog
 layout m3_alert_dialog_actions
 layout m3_alert_dialog_title
@@ -3890,6 +3944,7 @@ menu nav_menu
 mipmap ic_launcher
 mipmap ic_launcher_round
 plurals mtrl_badge_content_description
+raw firebase_common_keep
 string abc_action_bar_home_description
 string abc_action_bar_up_description
 string abc_action_menu_overflow_description
@@ -3956,11 +4011,20 @@ string common_google_play_services_wear_update_text
 string common_open_on_phone
 string common_signin_button_text
 string common_signin_button_text_long
+string copy_toast_msg
 string error_a11y_label
 string error_icon_content_description
 string exposed_dropdown_menu_content_description
 string fab_transformation_scrim_behavior
 string fab_transformation_sheet_behavior
+string fallback_menu_item_copy_link
+string fallback_menu_item_open_in_browser
+string fallback_menu_item_share_link
+string gcm_defaultSenderId
+string google_api_key
+string google_app_id
+string google_crash_reporting_api_key
+string google_storage_bucket
 string hello_blank_fragment
 string hide_bottom_view_on_scroll_behavior
 string icon_content_description
@@ -4071,6 +4135,7 @@ string path_password_eye
 string path_password_eye_mask_strike_through
 string path_password_eye_mask_visible
 string path_password_strike_through
+string project_id
 string search_menu_title
 string searchbar_scrolling_view_behavior
 string searchview_clear_text_content_description
@@ -5357,3 +5422,4 @@ styleable ViewTransition android_id SharedValue SharedValueId clearsTag duration
 styleable include constraintSet
 xml backup_rules
 xml data_extraction_rules
+xml image_share_filepaths

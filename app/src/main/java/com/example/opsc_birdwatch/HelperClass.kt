@@ -1,5 +1,11 @@
 package com.example.opsc_birdwatch
 
+import android.app.AlertDialog
+import android.util.Log
+import androidx.constraintlayout.helper.widget.MotionEffect
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+
 
 class HelperClass {
 
@@ -64,6 +70,7 @@ class HelperClass {
     }*/
 
 
+
     data class Achievement(
         val id: String,
         val name: String,
@@ -90,6 +97,8 @@ class HelperClass {
         // Add other progress-related properties if needed
     )
 
+    val achievementList: MutableList<Achievement> = mutableListOf()
+
     object AchievementManager {
         private val unlockedAchievements = mutableListOf<Achievement>()
 
@@ -97,7 +106,7 @@ class HelperClass {
 
 
         // Define a list of achievements
-        private val achievementList = listOf(
+        val achievementList = listOf(
             Achievement("Bronze-Travel", "Junior Traveler", "Achieve 5km of travel", listOf(Condition(ConditionType.DISTANCE_TRAVELED, 5.0))),
             Achievement("Silver-Travel", "Experienced Traveler", "Achieve 10km of travel", listOf(Condition(ConditionType.DISTANCE_TRAVELED, 10.0))),
             Achievement("Gold-Travel", "Pro Traveler", "Achieve 15km of travel", listOf(Condition(ConditionType.DISTANCE_TRAVELED, 15.0))),
@@ -209,6 +218,8 @@ class HelperClass {
         fun getAllAchievements(): List<Achievement> {
             return achievementList.toList()
         }
+
+
 
 
     }

@@ -40,6 +40,7 @@ class HomeFragment : Fragment() {
 
         val listButton = view?.findViewById<Button>(R.id.btnList)
         val mapButton = view?.findViewById<Button>(R.id.btnMap)
+        val achievementButton = view?.findViewById<Button>(R.id.btnAchievements)
 
         listButton?.setOnClickListener {
             btnListClick()
@@ -47,6 +48,10 @@ class HomeFragment : Fragment() {
 
         mapButton?.setOnClickListener {
             btnMapClick()
+        }
+
+        achievementButton?.setOnClickListener {
+            btnAchievementClick()
         }
 
         return view
@@ -58,6 +63,10 @@ class HomeFragment : Fragment() {
 
     private fun btnMapClick() {
         startActivity(Intent(requireContext(), MapActivity::class.java))
+    }
+
+    private fun btnAchievementClick() {
+        startActivity(Intent(requireContext(), activityAchievements::class.java))
     }
 
     companion object {

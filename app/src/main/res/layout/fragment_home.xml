@@ -50,6 +50,18 @@
             android:layout_marginTop="10dp"
             android:layout_marginHorizontal="10dp"/>
 
+        <Button
+            android:id="@+id/btnAchievements"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/transparent_button_rounded"
+            android:text="Achievements"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            app:iconTint="@color/black"
+            android:layout_marginTop="10dp"
+            android:layout_marginHorizontal="10dp"/>
+
     </LinearLayout>
 
 
