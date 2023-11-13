@@ -33,6 +33,8 @@ private const val ARG_PARAM2 = "param2"
  */
 class ListObservationsFragment : Fragment() {
 
+    private var birdCounter: Int = 0
+
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: birdAdapter
     lateinit var helperClass: HelperClass
@@ -64,6 +66,7 @@ class ListObservationsFragment : Fragment() {
 
         //helperClass.BirdMap
         val birdList = getBirdData()
+
 
         val addButton = view.findViewById<Button>(R.id.btnAdd)
         val refButton = view.findViewById<Button>(R.id.btnRefresh)
@@ -165,6 +168,11 @@ class ListObservationsFragment : Fragment() {
             for ((birdName, bird) in birdMap) {
                 // Use the birdName as the name, and get other details from the Bird object
                 birdList.add(BirdItem(R.drawable.bird_svgrepo_com, birdName, bird.dateTime, bird.location))
+
+                //get number of birds
+                birdCounter = birdList.size
+                //perform a check to see if it meets the conditions for the achievement
+                HelperClass.AchievementManager.trackBirdsAdded(birdCounter)
             }
         }else{
             Toast.makeText(requireContext(),"No Saved Observations", Toast.LENGTH_LONG).show()
@@ -175,6 +183,9 @@ class ListObservationsFragment : Fragment() {
     fun saveEntry(name: String, location: String, date: String){
         helperClass.addToList(name, name, location, date)
         Toast.makeText(requireContext(),"Saved!", Toast.LENGTH_SHORT).show()
+
+
+
     }
     //---------------------------------------------------------------------------------------\\
     fun getCurrentDateTime(): String {
