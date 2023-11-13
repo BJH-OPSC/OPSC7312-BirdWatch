@@ -15,10 +15,11 @@ class HelperClass {
 
     fun addToList(usersName: String, name: String, dateTime: String, location: String){
 
-
         val bird = Bird(name, dateTime, location)
         //BirdMap[usersName] = bird
         BirdMap.put(usersName, bird)
+
+        Log.d("HelperClass", "Achievement ID: $bird")
     }
 
   /*  fun fetchBirdData(UserID: String, holder: birdAdapter.ViewHolder, position: Int, onComplete: (List<BirdItem>) -> Unit) {
