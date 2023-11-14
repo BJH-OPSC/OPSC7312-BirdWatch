@@ -280,7 +280,7 @@ class HelperClass {
         private fun unlockAchievement(achievement: Achievement) {
             if (!unlockedAchievements.contains(achievement)) {
                 unlockedAchievements.add(achievement)
-                // You can notify the user, update UI, or store the achievement.
+                
                 achievement.isUnlocked = true
                 println("Achievement Unlocked: ${achievement.name}")
             }
