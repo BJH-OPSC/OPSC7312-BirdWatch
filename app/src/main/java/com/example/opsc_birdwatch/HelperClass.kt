@@ -178,7 +178,7 @@ class HelperClass {
         fun trackBirdsAdded(count: Int, context: Context) {
             checkAndUnlockAchievements(ConditionType.BIRDS_ADDED, count)
             trackAchievements(ConditionType.BIRDS_ADDED, count)
-            Log.d("HelperClass", "Achievement ID: birdcount")
+            //Log.d("HelperClass", "Achievement ID: birdcount")
             showNotification(context, "Achievement Unlocked!", "You have tracked quite a few birds!")
         }
 
@@ -190,14 +190,14 @@ class HelperClass {
         fun trackLoginFirst(context: Context) {
             checkAndUnlockAchievements(ConditionType.LOGGED_IN, 1)
             trackAchievements(ConditionType.LOGGED_IN, 1)
-            Log.d("HelperClass", "Achievement ID: login")
+            //Log.d("HelperClass", "Achievement ID: login")
             showNotification(context, "Achievement Unlocked!", "You have logged in for the first time!")
         }
 
         fun trackSettingsChanged(context: Context) {
             checkAndUnlockAchievements(ConditionType.SETTINGS_CHANGE, 1)
             trackAchievements(ConditionType.SETTINGS_CHANGE, 1)
-            Log.d("HelperClass", "Achievement ID: settingschanged")
+            //Log.d("HelperClass", "Achievement ID: settingschanged")
             showNotification(context, "Achievement Unlocked!", "You have changed your settings! Keep on watching those birds!")
         }
 
@@ -206,7 +206,7 @@ class HelperClass {
         private fun achievementFirestore(id: String, status: Boolean){
             val currentUser = FirebaseAuth.getInstance().currentUser
             val userId = currentUser?.uid
-            Log.d("User", "user: ${currentUser}")
+            //Log.d("User", "user: ${currentUser}")
 
             if (userId != null) {
 
@@ -219,12 +219,12 @@ class HelperClass {
                         "isUnlocked" to achievement.isUnlocked,
                         "user" to currentUser.uid
                     )
-                    Log.d("Achievements id:",achievement.id.toString())
+                    //Log.d("Achievements id:",achievement.id.toString())
                     db.collection("Achievements")
                         .add(achievementData)
                         .addOnSuccessListener { documentReference ->
                             // Document added successfully
-                            Log.d(MotionEffect.TAG, "data saved:success")
+                            //Log.d(MotionEffect.TAG, "data saved:success")
 
                             //------------------had to comment out the alertdialog cos it cant function outside of an activity
 
@@ -239,8 +239,8 @@ class HelperClass {
                         }
                         .addOnFailureListener { e ->
                             // Handle errors
-                            Log.d(MotionEffect.TAG, e.message.toString())
-                            Log.d(MotionEffect.TAG, "data saved:failure")
+                            //Log.d(MotionEffect.TAG, e.message.toString())
+                            //Log.d(MotionEffect.TAG, "data saved:failure")
                             //val alertDialog = AlertDialog.Builder(this)
                             //alertDialog.setTitle("unsuccessfully Saved")
                             //alertDialog.setMessage("Achievement Not Saved")
