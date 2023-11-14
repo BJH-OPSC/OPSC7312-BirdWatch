@@ -74,16 +74,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
             R.id.nav_settings -> {startActivity(Intent(this, SettingsActivity::class.java))}
 
-            R.id.nav_about -> {
-                val currentActivity = this::class.java
-
-                if (currentActivity != MainActivity::class.java){
-                    startActivity(Intent(this, MainActivity::class.java))
-                }else{
-                    supportFragmentManager.beginTransaction()
-                        .replace(R.id.fragment_container, AboutFragment()).commit()
-                }
-            }
+            R.id.nav_about -> {startActivity(Intent(this, activityAchievements::class.java))}
 
             R.id.nav_login -> {startActivity(Intent(this, SignInActivity::class.java))}
 

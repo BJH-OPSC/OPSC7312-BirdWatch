@@ -23,8 +23,8 @@
             android:title="Settings"/>
         <item
             android:id="@+id/nav_about"
-            android:icon="@drawable/baseline_info_24"
-            android:title="About"/>
+            android:icon="@drawable/trophy_cup_svgrepo_com"
+            android:title="Achievements"/>
     </group>
 
     <item

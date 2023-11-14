@@ -30,8 +30,6 @@ class activityAchievements : AppCompatActivity(), NavigationView.OnNavigationIte
 
     private lateinit var drawerLayout: DrawerLayout
 
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_achievements)
@@ -79,7 +77,7 @@ class activityAchievements : AppCompatActivity(), NavigationView.OnNavigationIte
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
 
-        navigationView.setCheckedItem(R.id.nav_home)
+        navigationView.setCheckedItem(R.id.nav_about)
     }
 
     private fun achievementFirestore(id: String, status: Boolean){
@@ -222,16 +220,7 @@ class activityAchievements : AppCompatActivity(), NavigationView.OnNavigationIte
 
             R.id.nav_settings -> {startActivity(Intent(this, SettingsActivity::class.java))}
 
-            R.id.nav_about -> {
-                val currentActivity = this::class.java
-
-                if (currentActivity == activityAchievements::class.java){
-                    startActivity(Intent(this, MainActivity::class.java))
-                }else{
-                    supportFragmentManager.beginTransaction()
-                        .replace(R.id.fragment_container, AboutFragment()).commit()
-                }
-            }
+            R.id.nav_about -> {startActivity(Intent(this, activityAchievements::class.java))}
 
             R.id.nav_login -> {startActivity(Intent(this, SignInActivity::class.java))}
 
