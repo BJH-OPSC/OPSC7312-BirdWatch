@@ -268,7 +268,7 @@ class ListObservationsFragment : Fragment() {
                        val date = doc.getString("Date")
                        Log.d("ContentValues", "fetchBirdData: $birdName")
                        var coordinates = Pair(latitude, longitude)
-                       val location = Location("dummy_provider") 
+                       val location = Location("dummy_provider")
                        location.latitude = coordinates.first?:0.0 // set the latitude
                        location.longitude = coordinates.second?:0.0 // set the longitude
 
