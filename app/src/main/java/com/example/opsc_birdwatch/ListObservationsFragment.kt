@@ -267,14 +267,18 @@ class ListObservationsFragment : Fragment() {
                        val longitude = doc.getDouble("Longitude")
                        val date = doc.getString("Date")
                        Log.d("ContentValues", "fetchBirdData: $birdName")
-                       var Location = Pair(latitude, longitude).toString()
+                       var coordinates = Pair(latitude, longitude)
+                       val location = Location("dummy_provider") 
+                       location.latitude = coordinates.first?:0.0 // set the latitude
+                       location.longitude = coordinates.second?:0.0 // set the longitude
 
+                       val locationName = getLocationName(location);
                        if (birdName != null && latitude != null && longitude != null && date != null) {
 
 
                            saveEntry(
                                birdName.toString(),
-                               Location,
+                               locationName,
                                date.toString())
                        } else{
                            Log.d(MotionEffect.TAG, "fetchBirdData: failure ")
