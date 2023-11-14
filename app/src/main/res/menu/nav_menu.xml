@@ -16,15 +16,15 @@
         <item
             android:id="@+id/nav_list"
             android:icon="@drawable/baseline_list_24"
-            android:title="List"/>
+            android:title="Observations"/>
         <item
             android:id="@+id/nav_settings"
             android:icon="@drawable/baseline_settings_24"
             android:title="Settings"/>
         <item
             android:id="@+id/nav_about"
-            android:icon="@drawable/baseline_info_24"
-            android:title="About"/>
+            android:icon="@drawable/trophy_cup_svgrepo_com"
+            android:title="Achievements"/>
     </group>
 
     <item
@@ -38,8 +38,8 @@
                 android:id="@+id/nav_logout"
                 android:icon="@drawable/baseline_logout_24"
                 android:title="Logout"
-                android:visible="false"
-                android:enabled="false"/>
+                android:visible="true"
+                android:enabled="true"/>
         </menu>
     </item>
 </menu>

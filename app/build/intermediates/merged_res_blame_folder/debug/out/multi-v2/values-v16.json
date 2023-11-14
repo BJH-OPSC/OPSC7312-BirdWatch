@@ -1,10 +1,20 @@
 {
     "logs": [
         {
-            "outputFile": "com.example.opsc_birdwatch.app-mergeDebugResources-30:/values-v16/values-v16.xml",
+            "outputFile": "com.example.opsc_birdwatch.app-mergeDebugResources-37:/values-v16/values-v16.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\lab_services_student\\.gradle\\caches\\transforms-3\\3e0b6e4cd00ec1094432a441bef118ac\\transformed\\appcompat-1.6.1\\res\\values-v16\\values-v16.xml",
+                    "source": "C:\\Users\\mattb\\.gradle\\caches\\transforms-3\\71a2db25e917f15c1b1f539d2abf90e1\\transformed\\core-1.12.0\\res\\values-v16\\values-v16.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "65",
+                        "endOffsets": "116"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\mattb\\.gradle\\caches\\transforms-3\\e7e972c5c9df50e6241e5fcf068a7694\\transformed\\appcompat-1.6.1\\res\\values-v16\\values-v16.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",
@@ -20,16 +30,6 @@
                         "endLines": "6",
                         "endColumns": "12",
                         "endOffsets": "289"
-                    }
-                },
-                {
-                    "source": "C:\\Users\\lab_services_student\\.gradle\\caches\\transforms-3\\24c8031572ced1a9ec505ef2513af626\\transformed\\core-1.9.0\\res\\values-v16\\values-v16.xml",
-                    "from": {
-                        "startLines": "2",
-                        "startColumns": "4",
-                        "startOffsets": "55",
-                        "endColumns": "65",
-                        "endOffsets": "116"
                     }
                 }
             ]
