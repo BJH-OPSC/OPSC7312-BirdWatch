@@ -42,7 +42,7 @@ class activityAchievements : AppCompatActivity(), NavigationView.OnNavigationIte
         recyclerView.addItemDecoration(dividerItemDecoration)
 
         val achievements = HelperClass.AchievementManager.getAllAchievements()
-        Log.d("AchievementAdapter", "Data size: ${achievements.size}")
+        //Log.d("AchievementAdapter", "Data size: ${achievements.size}")
         adapter = AchievementAdapter(achievements)
         recyclerView.adapter = adapter
 
@@ -83,7 +83,7 @@ class activityAchievements : AppCompatActivity(), NavigationView.OnNavigationIte
     private fun achievementFirestore(id: String, status: Boolean){
         val currentUser = FirebaseAuth.getInstance().currentUser
         val userId = currentUser?.uid
-        Log.d("User", "user: ${currentUser}")
+        //Log.d("User", "user: ${currentUser}")
 
         if (userId != null) {
 
@@ -139,9 +139,9 @@ class activityAchievements : AppCompatActivity(), NavigationView.OnNavigationIte
             val userId = currentUser?.uid
 
             if (userId != null) {
-                Log.d("ContentValues", "fetchAchievement: userID $userId")
+                //Log.d("ContentValues", "fetchAchievement: userID $userId")
             } else {
-                Log.d("ContentValues", "fetchAchievement: User is not authenticated")
+                //Log.d("ContentValues", "fetchAchievement: User is not authenticated")
             }
             // Query the collection based on the "user" field
             collectionRef.whereEqualTo("user", userId)
@@ -154,7 +154,7 @@ class activityAchievements : AppCompatActivity(), NavigationView.OnNavigationIte
                         val achievementID = doc.getString("id")
                         val achievementStatus = doc.getBoolean("isUnlocked")
 
-                        Log.d("ContentValues", "$achievementID" + "$achievementStatus")
+                        //Log.d("ContentValues", "$achievementID" + "$achievementStatus")
 
                         // Update the corresponding achievement in the list
                         if (achievementID != null && achievementStatus != null) {
@@ -175,7 +175,7 @@ class activityAchievements : AppCompatActivity(), NavigationView.OnNavigationIte
                 .addOnFailureListener { e ->
                     // Handle the error
                     // This will be called if there is an issue with retrieving the data
-                    Log.d(MotionEffect.TAG, "fetchAchievement: failure " + e.message.toString())
+                    //Log.d(MotionEffect.TAG, "fetchAchievement: failure " + e.message.toString())
                 }
         }catch (e: Exception){
             Log.d(ContentValues.TAG, "fetchAchievement: "+e.message.toString())
