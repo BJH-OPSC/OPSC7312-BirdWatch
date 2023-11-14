@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "com.example.opsc_birdwatch.app-mergeDebugResources-34:/values-ldltr-v21/values-ldltr-v21.xml",
+            "outputFile": "com.example.opsc_birdwatch.app-mergeDebugResources-37:/values-ldltr-v21/values-ldltr-v21.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\mattb\\.gradle\\caches\\transforms-3\\8d9343f569df63b726615d18b45679d4\\transformed\\appcompat-1.6.1\\res\\values-ldltr-v21\\values-ldltr-v21.xml",
+                    "source": "C:\\Users\\mattb\\.gradle\\caches\\transforms-3\\e7e972c5c9df50e6241e5fcf068a7694\\transformed\\appcompat-1.6.1\\res\\values-ldltr-v21\\values-ldltr-v21.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",

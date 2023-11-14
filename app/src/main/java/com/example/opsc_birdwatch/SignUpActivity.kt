@@ -4,12 +4,39 @@ import android.app.AlertDialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
+import androidx.constraintlayout.helper.widget.MotionEffect.TAG
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
+import com.google.firebase.auth.FirebaseAuthUserCollisionException
+import com.google.firebase.auth.FirebaseAuthWeakPasswordException
 
 class SignUpActivity : AppCompatActivity() {
-   // private val account: HashMap<String, String> = HashMap()
+    // private val account: HashMap<String, String> = HashMap()
+    private val auth: FirebaseAuth = FirebaseAuth.getInstance()
+    private val TAG = "SignUpActivity"
 
+    public override fun onStart() {
+        super.onStart()
+        // Check if user is signed in (non-null) and update UI accordingly.
+        val currentUser = auth.currentUser
+        if (currentUser != null) {
+            val alertDialog = AlertDialog.Builder(this)
+            alertDialog.setTitle("User Already Logged-In")
+            alertDialog.setMessage("You Have Already Successfully Logged In")
+            alertDialog.setPositiveButton("OK") { dialog, _ ->
+                // when the user clicks OK
+                dialog.dismiss()
+                finish()
+            }
+            alertDialog.show()
+        }
+    }
+
+    //----------------------------------------------------------------------------------------\\
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_up)
@@ -27,7 +54,7 @@ class SignUpActivity : AppCompatActivity() {
             val confirmPassword = confirmPasswordEditText.text.toString()
 
             // After successful registration, navigate to the login screen
-            if ( username.isEmpty() || password.isEmpty()) {
+            if (username.isEmpty() || password.isEmpty()) {
                 // Show an error message
                 val alertDialog = AlertDialog.Builder(this)
                 alertDialog.setTitle("Unsuccessful Register")
@@ -42,13 +69,12 @@ class SignUpActivity : AppCompatActivity() {
                 // Show an error message if the username already exists
                 val alertDialog = AlertDialog.Builder(this)
                 alertDialog.setTitle("Unsuccessful Register")
-                alertDialog.setMessage("Username already exists. Please choose another username.")
+                alertDialog.setMessage("Username already exists or must be a valid email. Please choose another username.")
                 alertDialog.setPositiveButton("OK") { dialog, _ ->
                     dialog.dismiss()
                 }
                 alertDialog.show()
-            }else if (!password.equals(confirmPassword)) {
-                // Show an error message if the username already exists
+            } else if (!password.equals(confirmPassword)) {
                 val alertDialog = AlertDialog.Builder(this)
                 alertDialog.setTitle("Unsuccessful Register")
                 alertDialog.setMessage("Passwords Do Not Match")
@@ -56,9 +82,10 @@ class SignUpActivity : AppCompatActivity() {
                     dialog.dismiss()
                 }
                 alertDialog.show()
-            }else {
+            } else {
                 // Register the user
                 AccountManager.addUser(username, password)
+                createUser(username, password);
                 val alertDialog = AlertDialog.Builder(this)
                 alertDialog.setTitle("Successful Register")
                 alertDialog.setMessage("You Have Successfully Registered")
@@ -84,5 +111,29 @@ class SignUpActivity : AppCompatActivity() {
 
         }
     }
+
+    //----------------------------------------------------------------------------------------------------------\\
+    private fun createUser(email: String, password: String) {
+        auth.createUserWithEmailAndPassword(email.trim(), password.trim())
+            .addOnCompleteListener(this) { task ->
+                // User creation was successful
+                if (task.isSuccessful) {
+                    Log.d(TAG, "createUserWithEmail:success")
+                    val user = auth.currentUser
+                } else {
+                    // If sign in fails
+                    Log.w(TAG, "createUserWithEmail:failure", task.exception)
+                    val errorText = when (task.exception) {
+                        is FirebaseAuthWeakPasswordException -> "Weak password. Please choose a stronger one."
+                        is FirebaseAuthInvalidCredentialsException -> "Invalid email address."
+                        is FirebaseAuthUserCollisionException -> "Email address is already in use."
+                        else -> "Authentication failed. Please try again later."
+                    }
+                    Toast.makeText(baseContext, errorText, Toast.LENGTH_SHORT).show()
+                }
+            }
+    }
+
 }
+
 //------------------------------------------------End of File-----------------------------------------\\

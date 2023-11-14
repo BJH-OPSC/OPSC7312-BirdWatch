@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "452172143963",
+    "project_id": "opsc7312-birdwatch",
+    "storage_bucket": "opsc7312-birdwatch.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:452172143963:android:20c59e2687452e4cdc8e7e",
+        "android_client_info": {
+          "package_name": "com.example.bjhbirdwatch"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA4xl173rNXjiYY7wPKOjgzoi-Mw8YxgWg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

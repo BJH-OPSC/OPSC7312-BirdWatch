@@ -3,6 +3,7 @@ package com.example.opsc_birdwatch
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.Manifest
+import android.app.AlertDialog
 import android.content.ContentValues
 import android.os.Bundle
 import android.view.MenuItem
@@ -16,7 +17,12 @@ import com.google.android.material.navigation.NavigationView
 import android.content.pm.PackageManager
 import android.location.Location
 import android.util.Log
+import android.widget.Button
+import android.widget.EditText
+import androidx.constraintlayout.helper.widget.MotionEffect
 import com.google.android.gms.location.*
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 
 class ObservationsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     private lateinit var drawerLayout: DrawerLayout
@@ -74,24 +80,20 @@ class ObservationsActivity : AppCompatActivity(), NavigationView.OnNavigationIte
 
             R.id.nav_settings -> {startActivity(Intent(this, SettingsActivity::class.java))}
 
-            R.id.nav_about -> {
-                val currentActivity = this::class.java
+            R.id.nav_about -> {startActivity(Intent(this, activityAchievements::class.java))}
 
-                if (currentActivity == ObservationsActivity::class.java){
-                    startActivity(Intent(this, MainActivity::class.java))
-                }else{
-                    supportFragmentManager.beginTransaction()
-                        .replace(R.id.fragment_container, AboutFragment()).commit()
-                }
-            }
             R.id.nav_login -> {startActivity(Intent(this, SignInActivity::class.java))}
 
-            R.id.nav_logout -> Toast.makeText(this, "Logged Out!", Toast.LENGTH_SHORT).show()
+            R.id.nav_logout -> signOutUser()
         }
         drawerLayout.closeDrawer(GravityCompat.START)
         return true
     }
-
+    private fun signOutUser() {
+        val auth = FirebaseAuth.getInstance()
+        auth.signOut()
+        Toast.makeText(this, "Logged Out!", Toast.LENGTH_SHORT).show()
+    }
     //onBackPressed function will determine what to do when the back button on the phone is pressed
     //checks if nav drawer is open, if yes then close it
     override fun onBackPressed() {
@@ -133,6 +135,7 @@ class ObservationsActivity : AppCompatActivity(), NavigationView.OnNavigationIte
                     if (location != null) {
                         Log.d(ContentValues.TAG, "New Location - Latitude: ${location.latitude}, Longitude: ${location.longitude}")
                         fragment.getLocation(location)
+
                         Log.d(ContentValues.TAG, "getLastKnownLocation: PASSED TO FRAGMENT")
                     } else {
                         Log.e(ContentValues.TAG, "Last known location is null.")
@@ -140,5 +143,8 @@ class ObservationsActivity : AppCompatActivity(), NavigationView.OnNavigationIte
                 }
         }
     }
+    //-----------------------------------------------------------------------------------------\\
+
 
 }
+//---------------------------------------------End of File--------------------------------------------------\\
