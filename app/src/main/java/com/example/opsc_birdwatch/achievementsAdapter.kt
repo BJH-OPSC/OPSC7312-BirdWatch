@@ -31,7 +31,7 @@ class AchievementAdapter(private var achievements: List<HelperClass.Achievement>
     fun updateData(newAchievements: List<HelperClass.Achievement>) {
         achievements = newAchievements.toList()
         notifyDataSetChanged()
-        Log.d("AchievementAdapter", "Data updated. New size: ${achievements.size}")
+        //Log.d("AchievementAdapter", "Data updated. New size: ${achievements.size}")
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -81,7 +81,7 @@ class AchievementAdapter(private var achievements: List<HelperClass.Achievement>
 
         private fun getLevelPrefix(achievementName: String): String {
             val prefix = achievementName.substringBefore('-').toLowerCase()
-            Log.d("AchievementAdapter", "Achievement ID: $achievementName, Level Prefix: $prefix")
+            //Log.d("AchievementAdapter", "Achievement ID: $achievementName, Level Prefix: $prefix")
             return prefix
         }
     }
