@@ -88,6 +88,9 @@ class ListObservationsFragment : Fragment() {
         val layoutManager = LinearLayoutManager(context)
         recyclerView.layoutManager = layoutManager
 
+        //testing
+        fetchBirdData()
+
         return view
 
     }
