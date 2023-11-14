@@ -40,7 +40,6 @@ import retrofit2.*
 import retrofit2.converter.gson.GsonConverterFactory
 
 import android.view.MenuItem
-import androidx.constraintlayout.helper.widget.MotionEffect
 import com.google.android.gms.location.*
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
@@ -141,25 +140,15 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfoWin
                 mCurrentLocation.longitude
             )
         )
-        Log.d(TAG, "calculateDirections: destination: $destination")
+        //Log.d(TAG, "calculateDirections: destination: $destination")
         directions.destination(destination)
             .setCallback(object : PendingResult.Callback<DirectionsResult> {
                 override fun onResult(result: DirectionsResult) {
-                    Log.d(TAG, "calculateDirections: routes: " + result.routes[0].toString())
-                    Log.d(
-                        TAG, "calculateDirections: duration: " + result.routes[0].legs[0].duration
-                    )
-                    Log.d(
-                        TAG, "calculateDirections: distance: " + result.routes[0].legs[0].distance
-                    )
-                    Log.d(
-                        TAG, "calculateDirections: geocodedWayPoints: " + result.geocodedWaypoints[0].toString()
-                    )
                     addPolylinesToMap(result)
                 }
 
                 override fun onFailure(e: Throwable) {
-                    Log.e(TAG, "calculateDirections: Failed to get directions: " + e.message)
+                    //Log.e(TAG, "calculateDirections: Failed to get directions: " + e.message)
                 }
             })
     }
@@ -193,7 +182,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfoWin
             }
             var duration = 9999999
             for (route in result.routes) {
-                Log.d(TAG, "run: leg: " + route.legs[0].toString())
+                //Log.d(TAG, "run: leg: " + route.legs[0].toString())
                 val decodedPath = PolylineEncoding.decode(route.overviewPolyline.encodedPath)
                 val newDecodedPath: MutableList<LatLng> = ArrayList()
 
@@ -225,15 +214,10 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfoWin
 
     //function to get nearby hotspots and store them in a List. Uses retrofit and eBird API
     private fun getHotspots(){
-        Log.d(TAG, "getHotspots: Called GETHOTSPOTS")
-        Log.d(TAG, "mCurrentLocation latidude ${mCurrentLocation.latitude}")
-        Log.d(TAG, "mCurrentLocation longidude ${mCurrentLocation.longitude}")
-
         //convert miles to kilometres if the user has selected imperial
         if(selectedUnits){
             selectedDistance = (selectedDistance*1.609).roundToInt()
         }
-        Log.d(TAG, "SELECTED DISTANCE: $selectedDistance")
 
         val retrofitBuilder = Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create())
@@ -265,7 +249,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfoWin
             }
 
             override fun onFailure(call: Call<List<Hotspot>?>, t: Throwable) {
-                Log.d(TAG, "onFailure: $t")
+                //Log.d(TAG, "onFailure: $t")
             }
         })
 
@@ -282,6 +266,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfoWin
         }
     }
 
+    //function to fetch the birds stored in firebase
     private fun fetchBirdData(onComplete: (List<BirdDataItem>) -> kotlin.Unit) {
         // Reference to the Firestore collection
         Log.d(TAG, "fetchBirdData: Called")
@@ -292,29 +277,24 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfoWin
             val userID = user?.uid
 
             if (userID != null) {
-                Log.d("ContentValues", "fetchBirdData: userID $userID")
+                //Log.d("ContentValues", "fetchBirdData: userID $userID")
             } else {
-                Log.d("ContentValues", "fetchBirdData: User is not authenticated")
+                //Log.d("ContentValues", "fetchBirdData: User is not authenticated")
             }
             val query = collectionRef.whereEqualTo("user", userID)
-
-            // Query the collection based on the "user" field (assuming "user" is the correct field name)
 
             query.get()
                 .addOnCompleteListener() { task ->
                     if (task.isSuccessful) {
                         val birdList = mutableListOf<BirdDataItem>()
-                        Log.d(TAG, "fetchBirdData: TASK SUCCESSFUL")
+                        //Log.d(TAG, "fetchBirdData: TASK SUCCESSFUL")
                         for (doc in task.result) {
-                            // doc.data contains the document data
                             val birdName = doc.getString("BirdName")
                             val latitude = doc.getDouble("Latitude")
                             val longitude = doc.getDouble("Longitude")
                             val date = doc.getString("Date")
-                            Log.d(TAG, "fetchBirdData: ${date} ${birdName} ${latitude} ${longitude}")
+                            //Log.d(TAG, "fetchBirdData: ${date} ${birdName} ${latitude} ${longitude}")
                             if (birdName != null && longitude != null && latitude != null && date != null) {
-                                //val birdDataItem = BirdDataItem(birdName, latitude.toDouble(), longitude.toDouble(), date)
-                                // markerBirdList.add(birdDataItem)
 
                                 val birdDataItem = BirdDataItem(birdName, latitude, longitude, date)
                                 birdList.add(birdDataItem)
@@ -324,22 +304,19 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfoWin
                         onComplete(birdList)
 
                     } else {
-                        Log.d(
-                            MotionEffect.TAG,
-                            "fetchBirdData: failure " + task.exception?.message.toString()
-                        )
+                        //Log.d(MotionEffect.TAG, "fetchBirdData: failure " + task.exception?.message.toString())
                     }
 
                 }
                 .addOnFailureListener { e ->
-                    Log.d(MotionEffect.TAG, "fetchBirdData: failure " + e.message.toString())
+                    //Log.d(MotionEffect.TAG, "fetchBirdData: failure " + e.message.toString())
 
                 }
 
         } catch (e: Exception) {
             // Handle the exception here
-            Log.e("FirebaseFunctionError", "An error occurred: ${e.message}")
-            Log.v("YourTag", "An error occurred", e)
+            //Log.e("FirebaseFunctionError", "An error occurred: ${e.message}")
+            //Log.v("YourTag", "An error occurred", e)
 
         }
     }
@@ -360,7 +337,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfoWin
             override fun onLocationResult(p0: LocationResult) {
                 p0.lastLocation?.let { location ->
                     mCurrentLocation = location
-                    Log.d(TAG, "New Location - Latitude: ${location.latitude}, Longitude: ${location.longitude}")
+                    //Log.d(TAG, "New Location - Latitude: ${location.latitude}, Longitude: ${location.longitude}")
                     if(!cameraMovedToUserLocation){
                         val currentLatLng = LatLng(location.latitude, location.longitude)
                         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 12f))
@@ -378,34 +355,6 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfoWin
         }
         currentLocationCallback = locationCallback
         mFusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper())
-    }
-
-    //unused function to get the last known location, replaced by the getDeviceLocation function
-    private fun getLastKnownLocation(){
-        Log.d(TAG, "getLastKnownLocation: called.")
-        if (ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            return
-        }
-        mMap.isMyLocationEnabled = true
-        mFusedLocationClient.lastLocation
-            .addOnSuccessListener { location: Location? ->
-                if (location != null) {
-                    mCurrentLocation = location
-                    Log.d(TAG, "Latitude: ${location.latitude}, Longitude: ${location.longitude}")
-                    val currentLatLng = LatLng(location.latitude, location.longitude)
-                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 12f))
-                    getHotspots()
-                } else {
-                    Log.e(TAG, "Last known location is null.")
-                }
-            }
-            .addOnFailureListener { e ->
-                Log.e(TAG, "Error getting last known location: ${e.message}")
-            }
     }
 
     //function to check whether google services are enabled
@@ -462,16 +411,14 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfoWin
 
     //function to check if the user has google services available
     private fun isServicesOK(): Boolean {
-        Log.d(TAG, "isServicesOK: checking google services version")
+        //Log.d(TAG, "isServicesOK: checking google services version")
         val available =
             GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(this@MapActivity)
         if (available == ConnectionResult.SUCCESS) {
-            //everything is fine and the user can make map requests
-            Log.d(TAG, "isServicesOK: Google Play Services is working")
+            //Log.d(TAG, "isServicesOK: Google Play Services is working")
             return true
         } else if (GoogleApiAvailability.getInstance().isUserResolvableError(available)) {
-            //an error occured but we can resolve it
-            Log.d(TAG, "isServicesOK: an error occurred but we can fix it")
+            //Log.d(TAG, "isServicesOK: an error occurred but we can fix it")
             val dialog: Dialog? = GoogleApiAvailability.getInstance()
                 .getErrorDialog(this@MapActivity, available, ERROR_DIALOG_REQUEST)
             dialog?.show()
@@ -491,8 +438,6 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfoWin
         mLocationPermissionGranted = false
         when (requestCode) {
             PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION -> {
-
-                // If request is cancelled, the result arrays are empty.
                 if (grantResults.isNotEmpty()
                     && grantResults[0] == PackageManager.PERMISSION_GRANTED
                 ) {
@@ -545,7 +490,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfoWin
 
     //function to handle the user clicking on the infoWindow of a marker
     override fun onInfoWindowClick(marker: Marker) {
-        Log.d(TAG, "onInfoWindowClick: INFO WINDOW CLICKED")
+        //Log.d(TAG, "onInfoWindowClick: INFO WINDOW CLICKED")
         if (marker.title != null && marker.title!!.contains("Trip #")) {
             return
         }
@@ -567,7 +512,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfoWin
         var index = 0
         for (polylineData in mPolyLinesData) {
             index++
-            Log.d(TAG, "onPolylineClick: toString: $polylineData")
+            //Log.d(TAG, "onPolylineClick: toString: $polylineData")
             if (polyline.id == polylineData.getPolyline()!!.id) {
                 polylineData.getPolyline()!!.color =
                     ContextCompat.getColor(this, R.color.blue)
@@ -628,6 +573,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfoWin
         return true
     }
 }
+//data class for the firebase bird item
 data class BirdDataItem(
     val birdName: String,
     val latitude: Double,

@@ -1,7 +1,6 @@
 package com.example.opsc_birdwatch
 
 import android.app.AlertDialog
-import android.content.ContentValues.TAG
 import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
@@ -31,8 +30,6 @@ class SettingsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
     private lateinit var sharedPreferencesManager: SharedPreferencesManager
     private var maxDistance = 20
     private lateinit var drawerLayout: DrawerLayout
-    val db = Firebase.firestore
-    val currentUser = FirebaseAuth.getInstance().currentUser
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,11 +46,11 @@ class SettingsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
         // Set the initial state of the switch
         decisionSwitch.isChecked = isImperialEnabled
         // Handle switch state changes
-        var isImperial = false;
+        var isImperial = false
         decisionSwitch.setOnCheckedChangeListener { _, isChecked ->
             // Save the user's preference when the switch state changes
             sharedPreferencesManager.setUnit(isChecked)
-            isImperial= isChecked;
+            isImperial= isChecked
             //sharedPreferencesManager.setMaxDistance(maxDistance)
         }
         //checks if imperial
@@ -81,8 +78,8 @@ class SettingsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
             } else {
                 Toast.makeText(this, "Please enter max distance that's less than 500km/310mi", Toast.LENGTH_SHORT).show()
             }
-            Log.d(TAG, "onCreate: MAX DISTANCE INT THING $maxDistanceInt")
-            Log.d(TAG, "onCreate: MAX DISTANCE IS ${sharedPreferencesManager.getMaxDistance()}")
+            //Log.d(TAG, "onCreate: MAX DISTANCE INT THING $maxDistanceInt")
+            //Log.d(TAG, "onCreate: MAX DISTANCE IS ${sharedPreferencesManager.getMaxDistance()}")
         }
         drawerLayout = findViewById<DrawerLayout>(R.id.drawer_layout)
 

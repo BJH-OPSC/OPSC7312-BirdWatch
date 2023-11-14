@@ -1,7 +1,6 @@
 package com.example.opsc_birdwatch
 
 import android.Manifest
-import android.app.Activity
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
@@ -18,6 +17,7 @@ class NotificationHelper(private val context: Context) {
         createNotificationChannel()
     }
 
+    //function to create the notification channel
     private fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
@@ -32,6 +32,7 @@ class NotificationHelper(private val context: Context) {
         }
     }
 
+    //function to build and show the notification to the user
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     fun showNotification(title: String?, content: String?) {
         if (ContextCompat.checkSelfPermission(
