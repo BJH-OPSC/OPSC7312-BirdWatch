@@ -51,19 +51,7 @@ class activityAchievements : AppCompatActivity(), NavigationView.OnNavigationIte
         fetchAchievements()
         adapter.notifyDataSetChanged()
 
-        val buttonTriggerActions = findViewById<Button>(R.id.button)
-        buttonTriggerActions.setOnClickListener {
 
-            //achievementFirestore()
-
-            // Testing scenario
-            //HelperClass.AchievementManager.trackDistanceTraveled(5.0) // Assume the condition is 5.0 km
-            //HelperClass.AchievementManager.trackBirdsAdded(5) // Assume the condition is 5 birds
-            //HelperClass.AchievementManager.trackMarkerPlaced()
-
-            // Update the RecyclerView with the new data
-
-        }
 
         drawerLayout = findViewById<DrawerLayout>(R.id.drawer_layout)
 
