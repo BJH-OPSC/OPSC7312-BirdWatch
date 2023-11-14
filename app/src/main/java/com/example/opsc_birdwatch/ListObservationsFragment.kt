@@ -105,9 +105,10 @@ class ListObservationsFragment : Fragment() {
         Log.d(TAG, "getLocation: FRAGMENT GETLOCATION HAS RUN")
         if (location != null) {
             mCurrentLocation = location
-            Log.d(TAG, "getLocation: MCURRENTLOCATION HAS THE LOCATION ${mCurrentLocation.latitude} AND ${mCurrentLocation.longitude}")
+            //Log.d(TAG, "getLocation: MCURRENTLOCATION HAS THE LOCATION ${mCurrentLocation.latitude} AND ${mCurrentLocation.longitude}")
         }
     }
+//-------------------------------------------------------------------------------------------\\
 
     private fun getLocationName(location: Location): String {
         val geocoder = Geocoder(requireContext())
@@ -121,11 +122,11 @@ class ListObservationsFragment : Fragment() {
                     val address = addresses[0]
                     val cityName = address.locality
                     val addressString = address.getAddressLine(0)
-                    Log.d(TAG, "ADDRESS: ${address.countryName} AND $addressString")
+                        //Log.d(TAG, "ADDRESS: ${address.countryName} AND $addressString")
                     returnName = "$cityName, $addressString"
-                    Log.d(TAG, "getLocationName THIS IS THE NAME: $returnName")
+                   // Log.d(TAG, "getLocationName THIS IS THE NAME: $returnName")
                 } else {
-                    Log.d(TAG, "getLocationNameFromCoordinates: COULD NOT GET LOCATION NAME")
+                    //Log.d(TAG, "getLocationNameFromCoordinates: COULD NOT GET LOCATION NAME")
                     returnName = ""
                 }
             }
@@ -134,6 +135,7 @@ class ListObservationsFragment : Fragment() {
         }
         return returnName
     }
+//-------------------------------------------------------------------------------------------\\
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     fun btnAddClick(){
@@ -151,6 +153,7 @@ class ListObservationsFragment : Fragment() {
             Toast.makeText(requireContext(),"Invalid Input", Toast.LENGTH_LONG).show()
         }
     }
+//-------------------------------------------------------------------------------------------\\
 
     fun btnRefreshClick(){
         fetchBirdData()
@@ -166,6 +169,7 @@ class ListObservationsFragment : Fragment() {
         adapter.notifyDataSetChanged()
         Toast.makeText(requireContext(),"Refreshed!", Toast.LENGTH_SHORT).show()
     }
+//-------------------------------------------------------------------------------------------\\
 
 
     fun updateList(birdMap: HashMap<String, HelperClass.Bird>): List<BirdItem>{
@@ -186,6 +190,7 @@ class ListObservationsFragment : Fragment() {
         }
         return birdList
     }
+//-------------------------------------------------------------------------------------------\\
 
     fun saveEntry(name: String, location: String, date: String){
         helperClass.addToList(name, name, location, date)
@@ -197,6 +202,7 @@ class ListObservationsFragment : Fragment() {
         val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
         return sdf.format(cal.time)
     }
+    //-------------------------------------------------------------------------------------------\\
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     private fun observationsFirestore(BirdName: String, location: Location){
         val currentUser = FirebaseAuth.getInstance().currentUser
@@ -230,8 +236,8 @@ class ListObservationsFragment : Fragment() {
                 }
                 .addOnFailureListener { e ->
                     // Handle errors
-                    Log.d(MotionEffect.TAG, e.message.toString())
-                    Log.d(MotionEffect.TAG, "data saved:failure")
+                  //  Log.d(MotionEffect.TAG, e.message.toString())
+                  //  Log.d(MotionEffect.TAG, "data saved:failure")
                     val alertDialog = AlertDialog.Builder(requireActivity())
                     alertDialog.setTitle("unsuccessfully Saved")
                     alertDialog.setMessage("Observation Not Saved")
@@ -244,6 +250,8 @@ class ListObservationsFragment : Fragment() {
         }
 
     }
+    //-------------------------------------------------------------------------------------------\\
+
     fun fetchBirdData() {
        try { // Reference to the Firestore collection
            val collectionRef = db.collection("BirdObservations")
@@ -267,7 +275,7 @@ class ListObservationsFragment : Fragment() {
                        val latitude = doc.getDouble("Latitude")
                        val longitude = doc.getDouble("Longitude")
                        val date = doc.getString("Date")
-                       Log.d("ContentValues", "fetchBirdData: $birdName")
+                      // Log.d("ContentValues", "fetchBirdData: $birdName")
                        var coordinates = Pair(latitude, longitude)
                        val location = Location("dummy_provider")
                        location.latitude = coordinates.first?:0.0 // set the latitude
@@ -298,6 +306,7 @@ class ListObservationsFragment : Fragment() {
            Log.d(TAG, "fetchBirdData: "+e.message.toString())
        }
     }
+//-------------------------------------------------------------------------------------------\\
 
     companion object {
         /**
