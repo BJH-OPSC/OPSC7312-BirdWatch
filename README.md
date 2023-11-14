@@ -20,6 +20,8 @@ To install, follow these steps:
 2.  Build and Run:
    - Connect an Android device to your computer or use an emulator.
    - NB: Sync the Gradle files
+   - if an error relating to the jdk occurs
+	ensure the jdk setting suggested by the build is set to default 
    - In Android Studio, click the "Run" button (a green triangle) in the toolbar or press Shift + F10.
    - Select your device or emulator from the list, and Android Studio will build and install the app.
    - The app should automatically start on the selected device or emulator.
