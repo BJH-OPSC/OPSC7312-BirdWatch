@@ -53,8 +53,8 @@ class activityAchievements : AppCompatActivity(), NavigationView.OnNavigationIte
         fetchAchievements()
         adapter.notifyDataSetChanged()
 
-        val buttonTriggerActions = findViewById<Button>(R.id.button)
-        buttonTriggerActions.setOnClickListener {
+        //val buttonTriggerActions = findViewById<Button>(R.id.button)
+        //buttonTriggerActions.setOnClickListener {
 
             //achievementFirestore()
 
@@ -65,7 +65,7 @@ class activityAchievements : AppCompatActivity(), NavigationView.OnNavigationIte
 
             // Update the RecyclerView with the new data
 
-        }
+        //}
 
         drawerLayout = findViewById<DrawerLayout>(R.id.drawer_layout)
 
@@ -231,9 +231,19 @@ class activityAchievements : AppCompatActivity(), NavigationView.OnNavigationIte
 
             R.id.nav_login -> {startActivity(Intent(this, SignInActivity::class.java))}
 
-            R.id.nav_logout -> Toast.makeText(this, "Logged Out!", Toast.LENGTH_SHORT).show()
+            R.id.nav_logout -> signOutUser()
         }
         drawerLayout.closeDrawer(GravityCompat.START)
         return true
+    }
+
+    private fun signOutUser() {
+        val auth = FirebaseAuth.getInstance()
+        auth.signOut()
+        Toast.makeText(this, "Logged Out!", Toast.LENGTH_SHORT).show()
+
+        adapter.resetImagesToGreyscale()
+
+        startActivity(Intent(this, MainActivity::class.java))
     }
 }

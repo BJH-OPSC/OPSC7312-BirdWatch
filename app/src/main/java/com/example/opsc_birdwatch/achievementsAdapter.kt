@@ -34,6 +34,14 @@ class AchievementAdapter(private var achievements: List<HelperClass.Achievement>
         Log.d("AchievementAdapter", "Data updated. New size: ${achievements.size}")
     }
 
+    fun resetImagesToGreyscale() {
+        for (achievement in achievements) {
+            // Apply greyscale color filter for all achievements
+            achievement.isUnlocked = false // Update the unlocked status to false
+        }
+        notifyDataSetChanged() // Notify adapter that the data has changed
+    }
+
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val imageViewAchievement: ImageView = itemView.findViewById(R.id.imageViewAchievement)
         private val textViewName: TextView = itemView.findViewById(R.id.textViewName)
@@ -58,7 +66,7 @@ class AchievementAdapter(private var achievements: List<HelperClass.Achievement>
                 else -> R.drawable.goldtrophyimg
             }
 
-            if (isUnlocked) {
+            if (achievement.isUnlocked) {
                 imageViewAchievement.setImageResource(imageResource)
                 imageViewAchievement.colorFilter = null // Remove color filter for unlocked achievements
             } else {
@@ -71,9 +79,6 @@ class AchievementAdapter(private var achievements: List<HelperClass.Achievement>
                 imageViewAchievement.colorFilter = colorFilter
             }
 
-
-
-
             textViewName.text = achievement.name
             textViewDescription.text = achievement.description
             textViewStatus.text = if (achievement.isUnlocked) "Unlocked" else "Locked"
@@ -84,5 +89,8 @@ class AchievementAdapter(private var achievements: List<HelperClass.Achievement>
             Log.d("AchievementAdapter", "Achievement ID: $achievementName, Level Prefix: $prefix")
             return prefix
         }
+
+
     }
+
 }
